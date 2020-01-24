@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">EspressoDaggerExamples</string>
+
+    <string name="fragment_list">List Fragment</string>
+    <string name="fragment_detail">Detail Fragment</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
