@@ -7,11 +7,14 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
+import java.lang.ClassCastException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,7 +25,9 @@ constructor(
     private val viewModelFactory: MainViewModelFactory
 ) : Fragment(R.layout.fragment_list) {
 
-    private val TAG: String = "AppDebug"
+    private val CLASS_NAME = "ListFragment"
+
+    lateinit var dataStateListener: DataStateListener
 
     val viewModel: MainViewModel by viewModels {
         viewModelFactory
@@ -34,6 +39,16 @@ constructor(
         go.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_detailFragment)
         }
+
+        subscribeObservers()
+
+        viewModel.getBlogPosts()
+    }
+
+    private fun subscribeObservers(){
+        viewModel.blogs.observe(viewLifecycleOwner, Observer {
+            dataStateListener.onDataStateChange(it)
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -41,6 +56,12 @@ constructor(
             .getAppComponent()
             .inject(this)
         super.onAttach(context)
+
+        try{
+            dataStateListener = context as DataStateListener
+        }catch (e: ClassCastException){
+            printLogD(CLASS_NAME, "$context must implement DataStateListener")
+        }
     }
 }
 

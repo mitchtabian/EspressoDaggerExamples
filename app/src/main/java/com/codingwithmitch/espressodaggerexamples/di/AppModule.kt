@@ -5,6 +5,7 @@ import com.codingwithmitch.espressodaggerexamples.api.ApiService.Companion.BASE_
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -12,9 +13,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+object AppModule {
 
 
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGsonBuilder(): Gson {
+        return GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
+    }
+
+    @JvmStatic
     @Singleton
     @Provides
     fun provideRetrofitBuilder(gsonBuilder: Gson): Retrofit.Builder{
@@ -23,6 +32,7 @@ class AppModule {
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
     }
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideApiService(retrofitBuilder: Retrofit.Builder): ApiService {
@@ -31,6 +41,7 @@ class AppModule {
             .create(ApiService::class.java)
     }
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideMainRepository(apiService: ApiService): MainRepository {

@@ -1,11 +1,11 @@
 package com.codingwithmitch.espressodaggerexamples.repository
 
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
-import retrofit2.Response
+import com.codingwithmitch.espressodaggerexamples.util.ApiResult
 
-interface MainRepository {
+interface MainRepository : Repository{
 
-    suspend fun getBlogs(category: String): List<BlogPost>
+    suspend fun getBlogs(category: String): ApiResult<List<BlogPost>>
 
-    suspend fun getAllBlogs(): List<BlogPost>
+    suspend fun getAllBlogs(): ApiResult<List<BlogPost>>
 }
