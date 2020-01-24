@@ -1,12 +1,9 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
-import android.util.Log
 import com.codingwithmitch.espressodaggerexamples.repository.Repository
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
-import kotlin.coroutines.CoroutineContext
-
 
 /**
  * Reference: https://medium.com/@douglas.iacovelli/how-to-handle-errors-with-retrofit-and-coroutines-33e7492a912

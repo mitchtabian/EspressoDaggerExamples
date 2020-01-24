@@ -19,8 +19,12 @@ constructor(
     val blogs: LiveData<DataState<List<BlogPost>>>
         get() = _blogs
 
-    fun getBlogPosts(){
-        launchJob(_blogs){mainRepository.getBlogs("")}
+    fun getBlogPosts(category: String){
+        launchJob(_blogs){mainRepository.getBlogs(category)}
+    }
+
+    fun getAllBlogs(){
+        launchJob(_blogs){mainRepository.getAllBlogs()}
     }
 
 }

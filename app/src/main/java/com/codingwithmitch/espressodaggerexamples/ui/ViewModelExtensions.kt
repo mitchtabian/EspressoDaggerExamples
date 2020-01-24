@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 private val CLASS_NAME = "MainViewModel"
 
 fun <T> MainViewModel.launchJob(
-    dataObj: MutableLiveData<DataState<T>> ,
+    dataObj: MutableLiveData<DataState<T>>,
     repositoryCall: suspend () -> ApiResult<T>
 ){
     viewModelScope.launch {
@@ -29,7 +29,7 @@ fun <T> MainViewModel.launchJob(
         when(response){
 
             is ApiResult.Success -> {
-                printLogD(CLASS_NAME, "Success: ${response.value}")
+                printLogD(CLASS_NAME, "Success.")
                 dataObj.value = DataState.data(response.value)
             }
 

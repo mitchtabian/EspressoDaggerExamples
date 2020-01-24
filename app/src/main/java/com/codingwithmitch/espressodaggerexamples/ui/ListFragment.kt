@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.models.BlogPost
+import com.codingwithmitch.espressodaggerexamples.util.Event
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -42,13 +44,29 @@ constructor(
 
         subscribeObservers()
 
-        viewModel.getBlogPosts()
+        viewModel.getAllBlogs()
+//        viewModel.getBlogPosts("fun")
     }
 
     private fun subscribeObservers(){
-        viewModel.blogs.observe(viewLifecycleOwner, Observer {
-            dataStateListener.onDataStateChange(it)
+        viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
+
+            if(dataState != null){
+                dataStateListener.onDataStateChange(dataState)
+
+                dataState.data?.let { dataEvent ->
+                    handleIncomingBlogPosts(dataEvent)
+                }
+            }
         })
+    }
+
+    private fun handleIncomingBlogPosts(dataEvent: Event<List<BlogPost>>){
+        dataEvent.getContentIfNotHandled()?.let { blogs ->
+            for(blog in blogs){
+                printLogD(CLASS_NAME, blog.toString())
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

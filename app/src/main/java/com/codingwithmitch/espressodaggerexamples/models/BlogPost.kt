@@ -25,3 +25,15 @@ class BlogPost (
     @Expose
     var category: String
 )
+{
+    override fun toString(): String {
+        return "\nBlogPost(" +
+                "\npk=$pk" +
+                "\ntitle='$title'" +
+                "\nbody='$body'" +
+                "\nimage='$image'" +
+                "\ncategory='$category'" +
+                "\n)" +
+                "\n----------"
+    }
+}

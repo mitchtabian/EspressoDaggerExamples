@@ -15,12 +15,11 @@ constructor(
 ) : MainRepository{
 
     override suspend fun getBlogs(category: String): ApiResult<List<BlogPost>> {
-        return safeApiCall(IO){ apiService.getBlogPosts() }
+        return safeApiCall(IO){ apiService.getBlogPosts(category) }
     }
 
     override suspend fun getAllBlogs(): ApiResult<List<BlogPost>> {
-        return safeApiCall(IO){apiService.getBlogPosts()}
-//        return apiService.getBlogPosts()
+        return safeApiCall(IO){apiService.getAllBlogPosts()}
     }
 
 }
