@@ -1,11 +1,10 @@
 package com.codingwithmitch.espressodaggerexamples.ui
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.espressodaggerexamples.util.ApiResult
 import com.codingwithmitch.espressodaggerexamples.util.DataState
-import com.codingwithmitch.espressodaggerexamples.util.NETWORK_ERROR
+import com.codingwithmitch.espressodaggerexamples.repository.NETWORK_ERROR
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.launch
 
@@ -47,6 +46,8 @@ fun <T> MainViewModel.launchJob(
         dataObj.value = DataState.loading(isLoading = false)
     }
 }
+
+
 
 
 

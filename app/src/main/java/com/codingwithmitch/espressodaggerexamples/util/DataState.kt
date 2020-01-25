@@ -1,5 +1,7 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
+import com.codingwithmitch.espressodaggerexamples.repository.UNKNOWN_ERROR
+
 data class DataState<T>(
     var errorEvent: Event<String>? = null,
     var loading: Loading = Loading(false),

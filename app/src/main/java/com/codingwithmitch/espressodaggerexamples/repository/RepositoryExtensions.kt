@@ -1,6 +1,6 @@
-package com.codingwithmitch.espressodaggerexamples.util
+package com.codingwithmitch.espressodaggerexamples.repository
 
-import com.codingwithmitch.espressodaggerexamples.repository.Repository
+import com.codingwithmitch.espressodaggerexamples.util.ApiResult
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
@@ -30,10 +30,16 @@ suspend fun <T> Repository.safeApiCall(
                 is HttpException -> {
                     val code = throwable.code()
                     val errorResponse = convertErrorBody(throwable)
-                    ApiResult.GenericError(code, errorResponse)
+                    ApiResult.GenericError(
+                        code,
+                        errorResponse
+                    )
                 }
                 else -> {
-                    ApiResult.GenericError(null, UNKNOWN_ERROR)
+                    ApiResult.GenericError(
+                        null,
+                        UNKNOWN_ERROR
+                    )
                 }
             }
         }

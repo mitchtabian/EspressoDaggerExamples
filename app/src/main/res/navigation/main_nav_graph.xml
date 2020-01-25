@@ -8,7 +8,6 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.codingwithmitch.espressodaggerexamples.ui.ListFragment"
-        android:label="fragment_list"
         tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_listFragment_to_detailFragment"
@@ -18,15 +17,14 @@
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.codingwithmitch.espressodaggerexamples.ui.DetailFragment"
-        android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_detailFragment_to_finalFragment"
             app:destination="@id/finalFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/finalFragment"
         android:name="com.codingwithmitch.espressodaggerexamples.ui.FinalFragment"
-        android:label="fragment_final"
         tools:layout="@layout/fragment_final" />
 </navigation>
