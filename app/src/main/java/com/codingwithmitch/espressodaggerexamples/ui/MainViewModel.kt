@@ -1,12 +1,12 @@
 package com.codingwithmitch.espressodaggerexamples.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent.*
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.cancel
@@ -33,6 +33,49 @@ constructor(
     val categories: LiveData<DataState<List<Category>>>
         get() = _categories
 
+    private val _viewState: MutableLiveData<MainViewState> = MutableLiveData()
+    private val _stateEvent: MutableLiveData<MainStateEvent> = MutableLiveData()
+
+    val viewState: LiveData<MainViewState>
+        get() = _viewState
+
+    val stateEvent: LiveData<MainStateEvent>
+        get() = _stateEvent
+
+    val dataState: LiveData<DataState<Any>> = Transformations
+        .switchMap(_stateEvent){stateEvent ->
+            stateEvent?.let {
+                handleStateEvent(stateEvent)
+            }
+        }
+
+    fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<Any>> {
+
+        return when (stateEvent) {
+
+            is GetAllBlogs -> {
+                launchLiveDataJob{mainRepository.getAllBlogs()}
+            }
+
+            is GetCategories -> {
+                launchLiveDataJob{mainRepository.getCategories()}
+            }
+
+            is SearchBlogsByCategory -> {
+                launchLiveDataJob { mainRepository.getBlogs(stateEvent.category) }
+            }
+        }
+
+    }
+
+    fun setStateEvent(stateEvent: MainStateEvent){
+        _stateEvent.value = stateEvent
+    }
+
+    fun setViewState(viewState: MainViewState){
+        _viewState.value = viewState
+    }
+
     fun getBlogPosts(category: String){
         launchJob(_blogs){mainRepository.getBlogs(category)}
     }
@@ -46,13 +89,49 @@ constructor(
     }
 
     fun setSelectedBlogPost(blogPost: BlogPost){
-        printLogD(CLASS_NAME, "setSelectedBlogPost: ${blogPost}")
         _selectedBlog.value = blogPost
     }
 
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+    }
+
+    fun getCurrentViewStateOrNew(): MainViewState{
+        val value = viewState.value?.let{
+            it
+        }?: MainViewState()
+        return value
+    }
+
+    fun setBlogListData(blogList: List<BlogPost>){
+        val update = getCurrentViewStateOrNew()
+        update.listFragmentView.blogs = blogList
+        setViewState(update)
+    }
+
+    fun setCategoriesData(categories: List<Category>){
+        val update = getCurrentViewStateOrNew()
+        update.listFragmentView.categories = categories
+        setViewState(update)
+    }
+
+
+    fun handleDataEvent(data: Any){
+        when(data){
+            is List<*> -> {
+                if(data.size > 0){
+                    if(data.get(0) is BlogPost){
+                        setBlogListData(data as List<BlogPost>)
+                        setStateEvent(GetCategories())
+                    }
+                    else if(data.get(0) is Category){
+                        setCategoriesData(data as List<Category>)
+                    }
+                }
+            }
+
+        }
     }
 }
 

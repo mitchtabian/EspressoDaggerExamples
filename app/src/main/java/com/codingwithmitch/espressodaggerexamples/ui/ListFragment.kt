@@ -14,6 +14,8 @@ import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.util.Event
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
@@ -55,30 +57,56 @@ constructor(
     }
 
     private fun initData(){
-        viewModel.getAllBlogs()
-        viewModel.getCategories()
+//        viewModel.getAllBlogs()
+//        viewModel.getCategories()
+
+        viewModel.setStateEvent(GetAllBlogs())
     }
 
     private fun subscribeObservers(){
-        viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             if(dataState != null){
                 dataStateListener.onDataStateChange(dataState)
 
-                dataState.data?.let { dataEvent ->
-                    handleIncomingBlogPosts(dataEvent)
+                dataState.data?.getContentIfNotHandled()?.let { data ->
+                    viewModel.handleDataEvent(data)
                 }
             }
         })
 
-        viewModel.categories.observe(viewLifecycleOwner, Observer { dataState ->
-            if(dataState != null){
-                dataStateListener.onToolbarLoading(dataState.loading.isLoading)
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+            if(viewState != null){
 
-                dataState.data?.let { dataEvent ->
-                    handleIncomingCategories(dataEvent)
+                viewState.listFragmentView.let{ view ->
+                    view.blogs.let { blogs ->
+                        listAdapter.submitList(blogs)
+                    }
+                    view.categories.let { categories ->
+                        uiCommunicationListener.showCategoriesMenu(categories = categories)
+                    }
                 }
             }
         })
+
+//        viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
+//            if(dataState != null){
+//                dataStateListener.onDataStateChange(dataState)
+//
+//                dataState.data?.let { dataEvent ->
+//                    handleIncomingBlogPosts(dataEvent)
+//                }
+//            }
+//        })
+//
+//        viewModel.categories.observe(viewLifecycleOwner, Observer { dataState ->
+//            if(dataState != null){
+//                dataStateListener.onToolbarLoading(dataState.loading.isLoading)
+//
+//                dataState.data?.let { dataEvent ->
+//                    handleIncomingCategories(dataEvent)
+//                }
+//            }
+//        })
     }
 
     override fun onRefresh() {

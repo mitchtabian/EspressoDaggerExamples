@@ -3,6 +3,8 @@ package com.codingwithmitch.espressodaggerexamples.repository
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainViewState
+import com.codingwithmitch.espressodaggerexamples.ui.state.MainViewState.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import kotlinx.coroutines.Dispatchers.IO
 import javax.inject.Inject
