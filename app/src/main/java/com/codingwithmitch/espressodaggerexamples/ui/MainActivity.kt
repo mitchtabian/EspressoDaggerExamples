@@ -95,6 +95,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun showCategoriesMenu(categories: List<Category>) {
         val menu = tool_bar.menu
+        menu.clear()
         for((index, category) in categories.withIndex()){
             menu.add(0, category.pk, index, category.category_name)
         }
@@ -112,11 +113,6 @@ class MainActivity : AppCompatActivity(),
             }
         }
         return false
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        printLogD(CLASS_NAME, "CLICKED")
-        return super.onOptionsItemSelected(item)
     }
 
     override fun hideCategoriesMenu() {
