@@ -2,22 +2,24 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
+import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
     DataStateListener,
@@ -26,7 +28,17 @@ class MainActivity : AppCompatActivity(),
 
     private val CLASS_NAME = "MainActivity"
 
+    @Inject
+    lateinit var viewModelFactory: MainViewModelFactory
+
+    val viewModel: MainViewModel by viewModels {
+        viewModelFactory
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as BaseApplication)
+            .getAppComponent()
+            .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -41,10 +53,20 @@ class MainActivity : AppCompatActivity(),
                 displayMainProgressBar(it.loading.isLoading)
 
                 it.errorEvent?.let { errorEvent ->
-//                    TODO("handle error event")
+                    errorEvent.getContentIfNotHandled()?.let { error ->
+                        displaySnackbar(error, Snackbar.LENGTH_SHORT)
+                    }
                 }
             }
         }
+    }
+
+    override fun displayToastMessage(message: String, length: Int) {
+        Toast.makeText(this, message, length).show()
+    }
+
+    override fun displaySnackbar(message: String, length: Int) {
+        Snackbar.make(this.window.decorView, message, length).show()
     }
 
     override fun onToolbarLoading(isLoading: Boolean) {
@@ -56,7 +78,7 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun displayMainProgressBar(isLoading: Boolean){
+    override fun displayMainProgressBar(isLoading: Boolean){
         if(isLoading){
             main_progress_bar.visibility = View.VISIBLE
         }
@@ -73,19 +95,27 @@ class MainActivity : AppCompatActivity(),
 
     override fun showCategoriesMenu(categories: List<Category>) {
         val menu = tool_bar.menu
-        for(category in categories){
-            menu.add(category.category_name)
+        for((index, category) in categories.withIndex()){
+            menu.add(0, category.pk, index, category.category_name)
         }
         tool_bar.invalidate()
-        onCreateOptionsMenu(menu)
+        tool_bar.setOnMenuItemClickListener { menuItem ->
+           onMenuItemSelected(categories, menuItem)
+        }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        return super.onCreateOptionsMenu(menu)
+    private fun onMenuItemSelected(categories: List<Category>, menuItem: MenuItem): Boolean{
+        for(category in categories){
+            if(category.pk == menuItem.itemId){
+                viewModel.getBlogPosts(category = category.category_name)
+                return true
+            }
+        }
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        printLogD(CLASS_NAME, "cLICKED")
+        printLogD(CLASS_NAME, "CLICKED")
         return super.onOptionsItemSelected(item)
     }
 
@@ -94,6 +124,23 @@ class MainActivity : AppCompatActivity(),
         tool_bar.invalidate()
     }
 
+    override fun hideToolbar() {
+        tool_bar.visibility = View.GONE
+    }
+
+    override fun showToolbar() {
+        tool_bar.visibility = View.VISIBLE
+    }
+
+    override fun hideStatusBar() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        hideToolbar()
+    }
+
+    override fun showStatusBar() {
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        showToolbar()
+    }
 }
 
 

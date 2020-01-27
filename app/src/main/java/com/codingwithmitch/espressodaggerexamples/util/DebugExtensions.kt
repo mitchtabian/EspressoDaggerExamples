@@ -1,10 +1,8 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
 import android.util.Log
-
-private val TAG: String = "AppDebug"
-
-const val DEBUG = true
+import com.codingwithmitch.espressodaggerexamples.util.Constants.DEBUG
+import com.codingwithmitch.espressodaggerexamples.util.Constants.TAG
 
 fun printLogD(className: String?, message: String ) {
     if (DEBUG) {
