@@ -61,16 +61,20 @@ constructor(
 //        viewModel.getCategories()
 
         viewModel.setStateEvent(GetAllBlogs())
+        viewModel.setStateEvent(GetCategories())
     }
 
     private fun subscribeObservers(){
-        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            if(dataState != null){
-                dataStateListener.onDataStateChange(dataState)
-
-                dataState.data?.getContentIfNotHandled()?.let { data ->
-                    viewModel.handleDataEvent(data)
-                }
+        viewModel.stateEvent.observe(viewLifecycleOwner, Observer { stateEvent ->
+//            if(dataState != null){
+//                dataStateListener.onDataStateChange(dataState)
+//
+//                dataState.data?.getContentIfNotHandled()?.let { data ->
+//                    viewModel.handleDataEvent(data)
+//                }
+//            }
+            if(stateEvent != null){
+                printLogD(CLASS_NAME, "Processesing a new state event: $stateEvent")
             }
         })
 
@@ -88,25 +92,25 @@ constructor(
             }
         })
 
-//        viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
-//            if(dataState != null){
-//                dataStateListener.onDataStateChange(dataState)
-//
-//                dataState.data?.let { dataEvent ->
-//                    handleIncomingBlogPosts(dataEvent)
-//                }
-//            }
-//        })
-//
-//        viewModel.categories.observe(viewLifecycleOwner, Observer { dataState ->
-//            if(dataState != null){
-//                dataStateListener.onToolbarLoading(dataState.loading.isLoading)
-//
-//                dataState.data?.let { dataEvent ->
-//                    handleIncomingCategories(dataEvent)
-//                }
-//            }
-//        })
+        viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
+            if(dataState != null){
+                dataStateListener.onDataStateChange(dataState)
+
+                dataState.data?.let { dataEvent ->
+                    handleIncomingBlogPosts(dataEvent)
+                }
+            }
+        })
+
+        viewModel.categories.observe(viewLifecycleOwner, Observer { dataState ->
+            if(dataState != null){
+                dataStateListener.onToolbarLoading(dataState.loading.isLoading)
+
+                dataState.data?.let { dataEvent ->
+                    handleIncomingCategories(dataEvent)
+                }
+            }
+        })
     }
 
     override fun onRefresh() {

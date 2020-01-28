@@ -4,19 +4,24 @@ import androidx.lifecycle.*
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
+import com.codingwithmitch.espressodaggerexamples.ui.state.JobManager
 import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel
 @Inject
 constructor(
     val mainRepository: MainRepository
-) :ViewModel(){
+) :ViewModel() {
+
+    // INJECT THIS?!
+    private val jobManager: JobManager<MainViewState> = JobManager(viewModelScope)
 
     private val CLASS_NAME = "MainViewModel"
 
@@ -39,33 +44,38 @@ constructor(
     val viewState: LiveData<MainViewState>
         get() = _viewState
 
-    val stateEvent: LiveData<MainStateEvent>
-        get() = _stateEvent
 
-    val dataState: LiveData<DataState<Any>> = Transformations
-        .switchMap(_stateEvent){stateEvent ->
+    val stateEvent: LiveData<String> = Transformations
+        .switchMap(_stateEvent){ stateEvent ->
             stateEvent?.let {
                 handleStateEvent(stateEvent)
             }
         }
 
-    fun handleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<Any>> {
+    fun handleStateEvent(stateEvent: MainStateEvent): LiveData<String> {
 
-        return when (stateEvent) {
+        var eventName = "None"
+        when (stateEvent) {
 
             is GetAllBlogs -> {
-                launchLiveDataJob{mainRepository.getAllBlogs()}
+                eventName = "GetAllBlogs"
+//                launchJob(_blogs){mainRepository.getAllBlogs()}
+
+                jobManager.addJob(GetAllBlogs(), mainRepository.getAllBlogs(viewModelScope) )
             }
 
             is GetCategories -> {
-                launchLiveDataJob{mainRepository.getCategories()}
+                eventName = "GetCategories"
+                launchJob(_categories){mainRepository.getCategories()}
             }
 
             is SearchBlogsByCategory -> {
-                launchLiveDataJob { mainRepository.getBlogs(stateEvent.category) }
+                eventName = "SearchBlogsByCategory"
+                launchJob(_blogs) { mainRepository.getBlogs(stateEvent.category) }
             }
         }
 
+        return liveData { emit(eventName) }
     }
 
     fun setStateEvent(stateEvent: MainStateEvent){
@@ -80,9 +90,9 @@ constructor(
         launchJob(_blogs){mainRepository.getBlogs(category)}
     }
 
-    fun getAllBlogs(){
-        launchJob(_blogs){mainRepository.getAllBlogs()}
-    }
+//    fun getAllBlogs(){
+//        launchJob(_blogs){mainRepository.getAllBlogs()}
+//    }
 
     fun getCategories(){
         launchJob(_categories){mainRepository.getCategories()}
