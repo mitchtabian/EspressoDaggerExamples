@@ -1,6 +1,7 @@
 package com.codingwithmitch.espressodaggerexamples.repository
 
 import com.codingwithmitch.espressodaggerexamples.util.ApiResult
+import com.codingwithmitch.espressodaggerexamples.util.ApiResult.*
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
@@ -21,22 +22,22 @@ suspend fun <T> Repository.safeApiCall(
     return withContext(dispatcher) {
         delay(NETWORK_DELAY)
         try {
-            ApiResult.Success(apiCall.invoke())
+            Success(apiCall.invoke())
         } catch (throwable: Throwable) {
             when (throwable) {
                 is IOException -> {
-                    ApiResult.NetworkError
+                    NetworkError
                 }
                 is HttpException -> {
                     val code = throwable.code()
                     val errorResponse = convertErrorBody(throwable)
-                    ApiResult.GenericError(
+                    GenericError(
                         code,
                         errorResponse
                     )
                 }
                 else -> {
-                    ApiResult.GenericError(
+                    GenericError(
                         null,
                         UNKNOWN_ERROR
                     )
@@ -45,6 +46,7 @@ suspend fun <T> Repository.safeApiCall(
         }
     }
 }
+
 
 private fun Repository.convertErrorBody(throwable: HttpException): String? {
     return try {

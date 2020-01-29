@@ -1,14 +1,14 @@
 package com.codingwithmitch.espressodaggerexamples.repository
 
-import com.codingwithmitch.espressodaggerexamples.models.BlogPost
-import com.codingwithmitch.espressodaggerexamples.models.Category
-import com.codingwithmitch.espressodaggerexamples.util.ApiResult
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
+import com.codingwithmitch.espressodaggerexamples.util.DataState
+import kotlinx.coroutines.flow.Flow
 
 interface MainRepository : Repository{
 
-    suspend fun getBlogs(category: String): ApiResult<List<BlogPost>>
+    fun getBlogs(category: String): Flow<DataState<MainViewState>>
 
-    suspend fun getAllBlogs(): ApiResult<List<BlogPost>>
+    fun getAllBlogs(): Flow<DataState<MainViewState>>
 
-    suspend fun getCategories(): ApiResult<List<Category>>
+    fun getCategories(): Flow<DataState<MainViewState>>
 }

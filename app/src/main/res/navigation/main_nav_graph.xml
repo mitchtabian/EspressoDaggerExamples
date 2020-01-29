@@ -11,7 +11,11 @@
         tools:layout="@layout/fragment_list" >
         <action
             android:id="@+id/action_listFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
 
     <fragment
@@ -20,11 +24,19 @@
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_detailFragment_to_finalFragment"
-            app:destination="@id/finalFragment" />
+            app:destination="@id/finalFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
     </fragment>
 
     <fragment
         android:id="@+id/finalFragment"
         android:name="com.codingwithmitch.espressodaggerexamples.ui.FinalFragment"
-        tools:layout="@layout/fragment_final" />
+        tools:layout="@layout/fragment_final"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"/>
 </navigation>

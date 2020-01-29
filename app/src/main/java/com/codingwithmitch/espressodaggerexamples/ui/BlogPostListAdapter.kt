@@ -1,21 +1,25 @@
 package com.codingwithmitch.espressodaggerexamples.ui
 
-import android.annotation.SuppressLint
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.*
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class BlogPostListAdapter(private val interaction: Interaction? = null) :
+class BlogPostListAdapter(
+    private val interaction: Interaction? = null
+    ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val CLASS_NAME = "BlogPostListAdapter"
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<BlogPost>() {
 
@@ -23,14 +27,12 @@ class BlogPostListAdapter(private val interaction: Interaction? = null) :
             return oldItem.pk == newItem.pk
         }
 
-        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: BlogPost, newItem: BlogPost): Boolean {
             return oldItem == newItem
         }
 
     }
     private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
@@ -57,7 +59,20 @@ class BlogPostListAdapter(private val interaction: Interaction? = null) :
     }
 
     fun submitList(list: List<BlogPost>) {
-        differ.submitList(list)
+        val commitCallback = Runnable {
+            /*
+                if process died or nav back need to restore layoutmanager AFTER
+                data is set... very annoying.
+                Not sure why I need the delay... Can't figure this out. I've tested with lists
+                100x the size of this one and the 100ms delay works fine.
+             */
+            CoroutineScope(Main).launch {
+                delay(100)
+                interaction?.restoreListPosition()
+            }
+        }
+
+        differ.submitList(list, commitCallback)
     }
 
     class BlogPostViewHolder
@@ -81,5 +96,7 @@ class BlogPostListAdapter(private val interaction: Interaction? = null) :
 
     interface Interaction {
         fun onItemSelected(position: Int, item: BlogPost)
+
+        fun restoreListPosition()
     }
 }

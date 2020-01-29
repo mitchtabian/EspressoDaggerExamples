@@ -6,23 +6,27 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.Category
-import com.codingwithmitch.espressodaggerexamples.util.DataState
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MAIN_VIEW_STATE_BUNDLE_KEY
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class MainActivity : AppCompatActivity(),
-    DataStateListener,
     UICommunicationListener
 {
 
@@ -43,22 +47,40 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         setupActionBar()
+
+        subscribeObservers()
+
+        restoreInstanceState(savedInstanceState)
     }
 
-    // Handles loading and errors
-    override fun onDataStateChange(dataState: DataState<*>?) {
-        dataState?.let{
-            GlobalScope.launch(Dispatchers.Main){
-
-                displayMainProgressBar(it.loading.isLoading)
-
-                it.errorEvent?.let { errorEvent ->
-                    errorEvent.getContentIfNotHandled()?.let { error ->
-                        displaySnackbar(error, Snackbar.LENGTH_SHORT)
-                    }
-                }
+    private fun restoreInstanceState(savedInstanceState: Bundle?){
+        savedInstanceState?.let { inState ->
+            (inState[MAIN_VIEW_STATE_BUNDLE_KEY] as MainViewState?)?.let { viewState ->
+                viewModel.setViewState(viewState)
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        viewModel.clearActiveJobCounter()
+        outState.putParcelable(
+            MAIN_VIEW_STATE_BUNDLE_KEY,
+            viewModel.getCurrentViewStateOrNew()
+            )
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun subscribeObservers(){
+        viewModel.viewState.observe(this, Observer { viewState ->
+            if(viewState != null){
+
+                displayMainProgressBar(viewModel.areAnyJobsActive())
+
+                viewState.errorMessage?.getContentIfNotHandled()?.let { message ->
+                    displaySnackbar(message, Snackbar.LENGTH_SHORT)
+                }
+            }
+        })
     }
 
     override fun displayToastMessage(message: String, length: Int) {
@@ -67,15 +89,6 @@ class MainActivity : AppCompatActivity(),
 
     override fun displaySnackbar(message: String, length: Int) {
         Snackbar.make(this.window.decorView, message, length).show()
-    }
-
-    override fun onToolbarLoading(isLoading: Boolean) {
-        if(isLoading){
-            toolbar_progress_bar.visibility = View.VISIBLE
-        }
-        else{
-            toolbar_progress_bar.visibility = View.GONE
-        }
     }
 
     override fun displayMainProgressBar(isLoading: Boolean){
@@ -93,11 +106,13 @@ class MainActivity : AppCompatActivity(),
         )
     }
 
-    override fun showCategoriesMenu(categories: List<Category>) {
+    override fun showCategoriesMenu(categories: ArrayList<Category>) {
+        printLogD(CLASS_NAME, "showCategoriesMenu")
         val menu = tool_bar.menu
         menu.clear()
+        categories.add(Category(MENU_ITEM_ID_GET_ALL_BLOGS, MENU_ITEM_NAME_GET_ALL_BLOGS))
         for((index, category) in categories.withIndex()){
-            menu.add(0, category.pk, index, category.category_name)
+            menu.add(0, category.pk , index, category.category_name)
         }
         tool_bar.invalidate()
         tool_bar.setOnMenuItemClickListener { menuItem ->
@@ -108,7 +123,12 @@ class MainActivity : AppCompatActivity(),
     private fun onMenuItemSelected(categories: List<Category>, menuItem: MenuItem): Boolean{
         for(category in categories){
             if(category.pk == menuItem.itemId){
-                viewModel.getBlogPosts(category = category.category_name)
+                viewModel.clearLayoutManagerState()
+                if(category.category_name.equals(MENU_ITEM_NAME_GET_ALL_BLOGS)){
+                    viewModel.setStateEvent(GetAllBlogs())
+                }else{
+                    viewModel.setStateEvent(SearchBlogsByCategory(category.category_name))
+                }
                 return true
             }
         }
@@ -116,6 +136,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun hideCategoriesMenu() {
+        printLogD(CLASS_NAME, "hideCategoriesMenu")
         tool_bar.menu.clear()
         tool_bar.invalidate()
     }
@@ -136,6 +157,16 @@ class MainActivity : AppCompatActivity(),
     override fun showStatusBar() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         showToolbar()
+    }
+
+    override fun expandAppBar() {
+        findViewById<AppBarLayout>(R.id.app_bar).setExpanded(true)
+    }
+
+    companion object {
+
+        const val MENU_ITEM_ID_GET_ALL_BLOGS = 99999999
+        const val MENU_ITEM_NAME_GET_ALL_BLOGS = "All"
     }
 }
 

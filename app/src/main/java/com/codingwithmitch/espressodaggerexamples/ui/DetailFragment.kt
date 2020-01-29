@@ -12,14 +12,19 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.lang.ClassCastException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Singleton
 class DetailFragment
 @Inject
@@ -39,23 +44,27 @@ constructor(
         super.onViewCreated(view, savedInstanceState)
 
         subscribeObservers()
-        uiCommunicationListener.hideCategoriesMenu()
 
         blog_image.setOnClickListener {
             findNavController().navigate(R.id.action_detailFragment_to_finalFragment)
         }
+
+        initUI()
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun initUI(){
         uiCommunicationListener.showStatusBar()
+        uiCommunicationListener.expandAppBar()
+        uiCommunicationListener.hideCategoriesMenu()
     }
 
     private fun subscribeObservers(){
-        viewModel.selectedBlog.observe(viewLifecycleOwner, Observer { blogPost ->
-            printLogD(CLASS_NAME, "$blogPost")
-            if(blogPost != null){
-                setBlogPostToView(blogPost)
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+            if(viewState != null){
+                viewState.detailFragmentView.selectedBlogPost?.let{ selectedBlogPost ->
+//                    printLogD(CLASS_NAME, "$selectedBlogPost")
+                    setBlogPostToView(selectedBlogPost)
+                }
             }
         })
     }

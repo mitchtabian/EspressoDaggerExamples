@@ -4,7 +4,7 @@ import com.codingwithmitch.espressodaggerexamples.models.Category
 
 interface UICommunicationListener {
 
-    fun showCategoriesMenu(categories: List<Category>)
+    fun showCategoriesMenu(categories: ArrayList<Category>)
 
     fun hideCategoriesMenu()
 
@@ -17,6 +17,8 @@ interface UICommunicationListener {
     fun hideStatusBar()
 
     fun showStatusBar()
+
+    fun expandAppBar()
 
     fun displayToastMessage(message: String, length: Int)
 
