@@ -3,6 +3,7 @@ package com.codingwithmitch.espressodaggerexamples.repository
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState.*
 import com.codingwithmitch.espressodaggerexamples.util.*
@@ -37,9 +38,15 @@ constructor(
                                 listFragmentView = ListFragmentView(
                                     blogs = resultObj
                                 )
-                            )
+                            ),
+                            stateEventName = stateEventName()
                         )
                     }
+
+                    override fun stateEventName(): String {
+                        return SearchBlogsByCategory(category).toString()
+                    }
+
                 }.result
             )
         }
@@ -61,9 +68,15 @@ constructor(
                                 listFragmentView = ListFragmentView(
                                     blogs = resultObj
                                 )
-                            )
+                            ),
+                            stateEventName = stateEventName()
                         )
                     }
+
+                    override fun stateEventName(): String {
+                        return GetAllBlogs().toString()
+                    }
+
                 }.result
             )
         }
@@ -85,9 +98,15 @@ constructor(
                                 listFragmentView = ListFragmentView(
                                     categories = resultObj
                                 )
-                            )
+                            ),
+                            stateEventName = stateEventName()
                         )
                     }
+
+                    override fun stateEventName(): String {
+                        return GetCategories().toString()
+                    }
+
                 }.result
             )
         }

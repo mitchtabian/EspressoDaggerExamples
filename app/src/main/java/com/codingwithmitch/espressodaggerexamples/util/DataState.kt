@@ -8,26 +8,31 @@ import kotlinx.android.parcel.RawValue
 
 data class DataState<T>(
     var errorEvent: Event<String>? = null,
-    var dataEvent: Event<T>? = null
+    var dataEvent: Event<T>? = null,
+    var stateEventName: String? = null
 ) {
 
     companion object {
 
         fun <T> error(
-            errorMessage: String? = UNKNOWN_ERROR
+            errorMessage: String? = UNKNOWN_ERROR,
+            stateEventName: String? = null
         ): DataState<T> {
             return DataState(
                 errorEvent = Event.errorEvent(errorMessage),
-                dataEvent = null
+                dataEvent = null,
+                stateEventName = stateEventName
             )
         }
 
         fun <T> data(
-            data: T? = null
+            data: T? = null,
+            stateEventName: String? = null
         ): DataState<T> {
             return DataState(
                 errorEvent = null,
-                dataEvent = Event.dataEvent(data)
+                dataEvent = Event.dataEvent(data),
+                stateEventName = stateEventName
             )
         }
     }

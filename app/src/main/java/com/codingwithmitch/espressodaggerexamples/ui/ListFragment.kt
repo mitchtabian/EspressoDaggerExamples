@@ -15,6 +15,7 @@ import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
@@ -80,25 +81,32 @@ constructor(
         }
     }
 
+    /*
+     I'm creating an observer in this fragment b/c I want more control
+     over it. When a blog is selected I immediately stop observing.
+     Mainly for hiding the menu in DetailFragment.
+     "uiCommunicationListener.hideCategoriesMenu()"
+    */
+    val observer: Observer<MainViewState> = Observer { viewState ->
+        if(viewState != null){
 
-    private fun subscribeObservers(){
-        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            if(viewState != null){
-
-                viewState.listFragmentView.let{ view ->
-                    view.blogs?.let { blogs ->
-                        listAdapter.apply {
-                            submitList(blogs)
-                        }
-                    }
-                    view.categories?.let { categories ->
-                        uiCommunicationListener.showCategoriesMenu(
-                            categories = ArrayList(categories)
-                        )
+            viewState.listFragmentView.let{ view ->
+                view.blogs?.let { blogs ->
+                    listAdapter.apply {
+                        submitList(blogs)
                     }
                 }
+                view.categories?.let { categories ->
+                    uiCommunicationListener.showCategoriesMenu(
+                        categories = ArrayList(categories)
+                    )
+                }
             }
-        })
+        }
+    }
+
+    private fun subscribeObservers(){
+        viewModel.viewState.observe(viewLifecycleOwner, observer)
     }
 
     override fun onRefresh() {
@@ -133,8 +141,13 @@ constructor(
     }
 
     override fun onItemSelected(position: Int, item: BlogPost) {
+        removeViewStateObserver()
         viewModel.setSelectedBlogPost(blogPost = item)
         findNavController().navigate(R.id.action_listFragment_to_detailFragment)
+    }
+
+    private fun removeViewStateObserver(){
+        viewModel.viewState.removeObserver(observer)
     }
 
 }

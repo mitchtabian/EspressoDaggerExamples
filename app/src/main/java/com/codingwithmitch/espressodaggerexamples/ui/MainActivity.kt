@@ -16,6 +16,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MAIN_VIEW_STATE_BUNDLE_KEY
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
@@ -106,6 +107,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun showCategoriesMenu(categories: ArrayList<Category>) {
+        printLogD(CLASS_NAME, "showCategoriesMenu")
         val menu = tool_bar.menu
         menu.clear()
         categories.add(Category(MENU_ITEM_ID_GET_ALL_BLOGS, MENU_ITEM_NAME_GET_ALL_BLOGS))
@@ -134,6 +136,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun hideCategoriesMenu() {
+        printLogD(CLASS_NAME, "hideCategoriesMenu")
         tool_bar.menu.clear()
         tool_bar.invalidate()
     }

@@ -44,14 +44,18 @@ constructor(
         super.onViewCreated(view, savedInstanceState)
 
         subscribeObservers()
-        uiCommunicationListener.hideCategoriesMenu()
 
         blog_image.setOnClickListener {
             findNavController().navigate(R.id.action_detailFragment_to_finalFragment)
         }
 
+        initUI()
+    }
+
+    private fun initUI(){
         uiCommunicationListener.showStatusBar()
         uiCommunicationListener.expandAppBar()
+        uiCommunicationListener.hideCategoriesMenu()
     }
 
     private fun subscribeObservers(){

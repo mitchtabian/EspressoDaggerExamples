@@ -10,11 +10,17 @@ abstract class ApiResponseHandler <ViewState, Data>(
     val result: DataState<ViewState> = when(response){
 
         is ApiResult.GenericError -> {
-            DataState.error(response.errorMessage)
+            DataState.error(
+                errorMessage = response.errorMessage,
+                stateEventName = stateEventName()
+            )
         }
 
         is ApiResult.NetworkError -> {
-            DataState.error(NETWORK_ERROR)
+            DataState.error(
+                NETWORK_ERROR,
+                stateEventName = stateEventName()
+            )
         }
 
         is ApiResult.Success -> {
@@ -23,4 +29,6 @@ abstract class ApiResponseHandler <ViewState, Data>(
     }
 
     abstract fun handleSuccess(resultObj: Data): DataState<ViewState>
+
+    abstract fun stateEventName(): String
 }

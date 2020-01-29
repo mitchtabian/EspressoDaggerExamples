@@ -48,6 +48,9 @@ constructor(
                 dataState.errorEvent?.getContentIfNotHandled()?.let { errorMessage ->
                     setErrorMessage(errorMessage)
                 }
+                dataState.stateEventName?.let { eventName ->
+                    removeJobFromCounter(eventName)
+                }
             }
             .launchIn(viewModelScope)
     }
@@ -101,13 +104,10 @@ constructor(
     fun handleNewData(data: MainViewState){
 
         data.listFragmentView.blogs?.let { blogs ->
-            removeJobFromCounter(GetAllBlogs().toString())
-            removeJobFromCounter(SearchBlogsByCategory("").toString())
             setBlogListData(blogs)
         }
 
         data.listFragmentView.categories?.let { categories ->
-            removeJobFromCounter(GetCategories().toString())
             setCategoriesData(categories)
         }
 
