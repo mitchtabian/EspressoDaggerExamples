@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        printLogD(CLASS_NAME, "CLICKED")
+        printLogD(CLASS_NAME, "cLICKED")
         return super.onOptionsItemSelected(item)
     }
 
