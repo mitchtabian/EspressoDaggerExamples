@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
@@ -13,7 +14,7 @@ import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.lang.ClassCastException
 import javax.inject.Inject
@@ -39,6 +40,15 @@ constructor(
 
         subscribeObservers()
         uiCommunicationListener.hideCategoriesMenu()
+
+        blog_image.setOnClickListener {
+            findNavController().navigate(R.id.action_detailFragment_to_finalFragment)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        uiCommunicationListener.showStatusBar()
     }
 
     private fun subscribeObservers(){

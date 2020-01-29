@@ -5,6 +5,7 @@ import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
+import com.codingwithmitch.espressodaggerexamples.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -25,6 +26,8 @@ interface AppComponent{
 
         fun build(): AppComponent
     }
+
+    fun inject(mainActivity: MainActivity)
 
     fun inject(mainNavHostFragment: MainNavHostFragment)
 

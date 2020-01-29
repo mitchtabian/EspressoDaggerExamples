@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
@@ -29,7 +30,8 @@ class ListFragment
 constructor(
     private val viewModelFactory: MainViewModelFactory
 ) : Fragment(R.layout.fragment_list),
-    BlogPostListAdapter.Interaction
+    BlogPostListAdapter.Interaction,
+    SwipeRefreshLayout.OnRefreshListener
 {
 
     private val CLASS_NAME = "ListFragment"
@@ -48,11 +50,14 @@ constructor(
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         subscribeObservers()
-        viewModel.getAllBlogs()
-        viewModel.getCategories()
-//        viewModel.getBlogPosts("fun")
+        swipe_refresh.setOnRefreshListener(this)
+        initData()
     }
 
+    private fun initData(){
+        viewModel.getAllBlogs()
+        viewModel.getCategories()
+    }
 
     private fun subscribeObservers(){
         viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
@@ -74,6 +79,11 @@ constructor(
                 }
             }
         })
+    }
+
+    override fun onRefresh() {
+        initData()
+        swipe_refresh.isRefreshing = false
     }
 
     private fun initRecyclerView(){
