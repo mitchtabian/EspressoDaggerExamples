@@ -3,24 +3,25 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_final.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import java.lang.ClassCastException
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class FinalFragment
 @Inject
 constructor(
@@ -39,21 +40,16 @@ constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
-    }
-
-    override fun onResume() {
-        super.onResume()
         uiCommunicationListener.hideStatusBar()
     }
 
     private fun subscribeObservers(){
-        uiCommunicationListener.displayMainProgressBar(isLoading = true)
 
-        viewModel.selectedBlog.observe(viewLifecycleOwner, Observer { blogPost ->
-
-            if(blogPost != null){
-                uiCommunicationListener.displayMainProgressBar(isLoading = false)
-                setImage(blogPost.image)
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+            if(viewState != null){
+                viewState.detailFragmentView.selectedBlogPost?.let{ blogPost ->
+                    setImage(blogPost.image)
+                }
             }
         })
     }

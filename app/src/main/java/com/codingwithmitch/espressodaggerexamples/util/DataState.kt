@@ -1,11 +1,14 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
+import android.os.Parcelable
 import com.codingwithmitch.espressodaggerexamples.repository.UNKNOWN_ERROR
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
 data class DataState<T>(
     var errorEvent: Event<String>? = null,
-    var loading: Loading = Loading(false),
-    var data: Event<T>? = null
+    var dataEvent: Event<T>? = null
 ) {
 
     companion object {
@@ -15,19 +18,7 @@ data class DataState<T>(
         ): DataState<T> {
             return DataState(
                 errorEvent = Event.errorEvent(errorMessage),
-                loading = Loading(false),
-                data = null
-            )
-        }
-
-        fun <T> loading(
-            isLoading: Boolean,
-            cachedData: T? = null
-        ): DataState<T> {
-            return DataState(
-                errorEvent = null,
-                loading = Loading(isLoading),
-                data = null
+                dataEvent = null
             )
         }
 
@@ -36,20 +27,22 @@ data class DataState<T>(
         ): DataState<T> {
             return DataState(
                 errorEvent = null,
-                loading = Loading(false),
-                data = Event.dataEvent(data)
+                dataEvent = Event.dataEvent(data)
             )
         }
     }
 }
 
-data class Loading(val isLoading: Boolean)
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  */
-open class Event<out T>(private val content: T) {
+@Parcelize
+open class Event<out T>(
+    private val content: @RawValue T
+) : Parcelable {
 
+    @IgnoredOnParcel
     var hasBeenHandled = false
         private set // Allow external read but not write
 

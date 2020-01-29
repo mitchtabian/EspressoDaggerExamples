@@ -6,8 +6,12 @@ import android.util.Log
 import androidx.annotation.NavigationRes
 import androidx.navigation.fragment.NavHostFragment
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 class MainNavHostFragment
 @Inject
 constructor(

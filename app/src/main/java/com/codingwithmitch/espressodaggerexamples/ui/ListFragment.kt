@@ -13,19 +13,19 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
-import com.codingwithmitch.espressodaggerexamples.models.Category
-import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent
-import com.codingwithmitch.espressodaggerexamples.ui.state.MainStateEvent.*
-import com.codingwithmitch.espressodaggerexamples.util.Event
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.coroutines.*
 import java.lang.ClassCastException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Singleton
 class ListFragment
 @Inject
@@ -38,8 +38,6 @@ constructor(
 
     private val CLASS_NAME = "ListFragment"
 
-    lateinit var dataStateListener: DataStateListener
-
     lateinit var uiCommunicationListener: UICommunicationListener
 
     lateinit var listAdapter: BlogPostListAdapter
@@ -50,64 +48,54 @@ constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        swipe_refresh.setOnRefreshListener(this)
         initRecyclerView()
         subscribeObservers()
-        swipe_refresh.setOnRefreshListener(this)
         initData()
     }
 
-    private fun initData(){
-//        viewModel.getAllBlogs()
-//        viewModel.getCategories()
-
-        viewModel.setStateEvent(GetAllBlogs())
-        viewModel.setStateEvent(GetCategories())
+    override fun onPause() {
+        super.onPause()
+        saveLayoutManagerState()
     }
 
-    private fun subscribeObservers(){
-        viewModel.stateEvent.observe(viewLifecycleOwner, Observer { stateEvent ->
-//            if(dataState != null){
-//                dataStateListener.onDataStateChange(dataState)
-//
-//                dataState.data?.getContentIfNotHandled()?.let { data ->
-//                    viewModel.handleDataEvent(data)
-//                }
-//            }
-            if(stateEvent != null){
-                printLogD(CLASS_NAME, "Processesing a new state event: $stateEvent")
-            }
-        })
+    private fun saveLayoutManagerState(){
+        recycler_view.layoutManager?.onSaveInstanceState()?.let { lmState ->
+            viewModel.setLayoutManagerState(lmState)
+        }
+    }
 
+    fun restoreLayoutManager() {
+        viewModel.getLayoutManagerState()?.let { lmState ->
+            recycler_view?.layoutManager?.onRestoreInstanceState(lmState)
+        }
+    }
+
+    private fun initData(){
+        val viewState = viewModel.getCurrentViewStateOrNew()
+        if(viewState.listFragmentView.blogs == null
+            || viewState.listFragmentView.categories == null){
+            viewModel.setStateEvent(GetAllBlogs())
+            viewModel.setStateEvent(GetCategories())
+        }
+    }
+
+
+    private fun subscribeObservers(){
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             if(viewState != null){
 
                 viewState.listFragmentView.let{ view ->
-                    view.blogs.let { blogs ->
-                        listAdapter.submitList(blogs)
+                    view.blogs?.let { blogs ->
+                        listAdapter.apply {
+                            submitList(blogs)
+                        }
                     }
-                    view.categories.let { categories ->
-                        uiCommunicationListener.showCategoriesMenu(categories = categories)
+                    view.categories?.let { categories ->
+                        uiCommunicationListener.showCategoriesMenu(
+                            categories = ArrayList(categories)
+                        )
                     }
-                }
-            }
-        })
-
-        viewModel.blogs.observe(viewLifecycleOwner, Observer { dataState ->
-            if(dataState != null){
-                dataStateListener.onDataStateChange(dataState)
-
-                dataState.data?.let { dataEvent ->
-                    handleIncomingBlogPosts(dataEvent)
-                }
-            }
-        })
-
-        viewModel.categories.observe(viewLifecycleOwner, Observer { dataState ->
-            if(dataState != null){
-                dataStateListener.onToolbarLoading(dataState.loading.isLoading)
-
-                dataState.data?.let { dataEvent ->
-                    handleIncomingCategories(dataEvent)
                 }
             }
         })
@@ -120,22 +108,10 @@ constructor(
 
     private fun initRecyclerView(){
         recycler_view.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            listAdapter = BlogPostListAdapter(this@ListFragment)
+            layoutManager = LinearLayoutManager(this@ListFragment.context)
             addItemDecoration(TopSpacingItemDecoration(30))
+            listAdapter = BlogPostListAdapter(this@ListFragment)
             adapter = listAdapter
-        }
-    }
-
-    private fun handleIncomingCategories(dataEvent: Event<List<Category>>){
-        dataEvent.getContentIfNotHandled()?.let{ categories ->
-            uiCommunicationListener.showCategoriesMenu(categories = categories)
-        }
-    }
-
-    private fun handleIncomingBlogPosts(dataEvent: Event<List<BlogPost>>){
-        dataEvent.getContentIfNotHandled()?.let { blogs ->
-            listAdapter.submitList(blogs)
         }
     }
 
@@ -146,22 +122,21 @@ constructor(
         super.onAttach(context)
 
         try{
-            dataStateListener = context as DataStateListener
-        }catch (e: ClassCastException){
-            printLogD(CLASS_NAME, "$context must implement DataStateListener")
-        }
-
-        try{
             uiCommunicationListener = context as UICommunicationListener
         }catch (e: ClassCastException){
             printLogD(CLASS_NAME, "$context must implement UICommunicationListener")
         }
     }
 
+    override fun restoreListPosition() {
+        restoreLayoutManager()
+    }
+
     override fun onItemSelected(position: Int, item: BlogPost) {
         viewModel.setSelectedBlogPost(blogPost = item)
         findNavController().navigate(R.id.action_listFragment_to_detailFragment)
     }
+
 }
 
 

@@ -8,8 +8,12 @@ import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
 import com.codingwithmitch.espressodaggerexamples.ui.MainActivity
 import dagger.BindsInstance
 import dagger.Component
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Singleton
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Singleton
 @Component(modules = [
     FragmentModule::class,

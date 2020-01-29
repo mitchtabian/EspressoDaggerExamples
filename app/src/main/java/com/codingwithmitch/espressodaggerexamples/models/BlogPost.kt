@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class BlogPost (
+data class BlogPost (
 
     @SerializedName("pk")
     @Expose

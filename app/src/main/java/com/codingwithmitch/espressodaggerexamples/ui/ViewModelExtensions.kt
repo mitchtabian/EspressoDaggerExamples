@@ -7,20 +7,21 @@ import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.espressodaggerexamples.util.ApiResult
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import com.codingwithmitch.espressodaggerexamples.repository.NETWORK_ERROR
-import com.codingwithmitch.espressodaggerexamples.util.ViewState
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
 private val CLASS_NAME = "MainViewModel"
 
+@InternalCoroutinesApi
+@ExperimentalCoroutinesApi
 fun <T> MainViewModel.launchJob(
     dataObj: MutableLiveData<DataState<T>>,
     repositoryCall: suspend () -> ApiResult<T>
 ){
     viewModelScope.launch {
-
-        dataObj.value = DataState.loading(isLoading = true)
 
         val startTime = System.currentTimeMillis()
         printLogD(CLASS_NAME, "Starting job...")
@@ -47,16 +48,16 @@ fun <T> MainViewModel.launchJob(
             }
         }
 
-        dataObj.value = DataState.loading(isLoading = false)
     }
 }
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 fun <T> MainViewModel.launchLiveDataJob(
     repositoryCall: suspend () -> ApiResult<T>
 ): LiveData<DataState<T>> {
     return liveData {
-        emit(DataState.loading(isLoading = true))
 
         val startTime = System.currentTimeMillis()
         printLogD(CLASS_NAME, "Starting job...")
@@ -83,7 +84,6 @@ fun <T> MainViewModel.launchLiveDataJob(
             }
         })
 
-        emit(DataState.loading(isLoading = false))
     }
 }
 
