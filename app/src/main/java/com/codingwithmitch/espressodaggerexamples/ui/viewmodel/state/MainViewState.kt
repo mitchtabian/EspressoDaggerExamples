@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.Event
-import com.codingwithmitch.espressodaggerexamples.util.ViewState
 import kotlinx.android.parcel.Parcelize
 
 
@@ -21,7 +20,7 @@ data class MainViewState (
 
     var detailFragmentView: DetailFragmentView = DetailFragmentView()
 
-) : Parcelable, ViewState {
+) : Parcelable {
 
     @Parcelize
     data class ListFragmentView(

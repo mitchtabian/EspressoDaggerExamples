@@ -2,7 +2,6 @@ package com.codingwithmitch.espressodaggerexamples.api
 
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
