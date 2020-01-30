@@ -1,7 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
-import com.codingwithmitch.espressodaggerexamples.api.ApiService.Companion.BASE_URL
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
 import com.google.gson.Gson
@@ -13,8 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-object AppModule {
-
+object FakeAppModule{
 
     @JvmStatic
     @Singleton
@@ -28,7 +26,7 @@ object AppModule {
     @Provides
     fun provideRetrofitBuilder(gsonBuilder: Gson): Retrofit.Builder{
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(ApiService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
     }
 
@@ -52,9 +50,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideString(): String {
-        return "A Test string (NOT MOCKED)"
+        return "A Test string"
     }
 }
+
+
+
 
 
 
