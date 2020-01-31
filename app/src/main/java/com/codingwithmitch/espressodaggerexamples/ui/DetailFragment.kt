@@ -83,7 +83,7 @@ constructor(
 
     override fun onAttach(context: Context) {
         (activity?.application as BaseApplication)
-            .getAppComponent()
+            .appComponent
             .inject(this)
         super.onAttach(context)
 
