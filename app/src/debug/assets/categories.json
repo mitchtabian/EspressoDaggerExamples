@@ -1,0 +1,14 @@
+[
+  {
+    "pk": 0,
+    "category_name": "fun"
+  },
+  {
+    "pk": 1,
+    "category_name": "dogs"
+  },
+  {
+    "pk": 2,
+    "category_name": "earthporn"
+  }
+]

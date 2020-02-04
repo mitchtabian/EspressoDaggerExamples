@@ -18,7 +18,8 @@ import javax.inject.Singleton
 @Component(modules = [
     FragmentModule::class,
     ViewModelModule::class,
-    AppModule::class
+    AppModule::class,
+    DataModule::class
 ])
 interface AppComponent{
 

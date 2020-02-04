@@ -1,7 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples
 
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
-import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 

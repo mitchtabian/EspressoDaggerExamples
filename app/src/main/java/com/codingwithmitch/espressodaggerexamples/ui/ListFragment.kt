@@ -16,6 +16,7 @@ import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
+import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
@@ -31,8 +32,7 @@ import javax.inject.Singleton
 class ListFragment
 @Inject
 constructor(
-    private val viewModelFactory: MainViewModelFactory,
-    val someString: String
+    private val viewModelFactory: MainViewModelFactory
 ) : Fragment(R.layout.fragment_list),
     BlogPostListAdapter.Interaction,
     SwipeRefreshLayout.OnRefreshListener
@@ -55,7 +55,6 @@ constructor(
         subscribeObservers()
         initData()
 
-        printLogD(CLASS_NAME, "Some string: ${someString}")
     }
 
     override fun onPause() {
@@ -79,6 +78,8 @@ constructor(
         val viewState = viewModel.getCurrentViewStateOrNew()
         if(viewState.listFragmentView.blogs == null
             || viewState.listFragmentView.categories == null){
+            EspressoIdlingResource.increment()
+            EspressoIdlingResource.increment()
             viewModel.setStateEvent(GetAllBlogs())
             viewModel.setStateEvent(GetCategories())
         }
@@ -97,12 +98,14 @@ constructor(
                 view.blogs?.let { blogs ->
                     listAdapter.apply {
                         submitList(blogs)
+                        EspressoIdlingResource.decrement()
                     }
                 }
                 view.categories?.let { categories ->
                     uiCommunicationListener.showCategoriesMenu(
                         categories = ArrayList(categories)
                     )
+                    EspressoIdlingResource.decrement()
                 }
             }
         }
@@ -126,19 +129,6 @@ constructor(
         }
     }
 
-    override fun onAttach(context: Context) {
-        (activity?.application as BaseApplication)
-            .appComponent
-            .inject(this)
-        super.onAttach(context)
-
-        try{
-            uiCommunicationListener = context as UICommunicationListener
-        }catch (e: ClassCastException){
-            printLogD(CLASS_NAME, "$context must implement UICommunicationListener")
-        }
-    }
-
     override fun restoreListPosition() {
         restoreLayoutManager()
     }
@@ -153,6 +143,24 @@ constructor(
         viewModel.viewState.removeObserver(observer)
     }
 
+    override fun onAttach(context: Context) {
+        (activity?.application as BaseApplication)
+            .appComponent
+            .inject(this)
+        super.onAttach(context)
+        setUICommunicationListener()
+    }
+
+
+    private fun setUICommunicationListener() {
+        try{
+            uiCommunicationListener = getUICommunicationListener()
+        }catch (e: ClassCastException){
+            printLogD(CLASS_NAME, "$context must implement UICommunicationListener")
+        }
+    }
+
+    fun getUICommunicationListener() = context as UICommunicationListener
 }
 
 

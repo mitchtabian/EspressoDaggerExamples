@@ -35,6 +35,10 @@ android {
             jvmTarget = "1.8"
         }
     }
+
+    sourceSets{
+        androidTest.java.srcDirs += "src/test-common/java"
+    }
 }
 
 dependencies {

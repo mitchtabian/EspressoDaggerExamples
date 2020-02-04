@@ -15,7 +15,8 @@ import javax.inject.Singleton
 @Component(modules = [
     FragmentModule::class,
     ViewModelModule::class,
-    FakeAppModule::class
+    AppModule::class,
+    FakeDataModule::class
 ])
 interface TestAppComponent: AppComponent {
 

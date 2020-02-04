@@ -26,20 +26,12 @@ object AppModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideRetrofitBuilder(gsonBuilder: Gson): Retrofit.Builder{
+    fun provideRetrofitBuilder(gsonBuilder: Gson): Retrofit.Builder {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
     }
 
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideApiService(retrofitBuilder: Retrofit.Builder): ApiService {
-        return retrofitBuilder
-            .build()
-            .create(ApiService::class.java)
-    }
 
     @JvmStatic
     @Singleton
@@ -48,16 +40,7 @@ object AppModule {
         return MainRepositoryImpl(apiService)
     }
 
-    const val SOME_STRING = "A Test string (NOT MOCKED)"
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideString(): String {
-        return SOME_STRING
-    }
 }
-
 
 
 

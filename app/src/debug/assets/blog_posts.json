@@ -1,0 +1,65 @@
+[
+  {
+    "pk": 0,
+    "title": "Vancouver PNE 2019",
+    "body": "Here is Jess and I at the Vancouver PNE. We ate a lot of food.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image8.png",
+    "category": "fun"
+  },
+  {
+    "pk": 1,
+    "title": "Ready for a Walk",
+    "body": "Here I am at the park with my dogs Kiba and Maizy. Maizy is the smaller one and Kiba is the larger one.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image2.png",
+    "category": "dogs"
+  },
+  {
+    "pk": 2,
+    "title": "Maizy Sleeping",
+    "body": "I took this picture while Maizy was sleeping on the couch. She's very cute.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image1.png",
+    "category": "dogs"
+  },
+  {
+    "pk": 3,
+    "title": "My Brother Blake",
+    "body": "This is a picture of my brother Blake and I. We were taking some pictures for his website.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image3.png",
+    "category": "fun"
+  },
+  {
+    "pk": 4,
+    "title": "Lounging Dogs",
+    "body": "Kiba and Maizy are laying in the sun relaxing.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image4.png",
+    "category": "dogs"
+  },
+  {
+    "pk": 5,
+    "title": "Mountains in Washington",
+    "body": "This is an image I found somewhere on the internert. I love pictures like this. I believe it's in Washington, U.S.A.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image5.png",
+    "category": "earthporn"
+  },
+  {
+    "pk": 6,
+    "title": "France Mountain Range",
+    "body": "Another beautiful picture of nature. You can find more pictures like this one on Reddit.com, in the subreddit: '/r/earthporn'.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image6.png",
+    "category": "earthporn"
+  },
+  {
+    "pk": 7,
+    "title": "Aldergrove Park",
+    "body": "I walk Kiba and Maizy pretty much every day. Usually we go to a park in Aldergrove. It takes about 1 hour, 15 minutes to walk around the entire park.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image7.png",
+    "category": "dogs"
+  },
+  {
+    "pk": 8,
+    "title": "Blake Posing for his Website",
+    "body": "My brother Blake is a Civil Engineer. He also started a side business designing septic fields. He took his photo for his website. People love dogs.",
+    "image": "https://cdn.open-api.xyz/open-api-static/static-blog-images/image9.png",
+    "category": "fun"
+  }
+]
