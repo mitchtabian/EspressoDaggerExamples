@@ -26,8 +26,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class MainActivity : AppCompatActivity(),
-    UICommunicationListener
+class MainActivity : AppCompatActivity()
 {
 
     private val CLASS_NAME = "MainActivity"
@@ -74,30 +73,13 @@ class MainActivity : AppCompatActivity(),
         viewModel.viewState.observe(this, Observer { viewState ->
             if(viewState != null){
 
-                displayMainProgressBar(viewModel.areAnyJobsActive())
+                getUICommunicationListener().displayMainProgressBar(viewModel.areAnyJobsActive())
 
                 viewState.errorMessage?.getContentIfNotHandled()?.let { message ->
-                    displaySnackbar(message, Snackbar.LENGTH_SHORT)
+                    getUICommunicationListener().displaySnackbar(message, Snackbar.LENGTH_SHORT)
                 }
             }
         })
-    }
-
-    override fun displayToastMessage(message: String, length: Int) {
-        Toast.makeText(this, message, length).show()
-    }
-
-    override fun displaySnackbar(message: String, length: Int) {
-        Snackbar.make(this.window.decorView, message, length).show()
-    }
-
-    override fun displayMainProgressBar(isLoading: Boolean){
-        if(isLoading){
-            main_progress_bar.visibility = View.VISIBLE
-        }
-        else{
-            main_progress_bar.visibility = View.GONE
-        }
     }
 
     private fun setupActionBar() {
@@ -106,19 +88,7 @@ class MainActivity : AppCompatActivity(),
         )
     }
 
-    override fun showCategoriesMenu(categories: ArrayList<Category>) {
-        printLogD(CLASS_NAME, "showCategoriesMenu")
-        val menu = tool_bar.menu
-        menu.clear()
-        categories.add(Category(MENU_ITEM_ID_GET_ALL_BLOGS, MENU_ITEM_NAME_GET_ALL_BLOGS))
-        for((index, category) in categories.withIndex()){
-            menu.add(0, category.pk , index, category.category_name)
-        }
-        tool_bar.invalidate()
-        tool_bar.setOnMenuItemClickListener { menuItem ->
-           onMenuItemSelected(categories, menuItem)
-        }
-    }
+
 
     private fun onMenuItemSelected(categories: List<Category>, menuItem: MenuItem): Boolean{
         for(category in categories){
@@ -135,32 +105,73 @@ class MainActivity : AppCompatActivity(),
         return false
     }
 
-    override fun hideCategoriesMenu() {
-        printLogD(CLASS_NAME, "hideCategoriesMenu")
-        tool_bar.menu.clear()
-        tool_bar.invalidate()
+
+
+    fun getUICommunicationListener(): UICommunicationListener{
+        return uiCommunicationListener
     }
 
-    override fun hideToolbar() {
-        tool_bar.visibility = View.GONE
-    }
+    private val uiCommunicationListener: UICommunicationListener = object: UICommunicationListener{
 
-    override fun showToolbar() {
-        tool_bar.visibility = View.VISIBLE
-    }
+        override fun showCategoriesMenu(categories: ArrayList<Category>) {
+            printLogD(CLASS_NAME, "showCategoriesMenu")
+            val menu = tool_bar.menu
+            menu.clear()
+            categories.add(Category(MENU_ITEM_ID_GET_ALL_BLOGS, MENU_ITEM_NAME_GET_ALL_BLOGS))
+            for((index, category) in categories.withIndex()){
+                menu.add(0, category.pk , index, category.category_name)
+            }
+            tool_bar.invalidate()
+            tool_bar.setOnMenuItemClickListener { menuItem ->
+                onMenuItemSelected(categories, menuItem)
+            }
+        }
 
-    override fun hideStatusBar() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        hideToolbar()
-    }
+        override fun hideCategoriesMenu() {
+            printLogD(CLASS_NAME, "hideCategoriesMenu")
+            tool_bar.menu.clear()
+            tool_bar.invalidate()
+        }
 
-    override fun showStatusBar() {
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        showToolbar()
-    }
+        override fun displayMainProgressBar(isLoading: Boolean){
+            if(isLoading){
+                main_progress_bar.visibility = View.VISIBLE
+            }
+            else{
+                main_progress_bar.visibility = View.GONE
+            }
+        }
 
-    override fun expandAppBar() {
-        findViewById<AppBarLayout>(R.id.app_bar).setExpanded(true)
+        override fun hideToolbar() {
+            tool_bar.visibility = View.GONE
+        }
+
+        override fun showToolbar() {
+            tool_bar.visibility = View.VISIBLE
+        }
+
+        override fun hideStatusBar() {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+            hideToolbar()
+        }
+
+        override fun showStatusBar() {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+            showToolbar()
+        }
+
+        override fun expandAppBar() {
+            findViewById<AppBarLayout>(R.id.app_bar).setExpanded(true)
+        }
+
+        override fun displayToastMessage(message: String, length: Int) {
+            Toast.makeText(this@MainActivity, message, length).show()
+        }
+
+        override fun displaySnackbar(message: String, length: Int) {
+            Snackbar.make(this@MainActivity.window.decorView, message, length).show()
+        }
+
     }
 
     companion object {
