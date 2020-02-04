@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -88,8 +89,6 @@ class MainActivity : AppCompatActivity()
         )
     }
 
-
-
     private fun onMenuItemSelected(categories: List<Category>, menuItem: MenuItem): Boolean{
         for(category in categories){
             if(category.pk == menuItem.itemId){
@@ -104,7 +103,6 @@ class MainActivity : AppCompatActivity()
         }
         return false
     }
-
 
 
     fun getUICommunicationListener(): UICommunicationListener{
@@ -172,6 +170,23 @@ class MainActivity : AppCompatActivity()
             Snackbar.make(this@MainActivity.window.decorView, message, length).show()
         }
 
+    }
+
+    override fun onAttachFragment(fragment: Fragment) {
+        when(fragment){
+
+            is ListFragment ->{
+                fragment.setUICommunicationListener(uiCommunicationListener)
+            }
+
+            is DetailFragment -> {
+                fragment.setUICommunicationListener(uiCommunicationListener)
+            }
+
+            is FinalFragment -> {
+                fragment.setUICommunicationListener(uiCommunicationListener)
+            }
+        }
     }
 
     companion object {

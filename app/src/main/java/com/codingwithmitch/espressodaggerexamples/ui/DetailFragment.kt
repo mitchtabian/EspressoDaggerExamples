@@ -86,12 +86,10 @@ constructor(
             .appComponent
             .inject(this)
         super.onAttach(context)
+    }
 
-        try{
-            uiCommunicationListener = context as UICommunicationListener
-        }catch (e: ClassCastException){
-            printLogD(CLASS_NAME, "$context must implement UICommunicationListener")
-        }
+    fun setUICommunicationListener(uiCommunicationListener: UICommunicationListener){
+        this.uiCommunicationListener = uiCommunicationListener
     }
 }
 

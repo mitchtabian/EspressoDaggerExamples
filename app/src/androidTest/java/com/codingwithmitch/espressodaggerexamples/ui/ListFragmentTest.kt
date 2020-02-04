@@ -17,6 +17,9 @@ import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.MainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
+import io.mockk.MockK
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.hamcrest.CoreMatchers
@@ -66,7 +69,11 @@ class ListFragmentTest{
 
         onView(withId(R.id.main_progress_bar)).check(matches(isDisplayed()))
 
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+
         scenario.onFragment { fragment ->
+
+            fragment.setUICommunicationListener(uiCommunicationListener)
 
             fragment.viewModel.viewState.observe(fragment.viewLifecycleOwner, Observer { viewState ->
                 println("BLOGS: ${viewState.listFragmentView.blogs}")
@@ -76,6 +83,8 @@ class ListFragmentTest{
 
         onView(withId(R.id.main_progress_bar)).check(matches(not(isDisplayed())))
     }
+
+
 }
 
 
