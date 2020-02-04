@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
@@ -64,13 +65,22 @@ constructor(
     }
 
     override fun onAttach(context: Context) {
-        (activity?.application as BaseApplication)
-            .appComponent
-            .inject(this)
         super.onAttach(context)
+        setUICommunicationListener(null)
     }
 
-    fun setUICommunicationListener(uiCommunicationListener: UICommunicationListener){
-        this.uiCommunicationListener = uiCommunicationListener
+    fun setUICommunicationListener(mockUICommuncationListener: UICommunicationListener?){
+
+        // TEST: Set interface from mock
+        if(mockUICommuncationListener != null){
+            this.uiCommunicationListener = mockUICommuncationListener
+        }
+        else{ // PRODUCTION: if no mock, get from MainNavHostFragment
+            val navHostFragment = activity?.supportFragmentManager
+                ?.findFragmentById(R.id.nav_host_fragment) as MainNavHostFragment?
+            navHostFragment?.let{ navHost ->
+                this.uiCommunicationListener = navHost.uiCommunicationListener
+            }
+        }
     }
 }

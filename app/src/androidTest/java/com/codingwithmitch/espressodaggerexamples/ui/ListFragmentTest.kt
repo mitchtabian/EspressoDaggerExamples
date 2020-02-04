@@ -2,11 +2,8 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Observer
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.*
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
@@ -14,16 +11,13 @@ import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
-import com.codingwithmitch.espressodaggerexamples.fragments.MainFragmentFactory
-import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
+import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
-import io.mockk.MockK
-import io.mockk.every
-import io.mockk.mockk
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
+import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,14 +31,18 @@ import javax.inject.Inject
 @RunWith(AndroidJUnit4ClassRunner::class)
 class ListFragmentTest{
 
+    private val CLASS_NAME = "ListFragmentTest"
+
     @Inject
-    lateinit var mainFragmentFactory: MainFragmentFactory
+    lateinit var viewModelFactory: MainViewModelFactory
 
     lateinit var appComponent: TestAppComponent
 
     @get: Rule
     val espressoIdlingResoureRule = EspressoIdlingResourceRule()
 
+//    @get:Rule
+//    val activityRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
     fun beforeTests(){
@@ -61,28 +59,31 @@ class ListFragmentTest{
     @Test
     fun test() {
 
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
+        val fragmentFactory = MockFragmentFactory(
+            viewModelFactory,
+            uiCommunicationListener
+        )
         val scenario = launchFragmentInContainer<ListFragment>(
-            factory = mainFragmentFactory
+            factory = fragmentFactory
         )
 
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
 
-        onView(withId(R.id.main_progress_bar)).check(matches(isDisplayed()))
-
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-
         scenario.onFragment { fragment ->
 
-            fragment.setUICommunicationListener(uiCommunicationListener)
-
             fragment.viewModel.viewState.observe(fragment.viewLifecycleOwner, Observer { viewState ->
-                println("BLOGS: ${viewState.listFragmentView.blogs}")
+                printLogD(CLASS_NAME, "viewstate: ${viewState}")
             })
-//            fragment.viewModel.setStateEvent(MainStateEvent.GetAllBlogs())
+
         }
 
-        onView(withId(R.id.main_progress_bar)).check(matches(not(isDisplayed())))
     }
+
+
 
 
 }

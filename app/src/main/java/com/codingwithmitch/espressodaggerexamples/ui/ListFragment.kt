@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
@@ -22,6 +23,7 @@ import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import java.lang.ClassCastException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -105,6 +107,7 @@ constructor(
                     uiCommunicationListener.showCategoriesMenu(
                         categories = ArrayList(categories)
                     )
+
                     EspressoIdlingResource.decrement()
                 }
             }
@@ -144,15 +147,24 @@ constructor(
     }
 
     override fun onAttach(context: Context) {
-        (activity?.application as BaseApplication)
-            .appComponent
-            .inject(this)
         super.onAttach(context)
+        setUICommunicationListener(null)
     }
 
 
-    fun setUICommunicationListener(uiCommunicationListener: UICommunicationListener){
-        this.uiCommunicationListener = uiCommunicationListener
+    fun setUICommunicationListener(mockUICommuncationListener: UICommunicationListener?){
+
+        // TEST: Set interface from mock
+        if(mockUICommuncationListener != null){
+            this.uiCommunicationListener = mockUICommuncationListener
+        }
+        else{ // PRODUCTION: if no mock, get from MainNavHostFragment
+            val navHostFragment = activity?.supportFragmentManager
+                ?.findFragmentById(R.id.nav_host_fragment) as MainNavHostFragment?
+            navHostFragment?.let{ navHost ->
+                this.uiCommunicationListener = navHost.uiCommunicationListener
+            }
+        }
     }
 
 }

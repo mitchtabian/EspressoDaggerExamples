@@ -6,12 +6,15 @@ import android.util.Log
 import androidx.annotation.NavigationRes
 import androidx.navigation.fragment.NavHostFragment
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
+import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
+import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
+@Singleton
 class MainNavHostFragment
 @Inject
 constructor(
@@ -22,6 +25,8 @@ constructor(
     @Inject
     lateinit var mainFragmentFactory: MainFragmentFactory
 
+    lateinit var uiCommunicationListener: UICommunicationListener
+
     override fun onAttach(context: Context) {
         ((activity?.application) as BaseApplication)
             .appComponent
@@ -30,7 +35,11 @@ constructor(
         super.onAttach(context)
     }
 
+    fun setUICommunicationListener(uiCommunicationListener: UICommunicationListener){
+        this.uiCommunicationListener = uiCommunicationListener
+    }
 }
+
 
 
 

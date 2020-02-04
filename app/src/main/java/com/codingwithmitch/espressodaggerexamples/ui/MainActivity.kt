@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MAIN_VIEW_STATE_BUNDLE_KEY
@@ -22,7 +23,8 @@ import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactor
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -74,10 +76,10 @@ class MainActivity : AppCompatActivity()
         viewModel.viewState.observe(this, Observer { viewState ->
             if(viewState != null){
 
-                getUICommunicationListener().displayMainProgressBar(viewModel.areAnyJobsActive())
+                uiCommunicationListener.displayMainProgressBar(viewModel.areAnyJobsActive())
 
                 viewState.errorMessage?.getContentIfNotHandled()?.let { message ->
-                    getUICommunicationListener().displaySnackbar(message, Snackbar.LENGTH_SHORT)
+                    uiCommunicationListener.displaySnackbar(message, Snackbar.LENGTH_SHORT)
                 }
             }
         })
@@ -104,10 +106,6 @@ class MainActivity : AppCompatActivity()
         return false
     }
 
-
-    fun getUICommunicationListener(): UICommunicationListener{
-        return uiCommunicationListener
-    }
 
     private val uiCommunicationListener: UICommunicationListener = object: UICommunicationListener{
 
@@ -175,15 +173,7 @@ class MainActivity : AppCompatActivity()
     override fun onAttachFragment(fragment: Fragment) {
         when(fragment){
 
-            is ListFragment ->{
-                fragment.setUICommunicationListener(uiCommunicationListener)
-            }
-
-            is DetailFragment -> {
-                fragment.setUICommunicationListener(uiCommunicationListener)
-            }
-
-            is FinalFragment -> {
+            is MainNavHostFragment ->{
                 fragment.setUICommunicationListener(uiCommunicationListener)
             }
         }

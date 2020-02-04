@@ -36,12 +36,6 @@ interface AppComponent{
 
     fun inject(mainNavHostFragment: MainNavHostFragment)
 
-    fun inject(listFragment: ListFragment)
-
-    fun inject(detailFragment: DetailFragment)
-
-    fun inject(finalFragment: FinalFragment)
-
 }
 
 
