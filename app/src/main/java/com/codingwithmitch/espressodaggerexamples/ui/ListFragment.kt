@@ -31,7 +31,8 @@ import javax.inject.Singleton
 class ListFragment
 @Inject
 constructor(
-    private val viewModelFactory: MainViewModelFactory
+    private val viewModelFactory: MainViewModelFactory,
+    val someString: String
 ) : Fragment(R.layout.fragment_list),
     BlogPostListAdapter.Interaction,
     SwipeRefreshLayout.OnRefreshListener
@@ -53,6 +54,8 @@ constructor(
         initRecyclerView()
         subscribeObservers()
         initData()
+
+        printLogD(CLASS_NAME, "Some string: ${someString}")
     }
 
     override fun onPause() {

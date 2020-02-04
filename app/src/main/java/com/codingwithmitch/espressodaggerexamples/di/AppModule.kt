@@ -48,11 +48,13 @@ object AppModule {
         return MainRepositoryImpl(apiService)
     }
 
+    const val SOME_STRING = "A Test string (NOT MOCKED)"
+
     @JvmStatic
     @Singleton
     @Provides
     fun provideString(): String {
-        return "A Test string (NOT MOCKED)"
+        return SOME_STRING
     }
 }
 

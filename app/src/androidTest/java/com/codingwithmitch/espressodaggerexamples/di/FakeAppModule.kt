@@ -46,11 +46,13 @@ object FakeAppModule{
         return MainRepositoryImpl(apiService)
     }
 
+    const val SOME_STRING = "A Test string from FakeAppModule.kt"
+
     @JvmStatic
     @Singleton
     @Provides
     fun provideString(): String {
-        return "A Test string"
+        return SOME_STRING
     }
 }
 

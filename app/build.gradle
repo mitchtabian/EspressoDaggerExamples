@@ -61,10 +61,10 @@ dependencies {
 
     // androidx.test
     def androidx_test = "1.1.0"
-    androidTestImplementation "androidx.test:runner:$androidx_test"
-    androidTestImplementation "androidx.test:core:$androidx_test"
-    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test"
-    androidTestImplementation "androidx.test:rules:$androidx_test"
+    debugImplementation "androidx.test:runner:$androidx_test"
+    debugImplementation "androidx.test:core:$androidx_test"
+    debugImplementation "androidx.test.ext:junit-ktx:$androidx_test"
+    debugImplementation "androidx.test:rules:$androidx_test"
 
 
     // androidx.fragment
@@ -105,7 +105,7 @@ dependencies {
     //glide
     def glide_version = "4.9.0"
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     // Recyclerview
     def recyclerview_version = "1.1.0-beta03"
