@@ -1,6 +1,8 @@
 package com.codingwithmitch.espressodaggerexamples.fragments
 
 import androidx.fragment.app.FragmentFactory
+import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
+import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
 import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
@@ -20,6 +22,18 @@ class MockFragmentFactory(
 
             ListFragment::class.java.name -> {
                 val fragment = ListFragment(viewModelFactory)
+                fragment.setUICommunicationListener(uiCommunicationListener)
+                fragment
+            }
+
+            DetailFragment::class.java.name -> {
+                val fragment = DetailFragment(viewModelFactory)
+                fragment.setUICommunicationListener(uiCommunicationListener)
+                fragment
+            }
+
+            FinalFragment::class.java.name -> {
+                val fragment = FinalFragment(viewModelFactory)
                 fragment.setUICommunicationListener(uiCommunicationListener)
                 fragment
             }
