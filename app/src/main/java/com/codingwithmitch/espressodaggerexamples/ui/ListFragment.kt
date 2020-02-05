@@ -81,7 +81,6 @@ constructor(
         if(viewState.listFragmentView.blogs == null
             || viewState.listFragmentView.categories == null){
             EspressoIdlingResource.increment()
-            EspressoIdlingResource.increment()
             viewModel.setStateEvent(GetAllBlogs())
             viewModel.setStateEvent(GetCategories())
         }
@@ -100,15 +99,13 @@ constructor(
                 view.blogs?.let { blogs ->
                     listAdapter.apply {
                         submitList(blogs)
-                        EspressoIdlingResource.decrement()
+//                        EspressoIdlingResource.decrement()
                     }
                 }
                 view.categories?.let { categories ->
                     uiCommunicationListener.showCategoriesMenu(
                         categories = ArrayList(categories)
                     )
-
-                    EspressoIdlingResource.decrement()
                 }
             }
         }

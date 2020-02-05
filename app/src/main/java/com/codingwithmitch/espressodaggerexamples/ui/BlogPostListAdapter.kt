@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.*
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
+import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -58,21 +60,27 @@ class BlogPostListAdapter(
         return differ.currentList.size
     }
 
-    fun submitList(list: List<BlogPost>) {
-        val commitCallback = Runnable {
-            /*
-                if process died or nav back need to restore layoutmanager AFTER
-                data is set... very annoying.
-                Not sure why I need the delay... Can't figure this out. I've tested with lists
-                100x the size of this one and the 100ms delay works fine.
-             */
-            CoroutineScope(Main).launch {
-                delay(100)
-                interaction?.restoreListPosition()
-            }
-        }
 
-        differ.submitList(list, commitCallback)
+    fun submitList(list: List<BlogPost>) {
+//        printLogD(CLASS_NAME, "hashcodes... ${list.hashCode()}, ${differ.currentList.hashCode()}")
+        if(list.hashCode() != differ.currentList.hashCode()){
+            printLogD(CLASS_NAME, "SubmitList... ${list.size}")
+            val commitCallback = Runnable {
+
+                /*
+                    if process died or nav back need to restore layoutmanager AFTER
+                    data is set... very annoying.
+                    Not sure why I need the delay... Can't figure this out. I've tested with lists
+                    100x the size of this one and the 100ms delay works fine.
+                 */
+                CoroutineScope(Main).launch {
+                    interaction?.restoreListPosition()
+                    EspressoIdlingResource.decrement()
+                }
+            }
+
+            differ.submitList(list, commitCallback)
+        }
     }
 
     class BlogPostViewHolder

@@ -2,6 +2,8 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -13,10 +15,14 @@ import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
+import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
+import com.codingwithmitch.espressodaggerexamples.util.RecyclerViewMatcher
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import io.mockk.*
+import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Before
@@ -77,14 +83,30 @@ class ListFragmentTest{
             factory = fragmentFactory
         )
 
-        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
 
-        onView(withId(R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToPosition<BlogPostListAdapter.BlogPostViewHolder>(8))
-        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
+        onView(listMatcher().atPosition(5))
+            .check(matches(hasDescendant(withText("Mountains in Washington"))))
+
+
+//        onView(listMatcher().atPosition(5))
+//            .check(matches(hasDescendant(withText("Mountains in Washington"))))
+
+//        val recyclerView = onView(withId(R.id.recycler_view))
+//
+//        recyclerView.check(matches(isDisplayed()))
+//
+//        recyclerView
+//            .perform(
+//                RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(6)
+//            )
+//        onView(withText("Mountains in Washington")).check(matches(isDisplayed()))
+
 
     }
 
+    private fun listMatcher(): RecyclerViewMatcher {
+        return RecyclerViewMatcher(R.id.recycler_view)
+    }
 }
 
 

@@ -39,6 +39,10 @@ android {
     sourceSets{
         androidTest.java.srcDirs += "src/test-common/java"
     }
+
+//    testOptions {
+//        animationsDisabled = true
+//    }
 }
 
 dependencies {
