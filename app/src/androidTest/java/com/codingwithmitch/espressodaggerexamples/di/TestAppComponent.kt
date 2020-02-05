@@ -1,7 +1,7 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
-import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentTest
+import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentIsolationTest
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,7 +28,7 @@ interface TestAppComponent: AppComponent {
         fun build(): TestAppComponent
     }
 
-    fun inject(listFragmentTest: ListFragmentTest)
+    fun inject(listFragmentTest: ListFragmentIsolationTest)
 
 }
 
