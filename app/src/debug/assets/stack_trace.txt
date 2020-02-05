@@ -1,0 +1,106 @@
+androidx.test.espresso.NoMatchingViewException: No views in hierarchy found matching: RecyclerView with id: com.codingwithmitch.espressodaggerexamples:id/recycler_view at position: 5
+
+View Hierarchy:
++>DecorView{id=-1, visibility=VISIBLE, width=1440, height=2392, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params={(0,0)(fillxfill) ty=BASE_APPLICATION wanim=0x1030001
+fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED
+pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND}, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++->ActionBarOverlayLayout{id=16908835, res-name=decor_content_parent, visibility=VISIBLE, width=1440, height=2392, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@4f2c32, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=3}
+|
++-->FrameLayout{id=16908290, res-name=content, visibility=VISIBLE, width=1440, height=2140, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=com.android.internal.widget.ActionBarOverlayLayout$LayoutParams@8f4b00, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=252.0, child-count=1}
+|
++--->CoordinatorLayout{id=-1, visibility=VISIBLE, width=1440, height=2140, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@7dd1f39, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=1}
+|
++---->SwipeRefreshLayout{id=2131230941, res-name=swipe_refresh, visibility=VISIBLE, width=1440, height=2140, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.coordinatorlayout.widget.CoordinatorLayout$LayoutParams@81e172c, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++----->CircleImageView{id=-1, visibility=GONE, width=140, height=140, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.view.ViewGroup$LayoutParams@7e775f5, tag=null, root-is-layout-requested=false, has-input-connection=false, x=650.0, y=-140.0}
+|
++----->RecyclerView{id=2131230894, res-name=recycler_view, visibility=VISIBLE, width=1440, height=2140, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=android.view.ViewGroup$LayoutParams@eb7a18, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++------>CardView{id=-1, visibility=VISIBLE, width=1440, height=1076, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@f139a56, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=30.0, child-count=1}
+|
++------->ConstraintLayout{id=-1, visibility=VISIBLE, width=1440, height=1076, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@1356ead, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++-------->ImageView{id=2131230792, res-name=blog_image, visibility=VISIBLE, width=1440, height=810, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@24705e2, tag=com.bumptech.glide.request.SingleRequest@ede02a1, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++-------->LinearLayout{id=2131230807, res-name=container1, visibility=VISIBLE, width=1440, height=266, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@ae748a9, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=810.0, child-count=2}
+|
++--------->TextView{id=2131230793, res-name=blog_title, visibility=VISIBLE, width=1370, height=90, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@8539e2e, tag=null, root-is-layout-requested=false, has-input-connection=false, x=35.0, y=35.0, text=Vancouver PNE 2019, input-type=0, ime-target=false, has-links=false}
+|
++--------->TextView{id=2131230791, res-name=blog_category, visibility=VISIBLE, width=1370, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@b608dcf, tag=null, root-is-layout-requested=false, has-input-connection=false, x=35.0, y=160.0, text=fun, input-type=0, ime-target=false, has-links=false}
+|
++------>CardView{id=-1, visibility=VISIBLE, width=1440, height=1076, has-focus=false, has-focusable=true, has-window-focus=true, is-clickable=true, is-enabled=true, is-focused=false, is-focusable=true, is-layout-requested=false, is-selected=false, layout-params=androidx.recyclerview.widget.RecyclerView$LayoutParams@ec2c665, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=1136.0, child-count=1}
+|
++------->ConstraintLayout{id=-1, visibility=VISIBLE, width=1440, height=1076, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@fbd9948, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++-------->ImageView{id=2131230792, res-name=blog_image, visibility=VISIBLE, width=1440, height=810, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@e1e63e1, tag=com.bumptech.glide.request.SingleRequest@bc7595, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++-------->LinearLayout{id=2131230807, res-name=container1, visibility=VISIBLE, width=1440, height=266, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=androidx.constraintlayout.widget.ConstraintLayout$LayoutParams@8b701f4, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=810.0, child-count=2}
+|
++--------->TextView{id=2131230793, res-name=blog_title, visibility=VISIBLE, width=1370, height=90, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@f3c5d1d, tag=null, root-is-layout-requested=false, has-input-connection=false, x=35.0, y=35.0, text=Ready for a Walk, input-type=0, ime-target=false, has-links=false}
+|
++--------->TextView{id=2131230791, res-name=blog_category, visibility=VISIBLE, width=1370, height=71, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@280ab92, tag=null, root-is-layout-requested=false, has-input-connection=false, x=35.0, y=160.0, text=dogs, input-type=0, ime-target=false, has-links=false}
+|
++-->ActionBarContainer{id=16908673, res-name=action_bar_container, visibility=VISIBLE, width=1440, height=168, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=com.android.internal.widget.ActionBarOverlayLayout$LayoutParams@46ae19, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=84.0, child-count=2}
+|
++--->ActionBarView{id=16908672, res-name=action_bar, visibility=VISIBLE, width=1440, height=168, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@30c9b8c, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++---->LinearLayout{id=-1, visibility=VISIBLE, width=898, height=168, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=true, is-enabled=false, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.app.ActionBar$LayoutParams@484f1db, tag=null, root-is-layout-requested=false, has-input-connection=false, x=28.0, y=0.0, child-count=2}
+|
++----->HomeView{id=-1, visibility=VISIBLE, width=140, height=168, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@28efbb6, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=2}
+|
++------>ImageView{id=16909474, res-name=up, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@c56d0b7, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
++------>ImageView{id=16908332, res-name=home, visibility=VISIBLE, width=112, height=112, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@918d024, tag=null, root-is-layout-requested=false, has-input-connection=false, x=14.0, y=28.0}
+|
++----->LinearLayout{id=-1, visibility=VISIBLE, width=758, height=85, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@ffdc153, tag=null, root-is-layout-requested=false, has-input-connection=false, x=140.0, y=41.0, child-count=2}
+|
++------>TextView{id=16908676, res-name=action_bar_title, visibility=VISIBLE, width=730, height=85, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@924ca90, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=EspressoDaggerExamples, input-type=0, ime-target=false, has-links=false}
+|
++------>TextView{id=16908675, res-name=action_bar_subtitle, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.LinearLayout$LayoutParams@5c24f89, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, text=, input-type=0, ime-target=false, has-links=false}
+|
++---->ActionMenuView{id=-1, visibility=VISIBLE, width=0, height=168, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.view.ViewGroup$LayoutParams@4edcb8e, tag=null, root-is-layout-requested=false, has-input-connection=false, x=1440.0, y=0.0, child-count=0}
+|
++--->ActionBarContextView{id=16908677, res-name=action_context_bar, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@b191faf, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=0}
+|
++-->ActionBarContainer{id=16909335, res-name=split_action_bar, visibility=GONE, width=0, height=0, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=true, is-selected=false, layout-params=com.android.internal.widget.ActionBarOverlayLayout$LayoutParams@1b3ffbc, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0, child-count=0}
+|
++->View{id=16908335, res-name=statusBarBackground, visibility=VISIBLE, width=1440, height=84, has-focus=false, has-focusable=false, has-window-focus=true, is-clickable=false, is-enabled=true, is-focused=false, is-focusable=false, is-layout-requested=false, is-selected=false, layout-params=android.widget.FrameLayout$LayoutParams@8f75b45, tag=null, root-is-layout-requested=false, has-input-connection=false, x=0.0, y=0.0}
+|
+at dalvik.system.VMStack.getThreadStackTrace(Native Method)
+at java.lang.Thread.getStackTrace(Thread.java:1538)
+at androidx.test.espresso.base.DefaultFailureHandler.getUserFriendlyError(DefaultFailureHandler.java:88)
+at androidx.test.espresso.base.DefaultFailureHandler.handle(DefaultFailureHandler.java:51)
+at androidx.test.espresso.ViewInteraction.waitForAndHandleInteractionResults(ViewInteraction.java:312)
+at androidx.test.espresso.ViewInteraction.check(ViewInteraction.java:297)
+at com.codingwithmitch.espressodaggerexamples.ui.ListFragmentTest.test(ListFragmentTest.kt:88)
+at java.lang.reflect.Method.invoke(Native Method)
+at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+at androidx.test.internal.runner.junit4.statement.RunBefores.evaluate(RunBefores.java:80)
+at org.junit.rules.TestWatcher$1.evaluate(TestWatcher.java:55)
+at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+at org.junit.runners.Suite.runChild(Suite.java:128)
+at org.junit.runners.Suite.runChild(Suite.java:27)
+at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+at androidx.test.internal.runner.TestExecutor.execute(TestExecutor.java:56)
+at androidx.test.runner.AndroidJUnitRunner.onStart(AndroidJUnitRunner.java:388)
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:2145)
