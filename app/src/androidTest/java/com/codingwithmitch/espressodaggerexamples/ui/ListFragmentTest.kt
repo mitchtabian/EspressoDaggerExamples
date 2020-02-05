@@ -87,10 +87,6 @@ class ListFragmentTest{
         onView(listMatcher().atPosition(5))
             .check(matches(hasDescendant(withText("Mountains in Washington"))))
 
-
-//        onView(listMatcher().atPosition(5))
-//            .check(matches(hasDescendant(withText("Mountains in Washington"))))
-
 //        val recyclerView = onView(withId(R.id.recycler_view))
 //
 //        recyclerView.check(matches(isDisplayed()))
