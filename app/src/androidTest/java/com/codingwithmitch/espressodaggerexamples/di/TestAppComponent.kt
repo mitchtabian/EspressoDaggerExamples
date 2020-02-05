@@ -1,7 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
-import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentTest
 import dagger.BindsInstance
 import dagger.Component
@@ -16,7 +15,7 @@ import javax.inject.Singleton
     FragmentModule::class,
     ViewModelModule::class,
     AppModule::class,
-    FakeDataModule::class
+    TestDataModule::class
 ])
 interface TestAppComponent: AppComponent {
 

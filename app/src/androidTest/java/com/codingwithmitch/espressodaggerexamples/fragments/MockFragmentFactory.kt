@@ -1,10 +1,12 @@
 package com.codingwithmitch.espressodaggerexamples.fragments
 
 import androidx.fragment.app.FragmentFactory
+import com.bumptech.glide.RequestManager
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
 import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
+import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -13,7 +15,8 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @InternalCoroutinesApi
 class MockFragmentFactory(
     private val viewModelFactory: MainViewModelFactory,
-    private val uiCommunicationListener: UICommunicationListener
+    private val uiCommunicationListener: UICommunicationListener,
+    private val requestManager: GlideRequestManager
 ): FragmentFactory(){
 
     override fun instantiate(classLoader: ClassLoader, className: String) =
@@ -21,7 +24,7 @@ class MockFragmentFactory(
         when(className){
 
             ListFragment::class.java.name -> {
-                val fragment = ListFragment(viewModelFactory)
+                val fragment = ListFragment(viewModelFactory, requestManager)
                 fragment.setUICommunicationListener(uiCommunicationListener)
                 fragment
             }

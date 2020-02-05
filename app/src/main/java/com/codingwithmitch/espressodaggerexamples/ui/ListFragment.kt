@@ -10,21 +10,17 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
+import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Main
-import java.lang.ClassCastException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +30,8 @@ import javax.inject.Singleton
 class ListFragment
 @Inject
 constructor(
-    private val viewModelFactory: MainViewModelFactory
+    private val viewModelFactory: MainViewModelFactory,
+    private val requestManager: GlideRequestManager
 ) : Fragment(R.layout.fragment_list),
     BlogPostListAdapter.Interaction,
     SwipeRefreshLayout.OnRefreshListener
@@ -80,7 +77,6 @@ constructor(
         val viewState = viewModel.getCurrentViewStateOrNew()
         if(viewState.listFragmentView.blogs == null
             || viewState.listFragmentView.categories == null){
-            EspressoIdlingResource.increment()
             viewModel.setStateEvent(GetAllBlogs())
             viewModel.setStateEvent(GetCategories())
         }
@@ -99,7 +95,6 @@ constructor(
                 view.blogs?.let { blogs ->
                     listAdapter.apply {
                         submitList(blogs)
-//                        EspressoIdlingResource.decrement()
                     }
                 }
                 view.categories?.let { categories ->
@@ -124,7 +119,7 @@ constructor(
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this@ListFragment.context)
             addItemDecoration(TopSpacingItemDecoration(30))
-            listAdapter = BlogPostListAdapter(this@ListFragment)
+            listAdapter = BlogPostListAdapter(requestManager, this@ListFragment)
             adapter = listAdapter
         }
     }

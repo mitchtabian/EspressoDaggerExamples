@@ -1,11 +1,16 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
+import android.app.Application
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.api.ApiService.Companion.BASE_URL
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.ui.MainActivity
 import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
+import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -46,6 +51,15 @@ object AppModule {
         return MainRepositoryImpl(apiService)
     }
 
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGlideRequestManager(application: Application): GlideRequestManager{
+        return GlideRequestManager(
+            Glide.with(application)
+        )
+    }
 
 }
 
