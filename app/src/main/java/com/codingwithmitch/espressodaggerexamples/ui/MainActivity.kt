@@ -18,7 +18,6 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MAIN_VIEW_STATE_BUNDLE_KEY
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
@@ -185,6 +184,7 @@ class MainActivity : AppCompatActivity()
         const val MENU_ITEM_ID_GET_ALL_BLOGS = 99999999
         const val MENU_ITEM_NAME_GET_ALL_BLOGS = "All"
     }
+
 }
 
 

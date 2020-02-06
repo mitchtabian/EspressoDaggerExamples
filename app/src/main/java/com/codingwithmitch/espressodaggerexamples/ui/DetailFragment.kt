@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -30,7 +31,7 @@ import javax.inject.Singleton
 class DetailFragment
 @Inject
 constructor(
-    private val viewModelFactory: MainViewModelFactory
+    private val viewModelFactory: ViewModelProvider.Factory
 ) : Fragment(R.layout.fragment_detail) {
 
     private val CLASS_NAME = "DetailFragment"

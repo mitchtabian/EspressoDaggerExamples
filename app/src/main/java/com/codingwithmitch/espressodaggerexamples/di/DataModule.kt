@@ -1,6 +1,8 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
+import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
+import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -18,6 +20,8 @@ object DataModule{
             .build()
             .create(ApiService::class.java)
     }
+
+
 
 }
 

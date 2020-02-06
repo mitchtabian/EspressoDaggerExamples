@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class BlogPostListAdapter(
@@ -59,9 +59,7 @@ class BlogPostListAdapter(
         return differ.currentList.size
     }
 
-
     fun submitList(list: List<BlogPost>) {
-        EspressoIdlingResource.increment()
         val commitCallback = Runnable {
 
             /*
@@ -71,8 +69,8 @@ class BlogPostListAdapter(
                 100x the size of this one and the 100ms delay works fine.
              */
             CoroutineScope(Main).launch {
+                delay(100)
                 interaction?.restoreListPosition()
-                EspressoIdlingResource.decrement()
             }
         }
 

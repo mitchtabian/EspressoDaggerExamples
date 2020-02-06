@@ -23,5 +23,16 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_data_textview"
+        android:textColor="#000"
+        android:layout_gravity="center"
+        android:text="@string/there_s_nothing_here"
+        android:visibility="gone"
+        />
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

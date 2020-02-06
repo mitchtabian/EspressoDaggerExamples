@@ -43,14 +43,12 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
     }
 
-
     @JvmStatic
     @Singleton
     @Provides
     fun provideMainRepository(apiService: ApiService): MainRepository {
         return MainRepositoryImpl(apiService)
     }
-
 
     @JvmStatic
     @Singleton
@@ -60,6 +58,7 @@ object AppModule {
             Glide.with(application)
         )
     }
+
 
 }
 

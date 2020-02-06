@@ -21,4 +21,14 @@ object EspressoIdlingResource {
             countingIdlingResource.decrement()
         }
     }
+
+    fun clear(): Boolean {
+        if (!countingIdlingResource.isIdleNow) {
+            decrement()
+            return false
+        }
+        else{
+            return true
+        }
+    }
 }

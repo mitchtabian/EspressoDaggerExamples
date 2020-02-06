@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,6 +19,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEv
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
@@ -30,7 +32,7 @@ import javax.inject.Singleton
 class ListFragment
 @Inject
 constructor(
-    private val viewModelFactory: MainViewModelFactory,
+    private val viewModelFactory: ViewModelProvider.Factory,
     private val requestManager: GlideRequestManager
 ) : Fragment(R.layout.fragment_list),
     BlogPostListAdapter.Interaction,
@@ -96,6 +98,7 @@ constructor(
                     listAdapter.apply {
                         submitList(blogs)
                     }
+                    displayTheresNothingHereTV((blogs.size > 0))
                 }
                 view.categories?.let { categories ->
                     uiCommunicationListener.showCategoriesMenu(
@@ -103,6 +106,15 @@ constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun displayTheresNothingHereTV(isVisible: Boolean){
+        if(isVisible){
+            no_data_textview.visibility = View.GONE
+        }
+        else{
+            no_data_textview.visibility = View.VISIBLE
         }
     }
 
