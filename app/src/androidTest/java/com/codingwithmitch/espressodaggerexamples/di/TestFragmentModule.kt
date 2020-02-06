@@ -21,22 +21,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Module
 abstract class TestFragmentModule {
 
-//    @Binds
-//    abstract fun bindFragmentFactory(fragmentFactory: MockFragmentFactory): FragmentFactory
-
     @Binds
-//    @IntoMap
-//    @MainFragmentKey(ListFragment::class)
     abstract fun bindListFragment(fragment: ListFragment): Fragment
 
     @Binds
-//    @IntoMap
-//    @MainFragmentKey(DetailFragment::class)
     abstract fun bindDetailFragment(fragment: DetailFragment): Fragment
 
     @Binds
-//    @IntoMap
-//    @MainFragmentKey(FinalFragment::class)
     abstract fun bindFinalFragment(fragment: FinalFragment): Fragment
 
 }

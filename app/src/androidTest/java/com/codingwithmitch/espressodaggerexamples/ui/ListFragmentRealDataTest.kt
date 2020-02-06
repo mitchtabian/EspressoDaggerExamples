@@ -98,9 +98,6 @@ class ListFragmentRealDataTest{
 
         onView(withId(R.id.no_data_textview))
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
-
-        printLogD(CLASS_NAME, "--------------- TEST COMPLETE ----------------")
-        printLogD(CLASS_NAME, "----------------------------------------------")
     }
 
 
@@ -109,18 +106,11 @@ class ListFragmentRealDataTest{
 
         val scenario = launchFragmentInContainer<RandomFragment>()
 
-        onView(withId(R.id.no_data_textview))
+        onView(withId(R.id.random_text))
             .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
 
     }
 
-
-    // TODO("Restoring list position (config change and process death?)")
-
-
-    // MainActivity tests
-    // TODO("is categories displayed?")
-    // TODO("Changing category")
 
 }
 
