@@ -109,7 +109,7 @@ class ListFragmentRealDataTest{
 
         val scenario = launchFragmentInContainer<RandomFragment>()
 
-        onView(withId(R.id.no_data_textview))
+        onView(withId(R.id.random_text))
             .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
 
     }

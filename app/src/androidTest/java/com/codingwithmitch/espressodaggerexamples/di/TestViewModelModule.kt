@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.codingwithmitch.daggermultifeature.feature1.di.keys.MainViewModelKey
 import com.codingwithmitch.espressodaggerexamples.ui.MockMainViewModelFactory
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
-import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

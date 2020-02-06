@@ -1,13 +1,10 @@
 package com.codingwithmitch.espressodaggerexamples.fragments
 
 import androidx.fragment.app.FragmentFactory
-import com.bumptech.glide.RequestManager
 import com.codingwithmitch.espressodaggerexamples.ui.*
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
-import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi

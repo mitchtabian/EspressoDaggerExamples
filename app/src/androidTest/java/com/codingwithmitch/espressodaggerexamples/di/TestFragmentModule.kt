@@ -1,18 +1,11 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import androidx.navigation.fragment.NavHostFragment
-import com.codingwithmitch.daggermultifeature.feature1.di.keys.MainFragmentKey
-import com.codingwithmitch.espressodaggerexamples.fragments.MainFragmentFactory
-import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
-import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
 import dagger.Binds
 import dagger.Module
-import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -21,22 +14,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @Module
 abstract class TestFragmentModule {
 
-//    @Binds
-//    abstract fun bindFragmentFactory(fragmentFactory: MockFragmentFactory): FragmentFactory
-
     @Binds
-//    @IntoMap
-//    @MainFragmentKey(ListFragment::class)
     abstract fun bindListFragment(fragment: ListFragment): Fragment
 
     @Binds
-//    @IntoMap
-//    @MainFragmentKey(DetailFragment::class)
     abstract fun bindDetailFragment(fragment: DetailFragment): Fragment
 
     @Binds
-//    @IntoMap
-//    @MainFragmentKey(FinalFragment::class)
     abstract fun bindFinalFragment(fragment: FinalFragment): Fragment
 
 }

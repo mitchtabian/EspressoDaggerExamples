@@ -21,7 +21,6 @@ import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
-import com.codingwithmitch.espressodaggerexamples.repository.MockMainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
