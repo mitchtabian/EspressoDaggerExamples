@@ -7,10 +7,13 @@ import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class MockFragmentFactory(
+class MockFragmentFactory
+//@Inject
+constructor(
     private val viewModelFactory: MockMainViewModelFactory,
     private val uiCommunicationListener: UICommunicationListener,
     private val requestManager: GlideRequestManager

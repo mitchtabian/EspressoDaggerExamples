@@ -1,7 +1,12 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
-import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentIsolationTest
+import com.codingwithmitch.espressodaggerexamples.api.ApiService
+import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
+import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentEmptyDataTest
+import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentRealDataTest
+import com.codingwithmitch.espressodaggerexamples.ui.MockMainViewModelFactory
+import com.codingwithmitch.espressodaggerexamples.ui.RandomTest
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,12 +17,12 @@ import javax.inject.Singleton
 @InternalCoroutinesApi
 @Singleton
 @Component(modules = [
-    FragmentModule::class,
-    ViewModelModule::class,
+    TestFragmentModule::class,
+    TestViewModelModule::class,
     AppModule::class,
     TestDataModule::class
 ])
-interface TestAppComponent: AppComponent {
+interface TestAppComponent {
 
     @Component.Builder
     interface Builder{
@@ -28,7 +33,11 @@ interface TestAppComponent: AppComponent {
         fun build(): TestAppComponent
     }
 
-    fun inject(listFragmentTest: ListFragmentIsolationTest)
+    fun inject(listFragmentTest: ListFragmentRealDataTest)
+
+    fun inject(listFragmentTest: ListFragmentEmptyDataTest)
+
+    fun inject(randomTest: RandomTest)
 
 }
 

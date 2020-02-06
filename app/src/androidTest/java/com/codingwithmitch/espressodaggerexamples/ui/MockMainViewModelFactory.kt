@@ -14,6 +14,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 class MockMainViewModelFactory
+@Inject
 constructor(
     val mainRepository: MainRepository
 ): ViewModelProvider.NewInstanceFactory() {

@@ -5,6 +5,7 @@ import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
+import com.codingwithmitch.espressodaggerexamples.repository.MockMainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.EMPTY_BLOG_POSTS_DATA_FILENAME
@@ -49,8 +50,6 @@ object TestDataModule{
         return CATEGORIES_DATA_FILENAME
     }
 
-
-
     @JvmStatic
     @Singleton
     @Provides
@@ -64,6 +63,15 @@ object TestDataModule{
             blogPostsDataFileName,
             categoriesDataFileName
         )
+    }
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideMainRepository_BlogListData(
+        fakeApiService: FakeApiService
+    ): MainRepository {
+        return MainRepositoryImpl(fakeApiService)
     }
 
 
@@ -83,7 +91,7 @@ object TestDataModule{
 //            )
 //        )
 //    }
-//
+
 //    @JvmStatic
 //    @Singleton
 //    @Provides

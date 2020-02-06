@@ -1,17 +1,21 @@
 package com.codingwithmitch.espressodaggerexamples.repository
 
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
+import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.ApiResponseHandler
 import com.codingwithmitch.espressodaggerexamples.util.DataState
+import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 class MockMainRepositoryImpl
+@Inject
 constructor(
     private val apiService: ApiService
 ): MainRepository{

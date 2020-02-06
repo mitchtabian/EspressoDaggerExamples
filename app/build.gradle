@@ -55,24 +55,33 @@ dependencies {
 
 
     // Kotlin test
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    debugImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     
     // Espresso
-    def androidx_test_espresso = "3.1.0"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_test_espresso"
-    implementation "androidx.test.espresso:espresso-idling-resource:$androidx_test_espresso"
+    def androidx_espresso_core = "3.1.1"
+    debugImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
+    debugImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
+
+    def androidx_espresso_idling_resource = "3.2.0"
+    debugImplementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
+    implementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
 
     // Mockk.io
-    def mockk_version = "1.9.2"
+//    def mockk_version = "1.9.2"
+    def mockk_version = "1.9.3"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 
     // androidx.test
-    def androidx_test = "1.1.0"
-    debugImplementation "androidx.test:runner:$androidx_test"
-    debugImplementation "androidx.test:core:$androidx_test"
-    debugImplementation "androidx.test.ext:junit-ktx:$androidx_test"
-    debugImplementation "androidx.test:rules:$androidx_test"
+    def androidx_test_runner = "1.2.0"
+    debugImplementation "androidx.test:runner:$androidx_test_runner"
+    debugImplementation "androidx.test:rules:$androidx_test_runner"
+
+    def androidx_test_core = "1.1.0"
+    debugImplementation "androidx.test:core:$androidx_test_core"
+
+    def androidx_test_ext = "1.1.1"
+    debugImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext"
+
 
 
     // androidx.fragment

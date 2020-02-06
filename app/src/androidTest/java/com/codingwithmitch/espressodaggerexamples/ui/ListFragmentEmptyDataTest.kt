@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.AndroidJUnitRunner
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
@@ -20,6 +21,7 @@ import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
+import com.codingwithmitch.espressodaggerexamples.repository.MockMainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
@@ -35,46 +37,47 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import javax.inject.Inject
 import javax.inject.Named
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
-class ListFragmentIsolationTest{
+class ListFragmentEmptyDataTest{
 
     private val CLASS_NAME = "ListFragmentTest"
 
-//    @Inject
-//    lateinit var viewModelFactory: MainViewModelFactory
+    @Inject
+    lateinit var viewModelFactory: MockMainViewModelFactory
 
     @Inject
     lateinit var jsonUtil: JsonUtil
 
-    @Inject
-    @Named("blog_posts_data_filename")
-    lateinit var blog_posts_filename: String
-
-    @Inject
-    @Named("empty_blog_posts_data_filename")
-    lateinit var empty_list_blog_posts_filename: String
-
-    @Inject
-    @Named("categories_data_filename")
-    lateinit var categories_filename: String
+//    @Inject
+//    @Named("empty_blog_posts_data_filename")
+//    lateinit var empty_list_blog_posts_filename: String
+//
+//    @Inject
+//    @Named("blog_posts_data_filename")
+//    lateinit var blog_posts_filename: String
+//
+//    @Inject
+//    @Named("categories_data_filename")
+//    lateinit var categories_filename: String
 
     lateinit var appComponent: TestAppComponent
 
-    lateinit var uiCommunicationListener: UICommunicationListener
+//    lateinit var uiCommunicationListener: UICommunicationListener
 
-    lateinit var requestManager: GlideRequestManager
+//    lateinit var requestManager: GlideRequestManager
 
 //    lateinit var fragmentFactory: MockFragmentFactory
 //
 //    lateinit var viewModelFactory: MockMainViewModelFactory
 
     @get: Rule
-    val espressoIdlingResoureRule = EspressoIdlingResourceRule()
+    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
 
     @Before
@@ -88,19 +91,17 @@ class ListFragmentIsolationTest{
 
         appComponent.inject(this)
 
-        requestManager = mockk<GlideRequestManager>()
-        every {
-            requestManager
-                .setImage(any(), any())
-        } just runs
+//        requestManager = mockk<GlideRequestManager>()
+//        every {
+//            requestManager
+//                .setImage(any(), any())
+//        } just runs
+//
+//        uiCommunicationListener = mockk<UICommunicationListener>()
+//        every {
+//            uiCommunicationListener.showCategoriesMenu(allAny())
+//        } just runs
 
-        uiCommunicationListener = mockk<UICommunicationListener>()
-        every {
-            uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-
-
-        resetIdlingResource()
     }
 
     private fun resetIdlingResource(){
@@ -111,65 +112,32 @@ class ListFragmentIsolationTest{
         }
     }
 
-    @Test
-    fun is_recyclerViewItemsSet_validData() {
-
-        val viewModelFactory = MockMainViewModelFactory(
-            MainRepositoryImpl(
-                FakeApiService(
-                    jsonUtil,
-                    blog_posts_filename, // valid data
-                    categories_filename
-                )
-            )
-        )
-
-        val fragmentFactory = MockFragmentFactory(
-            viewModelFactory,
-            uiCommunicationListener,
-            requestManager
-        )
-
-        // Begin
-        val scenario = launchFragmentInContainer<ListFragment>(
-            factory = fragmentFactory
-        )
-
-        val recyclerView = onView(withId(R.id.recycler_view))
-
-        recyclerView.check(matches(isDisplayed()))
-
-        recyclerView.perform(
-                RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(5)
-            )
-        onView(withText("Mountains in Washington")).check(matches(isDisplayed()))
-
-        recyclerView.perform(
-            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(8)
-        )
-        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
-
-        recyclerView.perform(
-            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(0)
-        )
-        onView(withText("Vancouver PNE 2019")).check(matches(isDisplayed()))
-
-        onView(withId(R.id.no_data_textview))
-            .check(matches(withEffectiveVisibility(Visibility.GONE)))
-    }
 
     @Test
     fun recyclerView_hasEmptyBlogList() {
 
-        val viewModelFactory = MockMainViewModelFactory(
-            MainRepositoryImpl(
-                FakeApiService(
-                    jsonUtil,
-                    empty_list_blog_posts_filename, // empty list
-                    categories_filename
-                )
-            )
-        )
+//        resetIdlingResource()
+
+//        val viewModelFactory = MockMainViewModelFactory(
+//            MainRepositoryImpl(
+//                FakeApiService(
+//                    jsonUtil,
+//                    empty_list_blog_posts_filename, // empty list
+//                    categories_filename
+//                )
+//            )
+//        )
+
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
+
+        val requestManager = mockk<GlideRequestManager>()
+        every {
+            requestManager
+                .setImage(any(), any())
+        } just runs
 
         val fragmentFactory = MockFragmentFactory(
             viewModelFactory,
@@ -182,8 +150,16 @@ class ListFragmentIsolationTest{
             factory = fragmentFactory
         )
 
+        scenario.onFragment { fragment ->
+
+            fragment.viewModel.viewState.observe(fragment.viewLifecycleOwner, Observer { viewState ->
+                printLogD(CLASS_NAME, "blogs: ${viewState.listFragmentView.blogs?.size}")
+            })
+        }
+
         onView(withId(R.id.no_data_textview))
             .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+
     }
 
 

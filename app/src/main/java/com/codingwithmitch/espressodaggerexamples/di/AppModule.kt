@@ -46,13 +46,6 @@ object AppModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideMainRepository(apiService: ApiService): MainRepository {
-        return MainRepositoryImpl(apiService)
-    }
-
-    @JvmStatic
-    @Singleton
-    @Provides
     fun provideGlideRequestManager(application: Application): GlideRequestManager{
         return GlideRequestManager(
             Glide.with(application)

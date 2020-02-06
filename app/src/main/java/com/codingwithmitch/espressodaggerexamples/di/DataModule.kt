@@ -21,6 +21,12 @@ object DataModule{
             .create(ApiService::class.java)
     }
 
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideMainRepository(apiService: ApiService): MainRepository {
+        return MainRepositoryImpl(apiService)
+    }
 
 
 }
