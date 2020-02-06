@@ -28,7 +28,7 @@ import javax.inject.Inject
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
-class FragmentTests{
+class ListFragmentTests{
 
     private val CLASS_NAME = "ListFragmentTest"
 
@@ -56,7 +56,7 @@ class FragmentTests{
     }
 
     @Test
-    fun b_is_recyclerViewItemsSet_validData() {
+    fun is_recyclerViewItemsSet_validData() {
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
         every {
@@ -99,12 +99,12 @@ class FragmentTests{
 
 
     @Test
-    fun a_isDetailFragmentVisible() {
+    fun is_recyclerViewVisible() {
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
-        every { uiCommunicationListener.showStatusBar() } just runs
-        every { uiCommunicationListener.expandAppBar() } just runs
-        every { uiCommunicationListener.hideCategoriesMenu() } just runs
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
 
         val fragmentFactory = MockFragmentFactory(
             viewModelFactory,
@@ -112,13 +112,18 @@ class FragmentTests{
             requestManager
         )
 
-        val scenario = launchFragmentInContainer<DetailFragment>(
+        // Begin
+        val scenario = launchFragmentInContainer<ListFragment>(
             factory = fragmentFactory
         )
 
-        onView(withId(R.id.blog_title)).check(matches(isDisplayed()))
+        val recyclerView = onView(withId(R.id.recycler_view))
+
+        recyclerView.check(matches(isDisplayed()))
 
     }
+
+
 
 
 }
