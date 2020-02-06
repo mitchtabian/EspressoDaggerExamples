@@ -8,20 +8,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
-import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
+import com.codingwithmitch.espressodaggerexamples.util.Constants
+import com.codingwithmitch.espressodaggerexamples.util.Constants.ApplicationMode
+import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import java.lang.ClassCastException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,7 +27,8 @@ import javax.inject.Singleton
 class DetailFragment
 @Inject
 constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
+    private val viewModelFactory: ViewModelProvider.Factory,
+    private val requestManager: GlideRequestManager
 ) : Fragment(R.layout.fragment_detail) {
 
     private val CLASS_NAME = "DetailFragment"
@@ -72,15 +69,11 @@ constructor(
     }
 
     private fun setBlogPostToView(blogPost: BlogPost){
-        view?.run {
-            Glide.with(this)
-                .load(blogPost.image)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(blog_image)
-            blog_title.text = blogPost.title
-            blog_category.text = blogPost.category
-            blog_body.text = blogPost.body
-        }
+        requestManager
+            .setImage(blogPost.image, blog_image)
+        blog_title.text = blogPost.title
+        blog_category.text = blogPost.category
+        blog_body.text = blogPost.body
     }
 
     override fun onAttach(context: Context) {

@@ -1,13 +1,16 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
+import com.bumptech.glide.Glide
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
+import com.codingwithmitch.espressodaggerexamples.util.Constants.ApplicationMode
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.EMPTY_BLOG_POSTS_DATA_FILENAME
+import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import dagger.Module
 import dagger.Provides
@@ -73,6 +76,25 @@ object TestDataModule{
         return MainRepositoryImpl(fakeApiService)
     }
 
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideApplicationMode(): ApplicationMode {
+        return ApplicationMode.TESTING
+    }
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGlideRequestManager(
+        application: Application,
+        applicationMode: ApplicationMode
+    ): GlideRequestManager {
+        return GlideRequestManager(
+            Glide.with(application),
+            applicationMode
+        )
+    }
 }
 
 

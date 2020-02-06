@@ -10,6 +10,8 @@ import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.ui.MainActivity
 import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
+import com.codingwithmitch.espressodaggerexamples.util.Constants
+import com.codingwithmitch.espressodaggerexamples.util.Constants.ApplicationMode
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -41,15 +43,6 @@ object AppModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
-    }
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGlideRequestManager(application: Application): GlideRequestManager{
-        return GlideRequestManager(
-            Glide.with(application)
-        )
     }
 
 

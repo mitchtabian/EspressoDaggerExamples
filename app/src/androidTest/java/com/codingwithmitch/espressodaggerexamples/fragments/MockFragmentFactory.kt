@@ -30,13 +30,13 @@ constructor(
             }
 
             DetailFragment::class.java.name -> {
-                val fragment = DetailFragment(viewModelFactory)
+                val fragment = DetailFragment(viewModelFactory, requestManager)
                 fragment.setUICommunicationListener(uiCommunicationListener)
                 fragment
             }
 
             FinalFragment::class.java.name -> {
-                val fragment = FinalFragment(viewModelFactory)
+                val fragment = FinalFragment(viewModelFactory, requestManager)
                 fragment.setUICommunicationListener(uiCommunicationListener)
                 fragment
             }

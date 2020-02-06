@@ -13,7 +13,7 @@ class MockTestRunner: AndroidJUnitRunner(){
         cl: ClassLoader?,
         className: String?,
         context: Context?
-    ): Application {
+    ) :  Application {
         return super.newApplication(cl, TestBaseApplication::class.java.name, context)
     }
 }

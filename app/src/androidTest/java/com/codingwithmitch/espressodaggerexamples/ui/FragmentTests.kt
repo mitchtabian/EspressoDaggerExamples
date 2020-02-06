@@ -28,12 +28,15 @@ import javax.inject.Inject
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
-class ListFragmentRealDataTest{
+class FragmentTests{
 
     private val CLASS_NAME = "ListFragmentTest"
 
     @Inject
     lateinit var viewModelFactory: MockMainViewModelFactory
+
+    @Inject
+    lateinit var requestManager: GlideRequestManager
 
     lateinit var appComponent: TestAppComponent
 
@@ -53,17 +56,11 @@ class ListFragmentRealDataTest{
     }
 
     @Test
-    fun is_recyclerViewItemsSet_validData() {
+    fun a_is_recyclerViewItemsSet_validData() {
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
         every {
             uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-
-        val requestManager = mockk<GlideRequestManager>()
-        every {
-            requestManager
-                .setImage(any(), any())
         } just runs
 
         val fragmentFactory = MockFragmentFactory(
@@ -102,12 +99,26 @@ class ListFragmentRealDataTest{
 
 
     @Test
-    fun recyclerView_hasEmptyBlogList() {
+    fun b_isDetailFragmentVisible() {
 
-        val scenario = launchFragmentInContainer<RandomFragment>()
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+        every {
+            uiCommunicationListener.showStatusBar()
+            uiCommunicationListener.expandAppBar()
+            uiCommunicationListener.hideCategoriesMenu()
+        } just runs
 
-        onView(withId(R.id.random_text))
-            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        val fragmentFactory = MockFragmentFactory(
+            viewModelFactory,
+            uiCommunicationListener,
+            requestManager
+        )
+
+        val scenario = launchFragmentInContainer<DetailFragment>(
+            factory = fragmentFactory
+        )
+
+//        onView(withId(R.id.blog_title)).check(matches(isDisplayed()))
 
     }
 
