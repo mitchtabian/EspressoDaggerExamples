@@ -67,8 +67,8 @@ dependencies {
     implementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
 
     // Mockk.io
-//    def mockk_version = "1.9.2"
-    def mockk_version = "1.9.3"
+    def mockk_version = "1.9.2"
+//    def mockk_version = "1.9.3"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 
     // androidx.test
@@ -85,7 +85,8 @@ dependencies {
 
 
     // androidx.fragment
-    def fragment_version = "1.2.0-rc01" // must use for new factory stuff
+    def fragment_version = "1.2.0"
+//    def fragment_version = "1.2.0-rc01" // must use for new factory stuff
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 

@@ -56,7 +56,7 @@ class FragmentTests{
     }
 
     @Test
-    fun a_is_recyclerViewItemsSet_validData() {
+    fun b_is_recyclerViewItemsSet_validData() {
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
         every {
@@ -99,14 +99,12 @@ class FragmentTests{
 
 
     @Test
-    fun b_isDetailFragmentVisible() {
+    fun a_isDetailFragmentVisible() {
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
-        every {
-            uiCommunicationListener.showStatusBar()
-            uiCommunicationListener.expandAppBar()
-            uiCommunicationListener.hideCategoriesMenu()
-        } just runs
+        every { uiCommunicationListener.showStatusBar() } just runs
+        every { uiCommunicationListener.expandAppBar() } just runs
+        every { uiCommunicationListener.hideCategoriesMenu() } just runs
 
         val fragmentFactory = MockFragmentFactory(
             viewModelFactory,
@@ -118,7 +116,7 @@ class FragmentTests{
             factory = fragmentFactory
         )
 
-//        onView(withId(R.id.blog_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.blog_title)).check(matches(isDisplayed()))
 
     }
 
