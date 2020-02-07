@@ -13,8 +13,4 @@ object Constants{
     const val NETWORK_ERROR_TIMEOUT = "Network timeout"
     const val NETWORK_DELAY = 1000L // ms (Fake network delay to make app more realistic)
 
-    enum class ApplicationMode {
-        NORMAL, TESTING
-    }
-
 }

@@ -13,8 +13,4 @@ object Constants {
     const val NETWORK_ERROR = "Network error"
     const val NETWORK_ERROR_TIMEOUT = "Network timeout"
 
-    enum class ApplicationMode {
-        NORMAL, TESTING
-    }
-
 }
