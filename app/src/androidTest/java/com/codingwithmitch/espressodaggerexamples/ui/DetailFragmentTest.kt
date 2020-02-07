@@ -49,41 +49,43 @@ class DetailFragmentTest {
 
     val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
+    val uiCommunicationListener = mockk<UICommunicationListener>()
+
     val requestManager = mockk<GlideRequestManager>()
 
     lateinit var appComponent: TestAppComponent
 
+    lateinit var fragmentFactory: FakeMainFragmentFactory
+
     @Before
     fun init(){
-        val validDataApiService = FakeApiService(
+        every { requestManager.setImage(any(), any()) } just runs
+        every { uiCommunicationListener.showStatusBar() } just runs
+        every { uiCommunicationListener.expandAppBar() } just runs
+        every { uiCommunicationListener.hideCategoriesMenu() } just runs
+
+        val apiService = FakeApiService(
             JsonUtil(app),
             BLOG_POSTS_DATA_FILENAME,
             CATEGORIES_DATA_FILENAME,
             0L
         )
         appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(validDataApiService))
+            .repositoryModule(TestRepositoryModule(apiService))
             .application(app)
             .build()
 
         appComponent.inject(this)
 
-        every { requestManager.setImage(any(), any()) } just runs
-    }
-
-    @Test
-    fun is_selectedBlogPostDetailsSet() {
-
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-        every { uiCommunicationListener.showStatusBar() } just runs
-        every { uiCommunicationListener.expandAppBar() } just runs
-        every { uiCommunicationListener.hideCategoriesMenu() } just runs
-
-        val fragmentFactory = FakeMainFragmentFactory(
+        fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager
         )
+    }
+
+    @Test
+    fun is_selectedBlogPostDetailsSet() {
 
         val scenario = launchFragmentInContainer<DetailFragment>(
             factory = fragmentFactory

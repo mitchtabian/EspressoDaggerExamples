@@ -51,37 +51,39 @@ class FinalFragmentTest {
 
     val requestManager = mockk<GlideRequestManager>()
 
+    val uiCommunicationListener = mockk<UICommunicationListener>()
+
     lateinit var appComponent: TestAppComponent
+
+    lateinit var fragmentFactory: FakeMainFragmentFactory
 
     @Before
     fun init(){
-        val validDataApiService = FakeApiService(
+        every { requestManager.setImage(any(), any()) } just runs
+        every { uiCommunicationListener.hideStatusBar() } just runs
+
+        val apiService = FakeApiService(
             JsonUtil(app),
             Constants.BLOG_POSTS_DATA_FILENAME,
             Constants.CATEGORIES_DATA_FILENAME,
             0L
         )
         appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(validDataApiService))
+            .repositoryModule(TestRepositoryModule(apiService))
             .application(app)
             .build()
 
         appComponent.inject(this)
 
-        every { requestManager.setImage(any(), any()) } just runs
-    }
-
-    @Test
-    fun is_scalingImageView() {
-
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-        every { uiCommunicationListener.hideStatusBar() } just runs
-
-        val fragmentFactory = FakeMainFragmentFactory(
+        fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager
         )
+    }
+
+    @Test
+    fun is_scalingImageView() {
 
         val scenario = launchFragmentInContainer<FinalFragment>(
             factory = fragmentFactory

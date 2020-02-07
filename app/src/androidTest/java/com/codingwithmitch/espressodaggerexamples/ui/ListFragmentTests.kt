@@ -10,6 +10,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
+import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
 import com.codingwithmitch.espressodaggerexamples.di.TestRepositoryModule
@@ -40,10 +41,16 @@ class ListFragmentTests{
 
     private val CLASS_NAME = "ListFragmentTest"
 
+    val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+
     @Inject
     lateinit var viewModelFactory: FakeMainViewModelFactory
 
+    lateinit var fragmentFactory: FakeMainFragmentFactory
+
     val requestManager = mockk<GlideRequestManager>()
+
+    val uiCommunicationListener = mockk<UICommunicationListener>()
 
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
@@ -51,36 +58,37 @@ class ListFragmentTests{
     @Before
     fun init(){
         every { requestManager.setImage(any(), any()) } just runs
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
     }
 
-    @Test
-    fun is_recyclerViewItemsSet_validData() {
+    private fun setupDependencies(apiService: ApiService){
 
-        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-
-        val validDataApiService = FakeApiService(
-            JsonUtil(app),
-            BLOG_POSTS_DATA_FILENAME, // real list of blogs
-            CATEGORIES_DATA_FILENAME,
-            0L
-        )
         val appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(validDataApiService))
+            .repositoryModule(TestRepositoryModule(apiService))
             .application(app)
             .build()
 
         appComponent.inject(this)
 
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-        every {
-            uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-
-        val fragmentFactory = FakeMainFragmentFactory(
+        fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager
         )
+    }
+
+    @Test
+    fun is_recyclerViewItemsSet_validData() {
+
+        val apiService = FakeApiService(
+            JsonUtil(app),
+            BLOG_POSTS_DATA_FILENAME, // real list of blogs
+            CATEGORIES_DATA_FILENAME,
+            0L
+        )
+        setupDependencies(apiService)
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -114,31 +122,13 @@ class ListFragmentTests{
     @Test
     fun is_blogListEmpty() {
 
-        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-
-        val validDataApiService = FakeApiService(
+        val apiService = FakeApiService(
             JsonUtil(app),
             EMPTY_LIST, // empty list
             CATEGORIES_DATA_FILENAME,
             0L
         )
-        val appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(validDataApiService))
-            .application(app)
-            .build()
-
-        appComponent.inject(this)
-
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-        every {
-            uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-
-        val fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            uiCommunicationListener,
-            requestManager
-        )
+        setupDependencies(apiService)
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -157,31 +147,13 @@ class ListFragmentTests{
     @Test
     fun is_dataErrorShown() {
 
-        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-
-        val validDataApiService = FakeApiService(
+        val apiService = FakeApiService(
             JsonUtil(app),
             SERVER_ERROR_FILENAME, // data that will cause UNKNOWN ERROR
             CATEGORIES_DATA_FILENAME,
             0L
         )
-        val appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(validDataApiService))
-            .application(app)
-            .build()
-
-        appComponent.inject(this)
-
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-        every {
-            uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-
-        val fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            uiCommunicationListener,
-            requestManager
-        )
+        setupDependencies(apiService)
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -195,31 +167,14 @@ class ListFragmentTests{
 
     @Test
     fun is_networkTimeoutDialogShown() {
-        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
-        val validDataApiService = FakeApiService(
+        val apiService = FakeApiService(
             JsonUtil(app),
             BLOG_POSTS_DATA_FILENAME,
             CATEGORIES_DATA_FILENAME,
             4000L // 4000 > 3000 so it will timeout
         )
-        val appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(validDataApiService))
-            .application(app)
-            .build()
-
-        appComponent.inject(this)
-
-        val uiCommunicationListener = mockk<UICommunicationListener>()
-        every {
-            uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-
-        val fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            uiCommunicationListener,
-            requestManager
-        )
+        setupDependencies(apiService)
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
