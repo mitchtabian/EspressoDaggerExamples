@@ -17,6 +17,7 @@ import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
+import com.codingwithmitch.espressodaggerexamples.util.GlideManager
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
@@ -32,7 +33,7 @@ class ListFragment
 @Inject
 constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
-    private val requestManager: GlideRequestManager
+    private val requestManager: GlideManager
 ) : Fragment(R.layout.fragment_list),
     BlogPostListAdapter.Interaction,
     SwipeRefreshLayout.OnRefreshListener

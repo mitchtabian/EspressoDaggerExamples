@@ -8,19 +8,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GlideRequestManager
+class FakeGlideRequestManager
 @Inject
-constructor(
-    private val requestManager: RequestManager,
-    private val applicationMode: ApplicationMode
-): GlideManager{
+constructor(): GlideManager{
 
     override fun setImage(imageUrl: String, imageView: ImageView){
-        if(applicationMode == ApplicationMode.NORMAL){
-            requestManager
-                .load(imageUrl)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imageView)
-        }
+        // does nothing
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application
 import com.bumptech.glide.Glide
 import com.codingwithmitch.espressodaggerexamples.util.Constants
 import com.codingwithmitch.espressodaggerexamples.util.Constants.ApplicationMode
+import com.codingwithmitch.espressodaggerexamples.util.GlideManager
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,7 @@ object AppModule{
     fun provideGlideRequestManager(
         application: Application,
         applicationMode: ApplicationMode
-    ): GlideRequestManager {
+    ): GlideManager {
         return GlideRequestManager(
             Glide.with(application),
             applicationMode

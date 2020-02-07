@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
+import com.codingwithmitch.espressodaggerexamples.util.GlideManager
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class BlogPostListAdapter(
-    private val requestManager: GlideRequestManager,
+    private val requestManager: GlideManager,
     private val interaction: Interaction? = null
     ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -81,7 +82,7 @@ class BlogPostListAdapter(
     constructor(
         itemView: View,
         private val interaction: Interaction?,
-        private val requestManager: GlideRequestManager
+        private val requestManager: GlideManager
     ) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: BlogPost) = with(itemView) {

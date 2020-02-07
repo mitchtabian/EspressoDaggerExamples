@@ -28,12 +28,14 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 import javax.inject.Inject
 
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -46,9 +48,10 @@ class ListFragmentTests{
     @Inject
     lateinit var viewModelFactory: FakeMainViewModelFactory
 
-    lateinit var fragmentFactory: FakeMainFragmentFactory
+    @Inject
+    lateinit var requestManager: FakeGlideRequestManager
 
-    val requestManager = mockk<GlideRequestManager>()
+    lateinit var fragmentFactory: FakeMainFragmentFactory
 
     val uiCommunicationListener = mockk<UICommunicationListener>()
 
@@ -57,7 +60,6 @@ class ListFragmentTests{
 
     @Before
     fun init(){
-        every { requestManager.setImage(any(), any()) } just runs
         every {
             uiCommunicationListener.showCategoriesMenu(allAny())
         } just runs
@@ -77,6 +79,7 @@ class ListFragmentTests{
             uiCommunicationListener,
             requestManager
         )
+
     }
 
     @Test
@@ -116,6 +119,27 @@ class ListFragmentTests{
 
         onView(withId(R.id.no_data_textview))
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
+    }
+
+    @Test
+    fun is_networkTimeoutDialogShown() {
+
+        val apiService = FakeApiService(
+            JsonUtil(app),
+            BLOG_POSTS_DATA_FILENAME,
+            CATEGORIES_DATA_FILENAME,
+            4000L // 4000 > 3000 so it will timeout
+        )
+        setupDependencies(apiService)
+
+        // Begin
+        val scenario = launchFragmentInContainer<ListFragment>(
+            factory = fragmentFactory
+        )
+
+        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+
+        onView(withText(NETWORK_ERROR_TIMEOUT)).check(matches(isDisplayed()))
     }
 
 
@@ -165,14 +189,15 @@ class ListFragmentTests{
         onView(withText(UNKNOWN_ERROR)).check(matches(isDisplayed()))
     }
 
+
     @Test
-    fun is_networkTimeoutDialogShown() {
+    fun is_recyclerViewPositionRestoredAfterFragmentRecreated() {
 
         val apiService = FakeApiService(
             JsonUtil(app),
             BLOG_POSTS_DATA_FILENAME,
             CATEGORIES_DATA_FILENAME,
-            4000L // 4000 > 3000 so it will timeout
+            0L
         )
         setupDependencies(apiService)
 
@@ -181,11 +206,24 @@ class ListFragmentTests{
             factory = fragmentFactory
         )
 
-        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+        val recyclerView = onView(withId(R.id.recycler_view))
 
-        onView(withText(NETWORK_ERROR_TIMEOUT)).check(matches(isDisplayed()))
+        recyclerView.check(matches(isDisplayed()))
+
+        recyclerView.perform(
+            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(8)
+        )
+        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
+
+        scenario.recreate()
+
+        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
+
     }
+
 }
+
+
 
 
 

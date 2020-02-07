@@ -19,7 +19,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.setSelectedBlogPo
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
-import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
+import com.codingwithmitch.espressodaggerexamples.util.FakeGlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import com.google.gson.Gson
@@ -51,7 +51,7 @@ class DetailFragmentTest {
 
     val uiCommunicationListener = mockk<UICommunicationListener>()
 
-    val requestManager = mockk<GlideRequestManager>()
+    val requestManager = mockk<FakeGlideRequestManager>()
 
     lateinit var appComponent: TestAppComponent
 

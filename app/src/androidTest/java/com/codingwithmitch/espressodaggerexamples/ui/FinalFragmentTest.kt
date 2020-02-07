@@ -18,13 +18,12 @@ import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.setSelectedBlogPost
 import com.codingwithmitch.espressodaggerexamples.util.Constants
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
-import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
+import com.codingwithmitch.espressodaggerexamples.util.FakeGlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.mockk.*
-import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_final.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -49,7 +48,7 @@ class FinalFragmentTest {
 
     val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
-    val requestManager = mockk<GlideRequestManager>()
+    val requestManager = mockk<FakeGlideRequestManager>()
 
     val uiCommunicationListener = mockk<UICommunicationListener>()
 
