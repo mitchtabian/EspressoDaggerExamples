@@ -2,6 +2,10 @@ package com.codingwithmitch.espressodaggerexamples.repository
 
 import com.codingwithmitch.espressodaggerexamples.util.ApiResult
 import com.codingwithmitch.espressodaggerexamples.util.ApiResult.*
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_DELAY
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR_TIMEOUT
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
+import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,20 +15,23 @@ import java.io.IOException
  */
 private val TAG: String = "AppDebug"
 
-const val UNKNOWN_ERROR = "Unknown error"
-const val NETWORK_ERROR = "Network error"
-const val NETWORK_DELAY = 1000L // ms
 
 suspend fun <T> Repository.safeApiCall(
     dispatcher: CoroutineDispatcher,
     apiCall: suspend () -> T
 ): ApiResult<T> {
     return withContext(dispatcher) {
-        delay(NETWORK_DELAY)
         try {
-            Success(apiCall.invoke())
+            withTimeout(NETWORK_TIMEOUT){ // throws TimeoutCancellationException
+                delay(NETWORK_DELAY)
+                Success(apiCall.invoke())
+            }
         } catch (throwable: Throwable) {
             when (throwable) {
+                is TimeoutCancellationException -> {
+                    val code = 408 // timeout error code
+                    GenericError(code, NETWORK_ERROR_TIMEOUT)
+                }
                 is IOException -> {
                     NetworkError
                 }

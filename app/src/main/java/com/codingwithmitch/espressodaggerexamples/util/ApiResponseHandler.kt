@@ -1,6 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
-import com.codingwithmitch.espressodaggerexamples.repository.NETWORK_ERROR
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR
 import kotlinx.coroutines.CoroutineDispatcher
 
 abstract class ApiResponseHandler <ViewState, Data>(

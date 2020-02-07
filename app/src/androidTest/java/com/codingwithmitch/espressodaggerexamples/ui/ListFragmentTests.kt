@@ -54,7 +54,8 @@ class ListFragmentTests{
         val validDataApiService = FakeApiService(
             JsonUtil(app),
             BLOG_POSTS_DATA_FILENAME, // real list of blogs
-            CATEGORIES_DATA_FILENAME
+            CATEGORIES_DATA_FILENAME,
+            0L
         )
         val appComponent = DaggerTestAppComponent.builder()
             .repositoryModule(TestRepositoryModule(validDataApiService))
@@ -111,7 +112,8 @@ class ListFragmentTests{
         val validDataApiService = FakeApiService(
             JsonUtil(app),
             EMPTY_LIST, // empty list
-            CATEGORIES_DATA_FILENAME
+            CATEGORIES_DATA_FILENAME,
+            0L
         )
         val appComponent = DaggerTestAppComponent.builder()
             .repositoryModule(TestRepositoryModule(validDataApiService))
@@ -153,7 +155,8 @@ class ListFragmentTests{
         val validDataApiService = FakeApiService(
             JsonUtil(app),
             SERVER_ERROR_FILENAME, // data that will cause UNKNOWN ERROR
-            CATEGORIES_DATA_FILENAME
+            CATEGORIES_DATA_FILENAME,
+            0L
         )
         val appComponent = DaggerTestAppComponent.builder()
             .repositoryModule(TestRepositoryModule(validDataApiService))
@@ -180,6 +183,8 @@ class ListFragmentTests{
 
         onView(withText(R.string.text_error)).check(matches(isDisplayed()))
     }
+
+    // TODO("test network timeout")
 }
 
 

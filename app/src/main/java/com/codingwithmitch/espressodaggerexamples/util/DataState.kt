@@ -1,7 +1,7 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
 import android.os.Parcelable
-import com.codingwithmitch.espressodaggerexamples.repository.UNKNOWN_ERROR
+import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue

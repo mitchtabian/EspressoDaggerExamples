@@ -5,12 +5,14 @@ import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.delay
 
 class FakeApiService
 constructor(
     private val jsonUtil: JsonUtil,
     private val blogPostsJsonFileName: String,
-    private val categoriesJsonFileName: String
+    private val categoriesJsonFileName: String,
+    private val networkDelay: Long
 ): ApiService {
 
     override suspend fun getBlogPosts(category: String): List<BlogPost> {
@@ -20,6 +22,7 @@ constructor(
             object : TypeToken<List<BlogPost>>() {}.type
         )
         val filteredBlogs = blogs.filter { blogPost -> blogPost.category.equals(category) }
+        delay(networkDelay)
         return filteredBlogs
     }
 
@@ -29,6 +32,7 @@ constructor(
             rawJson,
             object : TypeToken<List<BlogPost>>() {}.type
         )
+        delay(networkDelay)
         return blogs
     }
 
@@ -38,6 +42,7 @@ constructor(
             rawJson,
             object : TypeToken<List<Category>>() {}.type
         )
+        delay(networkDelay)
         return categories
     }
 
