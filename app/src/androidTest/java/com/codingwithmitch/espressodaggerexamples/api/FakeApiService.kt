@@ -5,17 +5,12 @@ import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Singleton
 
-@Singleton
 class FakeApiService
-@Inject
 constructor(
     private val jsonUtil: JsonUtil,
-    private @Named("blog_posts_data_filename") val blogPostsJsonFileName: String,
-    private @Named("categories_data_filename") val categoriesJsonFileName: String
+    private val blogPostsJsonFileName: String,
+    private val categoriesJsonFileName: String
 ): ApiService {
 
     override suspend fun getBlogPosts(category: String): List<BlogPost> {

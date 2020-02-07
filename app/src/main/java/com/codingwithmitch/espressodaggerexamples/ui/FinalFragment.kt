@@ -14,6 +14,7 @@ import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
+import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_final.*
@@ -27,7 +28,8 @@ import javax.inject.Inject
 class FinalFragment
 @Inject
 constructor(
-    private val viewModelFactory: ViewModelProvider.Factory
+    private val viewModelFactory: ViewModelProvider.Factory,
+    private val requestManager: GlideRequestManager
 )
 : Fragment(R.layout.fragment_final) {
 
@@ -57,12 +59,7 @@ constructor(
     }
 
     private fun setImage(imageUrl: String){
-        this.view?.let { view ->
-            Glide.with(view)
-                .load(imageUrl)
-                .into(scaling_image_view)
-        }
-
+        requestManager.setImage(imageUrl, scaling_image_view)
     }
 
     override fun onAttach(context: Context) {

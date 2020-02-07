@@ -5,31 +5,33 @@ import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepositoryImpl
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-object DataModule{
+class TestRepositoryModule
+constructor(
+    private val apiService: ApiService
+){
 
+    // ApiService is passed as constructor arg so we can pass different
+    // data sets for each @Test.
+    // Ex: empty data, real data, data that causes errors, whatever.
 
-    @JvmStatic
     @Singleton
     @Provides
-    fun provideApiService(retrofitBuilder: Retrofit.Builder): ApiService {
-        return retrofitBuilder
-            .build()
-            .create(ApiService::class.java)
-    }
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideMainRepository(apiService: ApiService): MainRepository {
+    fun provideMainRepository(): MainRepository {
         return MainRepositoryImpl(apiService)
     }
 
-
 }
+
+
+
+
+
+
+
+
 
 
 

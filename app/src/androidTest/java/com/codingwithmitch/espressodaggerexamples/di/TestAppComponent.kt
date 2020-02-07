@@ -1,8 +1,8 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
-import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentEmptyDataTest
-import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentRealDataTest
+import com.codingwithmitch.espressodaggerexamples.ui.DetailFragmentTest
+import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentTests
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,8 +15,8 @@ import javax.inject.Singleton
 @Component(modules = [
     TestFragmentModule::class,
     TestViewModelModule::class,
-    AppModule::class,
-    TestDataModule::class
+    TestAppModule::class,
+    TestRepositoryModule::class
 ])
 interface TestAppComponent {
 
@@ -26,12 +26,14 @@ interface TestAppComponent {
         @BindsInstance
         fun application(app: Application): Builder
 
+        fun repositoryModule(repositoryModule: TestRepositoryModule): Builder
+
         fun build(): TestAppComponent
     }
 
-    fun inject(listFragmentTest: ListFragmentRealDataTest)
+    fun inject(listFragmentTest: ListFragmentTests)
 
-    fun inject(listFragmentTest: ListFragmentEmptyDataTest)
+    fun inject(detailFragmentTest: DetailFragmentTest)
 
 }
 

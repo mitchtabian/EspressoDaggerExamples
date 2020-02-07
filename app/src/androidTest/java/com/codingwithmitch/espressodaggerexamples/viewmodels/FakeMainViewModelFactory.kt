@@ -1,19 +1,17 @@
-package com.codingwithmitch.espressodaggerexamples.ui
+package com.codingwithmitch.espressodaggerexamples.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import java.lang.reflect.InvocationTargetException
 import javax.inject.Inject
 
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class MockMainViewModelFactory
+class FakeMainViewModelFactory
 @Inject
 constructor(
     val mainRepository: MainRepository

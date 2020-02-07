@@ -36,9 +36,9 @@ android {
         }
     }
 
-    sourceSets{
-        androidTest.java.srcDirs += "src/test-common/java"
-    }
+//    sourceSets{
+//        androidTest.java.srcDirs += "src/test-common/java"
+//    }
 
 //    testOptions {
 //        animationsDisabled = true
@@ -67,8 +67,8 @@ dependencies {
     implementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
 
     // Mockk.io
-//    def mockk_version = "1.9.2"
-    def mockk_version = "1.9.3"
+    def mockk_version = "1.9.2"
+//    def mockk_version = "1.9.3"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 
     // androidx.test
@@ -85,7 +85,8 @@ dependencies {
 
 
     // androidx.fragment
-    def fragment_version = "1.2.0-rc01" // must use for new factory stuff
+    def fragment_version = "1.2.0"
+//    def fragment_version = "1.2.0-rc01" // must use for new factory stuff
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
@@ -127,4 +128,8 @@ dependencies {
     // Recyclerview
     def recyclerview_version = "1.1.0-beta03"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+
+    // material dialogs
+    def matieral_dialogs_version = "3.1.0"
+    implementation "com.afollestad.material-dialogs:core:$matieral_dialogs_version"
 }
