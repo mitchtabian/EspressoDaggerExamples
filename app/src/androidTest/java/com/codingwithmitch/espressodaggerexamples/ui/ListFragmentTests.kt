@@ -10,15 +10,21 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
+import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
-import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
-import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
+import com.codingwithmitch.espressodaggerexamples.di.TestRepositoryModule
+import com.codingwithmitch.espressodaggerexamples.fragments.FakeMainFragmentFactory
+import com.codingwithmitch.espressodaggerexamples.repository.UNKNOWN_ERROR
 import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.*
+import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
+import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
+import com.codingwithmitch.espressodaggerexamples.util.Constants.EMPTY_LIST
+import com.codingwithmitch.espressodaggerexamples.util.Constants.SERVER_ERROR_FILENAME
+import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,37 +39,37 @@ class ListFragmentTests{
     private val CLASS_NAME = "ListFragmentTest"
 
     @Inject
-    lateinit var viewModelFactory: MockMainViewModelFactory
+    lateinit var viewModelFactory: FakeMainViewModelFactory
 
     @Inject
     lateinit var requestManager: GlideRequestManager
 
-    lateinit var appComponent: TestAppComponent
-
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
-    @Before
-    fun prepareMocks(){
+    @Test
+    fun is_recyclerViewItemsSet_validData() {
 
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
-        appComponent = DaggerTestAppComponent.builder()
+        val validDataApiService = FakeApiService(
+            JsonUtil(app),
+            BLOG_POSTS_DATA_FILENAME, // real list of blogs
+            CATEGORIES_DATA_FILENAME
+        )
+        val appComponent = DaggerTestAppComponent.builder()
+            .repositoryModule(TestRepositoryModule(validDataApiService))
             .application(app)
             .build()
 
         appComponent.inject(this)
-    }
-
-    @Test
-    fun is_recyclerViewItemsSet_validData() {
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
         every {
             uiCommunicationListener.showCategoriesMenu(allAny())
         } just runs
 
-        val fragmentFactory = MockFragmentFactory(
+        val fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager
@@ -99,14 +105,28 @@ class ListFragmentTests{
 
 
     @Test
-    fun is_recyclerViewVisible() {
+    fun is_blogListEmpty() {
+
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+
+        val validDataApiService = FakeApiService(
+            JsonUtil(app),
+            EMPTY_LIST, // empty list
+            CATEGORIES_DATA_FILENAME
+        )
+        val appComponent = DaggerTestAppComponent.builder()
+            .repositoryModule(TestRepositoryModule(validDataApiService))
+            .application(app)
+            .build()
+
+        appComponent.inject(this)
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
         every {
             uiCommunicationListener.showCategoriesMenu(allAny())
         } just runs
 
-        val fragmentFactory = MockFragmentFactory(
+        val fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager
@@ -121,11 +141,46 @@ class ListFragmentTests{
 
         recyclerView.check(matches(isDisplayed()))
 
+        onView(withId(R.id.no_data_textview))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 
 
+    @Test
+    fun is_dataErrorShown() {
 
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
+        val validDataApiService = FakeApiService(
+            JsonUtil(app),
+            SERVER_ERROR_FILENAME, // data that will cause UNKNOWN ERROR
+            CATEGORIES_DATA_FILENAME
+        )
+        val appComponent = DaggerTestAppComponent.builder()
+            .repositoryModule(TestRepositoryModule(validDataApiService))
+            .application(app)
+            .build()
+
+        appComponent.inject(this)
+
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
+
+        val fragmentFactory = FakeMainFragmentFactory(
+            viewModelFactory,
+            uiCommunicationListener,
+            requestManager
+        )
+
+        // Begin
+        val scenario = launchFragmentInContainer<ListFragment>(
+            factory = fragmentFactory
+        )
+
+        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+    }
 }
 
 

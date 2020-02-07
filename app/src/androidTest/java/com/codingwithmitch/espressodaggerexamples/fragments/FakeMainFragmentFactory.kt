@@ -1,20 +1,18 @@
 package com.codingwithmitch.espressodaggerexamples.fragments
 
 import androidx.fragment.app.FragmentFactory
-import com.bumptech.glide.RequestManager
 import com.codingwithmitch.espressodaggerexamples.ui.*
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
-import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
+import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-class MockFragmentFactory
+class FakeMainFragmentFactory
 //@Inject
 constructor(
-    private val viewModelFactory: MockMainViewModelFactory,
+    private val viewModelFactory: FakeMainViewModelFactory,
     private val uiCommunicationListener: UICommunicationListener,
     private val requestManager: GlideRequestManager
 ): FragmentFactory(){

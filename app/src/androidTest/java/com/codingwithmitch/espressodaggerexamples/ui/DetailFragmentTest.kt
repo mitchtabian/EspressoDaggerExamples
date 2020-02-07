@@ -10,9 +10,10 @@ import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
-import com.codingwithmitch.espressodaggerexamples.fragments.MockFragmentFactory
+import com.codingwithmitch.espressodaggerexamples.fragments.FakeMainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
+import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -33,7 +34,7 @@ class DetailFragmentTest {
     private val CLASS_NAME = "DetailFragmentTest"
 
     @Inject
-    lateinit var viewModelFactory: MockMainViewModelFactory
+    lateinit var viewModelFactory: FakeMainViewModelFactory
 
     @Inject
     lateinit var requestManager: GlideRequestManager
@@ -63,7 +64,7 @@ class DetailFragmentTest {
         every { uiCommunicationListener.expandAppBar() } just runs
         every { uiCommunicationListener.hideCategoriesMenu() } just runs
 
-        val fragmentFactory = MockFragmentFactory(
+        val fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager

@@ -22,5 +22,4 @@ interface UICommunicationListener {
 
     fun displayToastMessage(message: String, length: Int)
 
-    fun displaySnackbar(message: String, length: Int)
 }

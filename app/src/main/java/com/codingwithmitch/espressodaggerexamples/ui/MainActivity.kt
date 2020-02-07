@@ -18,6 +18,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MAIN_VIEW_STATE_BUNDLE_KEY
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
+import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
@@ -78,9 +79,6 @@ class MainActivity : AppCompatActivity()
 
                 uiCommunicationListener.displayMainProgressBar(viewModel.areAnyJobsActive())
 
-                viewState.errorMessage?.getContentIfNotHandled()?.let { message ->
-                    uiCommunicationListener.displaySnackbar(message, Snackbar.LENGTH_SHORT)
-                }
             }
         })
     }
@@ -162,10 +160,6 @@ class MainActivity : AppCompatActivity()
 
         override fun displayToastMessage(message: String, length: Int) {
             Toast.makeText(this@MainActivity, message, length).show()
-        }
-
-        override fun displaySnackbar(message: String, length: Int) {
-            Snackbar.make(this@MainActivity.window.decorView, message, length).show()
         }
 
     }

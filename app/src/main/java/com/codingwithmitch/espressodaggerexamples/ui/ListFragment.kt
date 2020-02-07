@@ -19,8 +19,6 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEv
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
-import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -55,7 +53,6 @@ constructor(
         initRecyclerView()
         subscribeObservers()
         initData()
-
     }
 
     override fun onPause() {
@@ -93,6 +90,10 @@ constructor(
     val observer: Observer<MainViewState> = Observer { viewState ->
         if(viewState != null){
 
+            viewState.errorMessage?.getContentIfNotHandled()?.let { message ->
+                displayErrorDialog(errorMessage = message)
+            }
+
             viewState.listFragmentView.let{ view ->
                 view.blogs?.let { blogs ->
                     listAdapter.apply {
@@ -109,8 +110,8 @@ constructor(
         }
     }
 
-    private fun displayTheresNothingHereTV(isVisible: Boolean){
-        if(isVisible){
+    private fun displayTheresNothingHereTV(isDataAvailable: Boolean){
+        if(isDataAvailable){
             no_data_textview.visibility = View.GONE
         }
         else{

@@ -11,6 +11,7 @@ import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+/* Alternative is provided for test (TestViewModelModule) */
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 @Module

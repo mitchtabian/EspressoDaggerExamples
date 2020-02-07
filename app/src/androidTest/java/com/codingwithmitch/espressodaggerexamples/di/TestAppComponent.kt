@@ -15,8 +15,8 @@ import javax.inject.Singleton
 @Component(modules = [
     TestFragmentModule::class,
     TestViewModelModule::class,
-    AppModule::class,
-    TestDataModule::class
+    TestAppModule::class,
+    TestRepositoryModule::class
 ])
 interface TestAppComponent {
 
@@ -25,6 +25,8 @@ interface TestAppComponent {
 
         @BindsInstance
         fun application(app: Application): Builder
+
+        fun repositoryModule(repositoryModule: TestRepositoryModule): Builder
 
         fun build(): TestAppComponent
     }
