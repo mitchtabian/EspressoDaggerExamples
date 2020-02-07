@@ -22,7 +22,8 @@ suspend fun <T> Repository.safeApiCall(
 ): ApiResult<T> {
     return withContext(dispatcher) {
         try {
-            withTimeout(NETWORK_TIMEOUT){ // throws TimeoutCancellationException
+            // throws TimeoutCancellationException
+            withTimeout(NETWORK_TIMEOUT){
                 delay(NETWORK_DELAY)
                 Success(apiCall.invoke())
             }

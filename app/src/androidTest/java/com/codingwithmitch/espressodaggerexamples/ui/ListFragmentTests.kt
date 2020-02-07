@@ -20,13 +20,13 @@ import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.EMPTY_LIST
 import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR_TIMEOUT
-import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.Constants.SERVER_ERROR_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,11 +43,15 @@ class ListFragmentTests{
     @Inject
     lateinit var viewModelFactory: FakeMainViewModelFactory
 
-    @Inject
-    lateinit var requestManager: GlideRequestManager
+    val requestManager = mockk<GlideRequestManager>()
 
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
+
+    @Before
+    fun init(){
+        every { requestManager.setImage(any(), any()) } just runs
+    }
 
     @Test
     fun is_recyclerViewItemsSet_validData() {
