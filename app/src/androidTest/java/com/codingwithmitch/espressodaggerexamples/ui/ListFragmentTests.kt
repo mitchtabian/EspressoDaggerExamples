@@ -19,7 +19,10 @@ import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.EMPTY_LIST
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR_TIMEOUT
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.Constants.SERVER_ERROR_FILENAME
+import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -182,9 +185,47 @@ class ListFragmentTests{
         )
 
         onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+
+        onView(withText(UNKNOWN_ERROR)).check(matches(isDisplayed()))
     }
 
-    // TODO("test network timeout")
+    @Test
+    fun is_networkTimeoutDialogShown() {
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+
+        val validDataApiService = FakeApiService(
+            JsonUtil(app),
+            BLOG_POSTS_DATA_FILENAME,
+            CATEGORIES_DATA_FILENAME,
+            4000L // 4000 > 3000 so it will timeout
+        )
+        val appComponent = DaggerTestAppComponent.builder()
+            .repositoryModule(TestRepositoryModule(validDataApiService))
+            .application(app)
+            .build()
+
+        appComponent.inject(this)
+
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
+
+        val fragmentFactory = FakeMainFragmentFactory(
+            viewModelFactory,
+            uiCommunicationListener,
+            requestManager
+        )
+
+        // Begin
+        val scenario = launchFragmentInContainer<ListFragment>(
+            factory = fragmentFactory
+        )
+
+        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+
+        onView(withText(NETWORK_ERROR_TIMEOUT)).check(matches(isDisplayed()))
+    }
 }
 
 

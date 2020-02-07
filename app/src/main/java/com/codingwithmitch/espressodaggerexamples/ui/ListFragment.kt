@@ -19,6 +19,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEv
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
