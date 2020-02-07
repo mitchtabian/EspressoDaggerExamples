@@ -14,7 +14,6 @@ import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
 import com.codingwithmitch.espressodaggerexamples.di.TestRepositoryModule
 import com.codingwithmitch.espressodaggerexamples.fragments.FakeMainFragmentFactory
-import com.codingwithmitch.espressodaggerexamples.repository.UNKNOWN_ERROR
 import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
