@@ -2,10 +2,8 @@ package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
-import com.codingwithmitch.espressodaggerexamples.ui.DetailFragmentTest
-import com.codingwithmitch.espressodaggerexamples.ui.FinalFragmentTest
-import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentErrorTests
-import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentTests
+import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
+import com.codingwithmitch.espressodaggerexamples.ui.*
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,7 +14,8 @@ import javax.inject.Singleton
 @InternalCoroutinesApi
 @Singleton
 @Component(modules = [
-    TestFragmentModule::class,
+//    TestFragmentModule::class,
+    FragmentModule::class,
     TestViewModelModule::class,
     TestRepositoryModule::class,
     TestAppModule::class
@@ -25,14 +24,14 @@ interface TestAppComponent: AppComponent {
 
     val apiService: FakeApiService
 
-//    @Component.Builder
-//    interface Builder {
-//
-//        @BindsInstance
-//        fun application(app: Application): Builder
-//
-//        fun build(): TestAppComponent
-//    }
+    @Component.Builder
+    interface Builder {
+
+        @BindsInstance
+        fun application(app: Application): Builder
+
+        fun build(): TestAppComponent
+    }
 
     fun inject(listFragmentTest: ListFragmentTests)
 

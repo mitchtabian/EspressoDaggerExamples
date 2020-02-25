@@ -1,8 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import com.codingwithmitch.espressodaggerexamples.fragments.MainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
@@ -26,6 +24,7 @@ abstract class TestFragmentModule {
     abstract fun bindFinalFragment(fragment: FinalFragment): Fragment
 
 }
+
 
 
 

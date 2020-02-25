@@ -1,5 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples.ui
 
+import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.assertion.ViewAssertions.*
@@ -50,7 +51,10 @@ class ListFragmentErrorTests {
 
         val scenario = launchActivity<MainActivity>()
 
-        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()))
+        onView(withId(R.id.main_parent)).check(matches(isDisplayed()))
+
+//        onView(withId(R.id.app_bar))
+//            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 
 //    @Test
