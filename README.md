@@ -12,4 +12,4 @@
 **Work in progress**
 
 # Contributors
-1. [https://twitter.com/R4md4c](R4md4c)
+1. [@R4md4c](https://twitter.com/R4md4c)
