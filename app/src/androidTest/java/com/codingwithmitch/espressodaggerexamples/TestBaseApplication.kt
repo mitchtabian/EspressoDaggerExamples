@@ -1,5 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples
 
+import com.codingwithmitch.espressodaggerexamples.di.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -8,8 +9,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 class TestBaseApplication : BaseApplication(){
 
     override fun initAppComponent() {
-        // do nothing. TestAppComponent will be initialized in tests
+        appComponent = DaggerTestAppComponent.builder()
+            .application(this)
+            .build()
     }
+
+
+
 }
 
 

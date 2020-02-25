@@ -38,70 +38,70 @@ import javax.inject.Inject
 @RunWith(AndroidJUnit4ClassRunner::class)
 class FinalFragmentTest {
 
-    private val CLASS_NAME = "FinalFragmentTest"
-
-    @Inject
-    lateinit var viewModelFactory: FakeMainViewModelFactory
-
-    @get: Rule
-    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
-
-    val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-
-    val requestManager = mockk<FakeGlideRequestManager>()
-
-    val uiCommunicationListener = mockk<UICommunicationListener>()
-
-    lateinit var appComponent: TestAppComponent
-
-    lateinit var fragmentFactory: FakeMainFragmentFactory
-
-    @Before
-    fun init(){
-        every { requestManager.setImage(any(), any()) } just runs
-        every { uiCommunicationListener.hideStatusBar() } just runs
-
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            Constants.BLOG_POSTS_DATA_FILENAME,
-            Constants.CATEGORIES_DATA_FILENAME,
-            0L
-        )
-        appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(apiService))
-            .application(app)
-            .build()
-
-        appComponent.inject(this)
-
-        fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            uiCommunicationListener,
-            requestManager
-        )
-    }
-
-    @Test
-    fun is_scalingImageView() {
-
-        val scenario = launchFragmentInContainer<FinalFragment>(
-            factory = fragmentFactory
-        )
-
-        val rawJson = JsonUtil(app).readJSONFromAsset(Constants.BLOG_POSTS_DATA_FILENAME)
-        val blogs = Gson().fromJson<List<BlogPost>>(
-            rawJson,
-            object : TypeToken<List<BlogPost>>() {}.type
-        )
-        val selectedBlogPost = blogs.get(0)
-        scenario.onFragment { fragment ->
-            fragment.viewModel.setSelectedBlogPost(selectedBlogPost)
-
-            verify { requestManager.setImage(selectedBlogPost.image, fragment.scaling_image_view) }
-        }
-
-        onView(withId(R.id.scaling_image_view)).check(matches(isDisplayed()))
-    }
+//    private val CLASS_NAME = "FinalFragmentTest"
+//
+//    @Inject
+//    lateinit var viewModelFactory: FakeMainViewModelFactory
+//
+//    @get: Rule
+//    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
+//
+//    val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+//
+//    val requestManager = mockk<FakeGlideRequestManager>()
+//
+//    val uiCommunicationListener = mockk<UICommunicationListener>()
+//
+//    lateinit var appComponent: TestAppComponent
+//
+//    lateinit var fragmentFactory: FakeMainFragmentFactory
+//
+//    @Before
+//    fun init(){
+//        every { requestManager.setImage(any(), any()) } just runs
+//        every { uiCommunicationListener.hideStatusBar() } just runs
+//
+//        val apiService = FakeApiService(
+//            JsonUtil(app),
+//            Constants.BLOG_POSTS_DATA_FILENAME,
+//            Constants.CATEGORIES_DATA_FILENAME,
+//            0L
+//        )
+//        appComponent = DaggerTestAppComponent.builder()
+//            .repositoryModule(TestRepositoryModule(apiService))
+//            .application(app)
+//            .build()
+//
+//        appComponent.inject(this)
+//
+//        fragmentFactory = FakeMainFragmentFactory(
+//            viewModelFactory,
+//            uiCommunicationListener,
+//            requestManager
+//        )
+//    }
+//
+//    @Test
+//    fun is_scalingImageView() {
+//
+//        val scenario = launchFragmentInContainer<FinalFragment>(
+//            factory = fragmentFactory
+//        )
+//
+//        val rawJson = JsonUtil(app).readJSONFromAsset(Constants.BLOG_POSTS_DATA_FILENAME)
+//        val blogs = Gson().fromJson<List<BlogPost>>(
+//            rawJson,
+//            object : TypeToken<List<BlogPost>>() {}.type
+//        )
+//        val selectedBlogPost = blogs.get(0)
+//        scenario.onFragment { fragment ->
+//            fragment.viewModel.setSelectedBlogPost(selectedBlogPost)
+//
+//            verify { requestManager.setImage(selectedBlogPost.image, fragment.scaling_image_view) }
+//        }
+//
+//        onView(withId(R.id.scaling_image_view)).check(matches(isDisplayed()))
+//    }
 }
 
 

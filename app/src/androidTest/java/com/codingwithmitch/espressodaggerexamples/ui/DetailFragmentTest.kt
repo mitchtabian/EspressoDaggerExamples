@@ -41,77 +41,95 @@ class DetailFragmentTest {
 
     private val CLASS_NAME = "DetailFragmentTest"
 
-    @Inject
-    lateinit var viewModelFactory: FakeMainViewModelFactory
-
-    @get: Rule
-    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
-
-    val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-
-    val uiCommunicationListener = mockk<UICommunicationListener>()
-
-    val requestManager = mockk<FakeGlideRequestManager>()
-
-    lateinit var appComponent: TestAppComponent
-
-    lateinit var fragmentFactory: FakeMainFragmentFactory
-
-    @Before
-    fun init(){
-        every { requestManager.setImage(any(), any()) } just runs
-        every { uiCommunicationListener.showStatusBar() } just runs
-        every { uiCommunicationListener.expandAppBar() } just runs
-        every { uiCommunicationListener.hideCategoriesMenu() } just runs
-
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            BLOG_POSTS_DATA_FILENAME,
-            CATEGORIES_DATA_FILENAME,
-            0L
-        )
-        appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(apiService))
-            .application(app)
-            .build()
-
-        appComponent.inject(this)
-
-        fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            uiCommunicationListener,
-            requestManager
-        )
-    }
-
-    @Test
-    fun is_selectedBlogPostDetailsSet() {
-
-        val scenario = launchFragmentInContainer<DetailFragment>(
-            factory = fragmentFactory
-        )
-
-        val rawJson = JsonUtil(app).readJSONFromAsset(BLOG_POSTS_DATA_FILENAME)
-        val blogs = Gson().fromJson<List<BlogPost>>(
-            rawJson,
-            object : TypeToken<List<BlogPost>>() {}.type
-        )
-        val selectedBlogPost = blogs.get(0)
-        scenario.onFragment { fragment ->
-            fragment.viewModel.setSelectedBlogPost(selectedBlogPost)
-
-            verify { requestManager.setImage(selectedBlogPost.image, fragment.blog_image) }
-        }
-
-        onView(ViewMatchers.withId(R.id.blog_title))
-            .check(matches(withText(selectedBlogPost.title)))
-
-        onView(ViewMatchers.withId(R.id.blog_category))
-            .check(matches(withText(selectedBlogPost.category)))
-
-        onView(ViewMatchers.withId(R.id.blog_body))
-            .check(matches(withText(selectedBlogPost.body)))
-    }
+//    @Inject
+//    lateinit var viewModelFactory: FakeMainViewModelFactory
+//
+//    @get: Rule
+//    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
+//
+//    val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+//
+//    val uiCommunicationListener = mockk<UICommunicationListener>()
+//
+//    val requestManager = mockk<FakeGlideRequestManager>()
+//
+//    lateinit var appComponent: TestAppComponent
+//
+//    lateinit var fragmentFactory: FakeMainFragmentFactory
+//
+//    @Before
+//    fun init(){
+//        every { requestManager.setImage(any(), any()) } just runs
+//        every { uiCommunicationListener.showStatusBar() } just runs
+//        every { uiCommunicationListener.expandAppBar() } just runs
+//        every { uiCommunicationListener.hideCategoriesMenu() } just runs
+//
+//        val apiService = FakeApiService(
+//            JsonUtil(app),
+//            BLOG_POSTS_DATA_FILENAME,
+//            CATEGORIES_DATA_FILENAME,
+//            0L
+//        )
+//        appComponent = DaggerTestAppComponent.builder()
+//            .repositoryModule(TestRepositoryModule(apiService))
+//            .application(app)
+//            .build()
+//
+//        appComponent.inject(this)
+//
+//        fragmentFactory = FakeMainFragmentFactory(
+//            viewModelFactory,
+//            uiCommunicationListener,
+//            requestManager
+//        )
+//    }
+//
+//    private fun configureApiService(
+//        blogsDataSource: String? = null,
+//        categoriesDataSource: String? = null,
+//        networkDelay: Long? = null,
+//        application: TestBaseApplication
+//    ){
+//        val apiService = (application.appComponent as TestAppComponent).apiService
+//        apiService.initJsonUtil(application)
+//        blogsDataSource?.let { apiService.blogPostsJsonFileName = it }
+//        categoriesDataSource?.let { apiService.categoriesJsonFileName = it }
+//        networkDelay?.let { apiService.networkDelay = it }
+//    }
+//
+//    private fun injectTest(application: TestBaseApplication){
+//        (application.appComponent as TestAppComponent)
+//            .inject(this)
+//    }
+//
+//    @Test
+//    fun is_selectedBlogPostDetailsSet() {
+//
+//        val scenario = launchFragmentInContainer<DetailFragment>(
+//            factory = fragmentFactory
+//        )
+//
+//        val rawJson = JsonUtil(app).readJSONFromAsset(BLOG_POSTS_DATA_FILENAME)
+//        val blogs = Gson().fromJson<List<BlogPost>>(
+//            rawJson,
+//            object : TypeToken<List<BlogPost>>() {}.type
+//        )
+//        val selectedBlogPost = blogs.get(0)
+//        scenario.onFragment { fragment ->
+//            fragment.viewModel.setSelectedBlogPost(selectedBlogPost)
+//
+//            verify { requestManager.setImage(selectedBlogPost.image, fragment.blog_image) }
+//        }
+//
+//        onView(ViewMatchers.withId(R.id.blog_title))
+//            .check(matches(withText(selectedBlogPost.title)))
+//
+//        onView(ViewMatchers.withId(R.id.blog_category))
+//            .check(matches(withText(selectedBlogPost.category)))
+//
+//        onView(ViewMatchers.withId(R.id.blog_body))
+//            .check(matches(withText(selectedBlogPost.body)))
+//    }
 }
 
 

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,6 +12,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
+import com.codingwithmitch.espressodaggerexamples.di.AppComponent
+import com.codingwithmitch.espressodaggerexamples.di.IComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
@@ -22,7 +23,6 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewSta
 import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -47,8 +47,7 @@ class MainActivity : AppCompatActivity()
     private val dialogs: HashMap<String, MaterialDialog> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as BaseApplication)
-            .appComponent
+        ((application as BaseApplication).appComponent as AppComponent)
             .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -12,19 +12,13 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
-import com.codingwithmitch.espressodaggerexamples.api.ApiService
-import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
-import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
-import com.codingwithmitch.espressodaggerexamples.di.TestRepositoryModule
+import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.FakeMainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.EMPTY_LIST
-import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR_TIMEOUT
-import com.codingwithmitch.espressodaggerexamples.util.Constants.SERVER_ERROR_FILENAME
-import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,14 +48,7 @@ class ListFragmentTests{
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
-    private fun setupDependencies(apiService: ApiService, application: Application): FragmentFactory{
-
-        val appComponent = DaggerTestAppComponent.builder()
-            .repositoryModule(TestRepositoryModule(apiService))
-            .application(application)
-            .build()
-
-        appComponent.inject(this)
+    private fun buildFragmentFactory(): FragmentFactory{
 
         val uiCommunicationListener = mockk<UICommunicationListener>()
         every {
@@ -74,18 +61,39 @@ class ListFragmentTests{
         )
     }
 
+    private fun configureApiService(
+        blogsDataSource: String? = null,
+        categoriesDataSource: String? = null,
+        networkDelay: Long? = null,
+        application: TestBaseApplication
+    ){
+        val apiService = (application.appComponent as TestAppComponent).apiService
+        apiService.initJsonUtil(application)
+        blogsDataSource?.let { apiService.blogPostsJsonFileName = it }
+        categoriesDataSource?.let { apiService.categoriesJsonFileName = it }
+        networkDelay?.let { apiService.networkDelay = it }
+    }
+
+    private fun injectTest(application: TestBaseApplication){
+        (application.appComponent as TestAppComponent)
+            .inject(this)
+    }
+
     @Test
     fun is_blogListEmpty() {
 
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            EMPTY_LIST, // empty list
-            CATEGORIES_DATA_FILENAME,
-            0L
+        injectTest(app)
+
+        configureApiService(
+            blogsDataSource = EMPTY_LIST,
+            categoriesDataSource = CATEGORIES_DATA_FILENAME,
+            networkDelay = 0L, // not needed since default is 0L
+            application = app
         )
-        val fragmentFactory = setupDependencies(apiService, app)
+        
+        val fragmentFactory = buildFragmentFactory()
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -105,13 +113,15 @@ class ListFragmentTests{
 
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            BLOG_POSTS_DATA_FILENAME, // real list of blogs
-            CATEGORIES_DATA_FILENAME,
-            0L
+        injectTest(app)
+
+        configureApiService(
+            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
+            categoriesDataSource = CATEGORIES_DATA_FILENAME,
+            networkDelay = 0L, // not needed since default is 0L
+            application = app
         )
-        val fragmentFactory = setupDependencies(apiService, app)
+        val fragmentFactory = buildFragmentFactory()
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -146,13 +156,16 @@ class ListFragmentTests{
 
         val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            BLOG_POSTS_DATA_FILENAME,
-            CATEGORIES_DATA_FILENAME,
-            0L
+        injectTest(app)
+
+        configureApiService(
+            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
+            categoriesDataSource = CATEGORIES_DATA_FILENAME,
+            networkDelay = 0L, // not needed since default is 0L
+            application = app
         )
-        val fragmentFactory = setupDependencies(apiService, app)
+
+        val fragmentFactory = buildFragmentFactory()
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(

@@ -1,6 +1,7 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
+import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragmentTest
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragmentTest
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentErrorTests
@@ -20,15 +21,15 @@ import javax.inject.Singleton
     TestRepositoryModule::class,
     TestAppModule::class
 ])
-interface TestAppComponent {
+interface TestAppComponent: IComponent {
+
+    val apiService: FakeApiService
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
 
         @BindsInstance
         fun application(app: Application): Builder
-
-        fun repositoryModule(repositoryModule: TestRepositoryModule): Builder
 
         fun build(): TestAppComponent
     }

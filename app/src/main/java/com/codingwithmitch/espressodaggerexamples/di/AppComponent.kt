@@ -19,10 +19,10 @@ import javax.inject.Singleton
     AppModule::class,
     RepositoryModule::class
 ])
-interface AppComponent{
+interface AppComponent: IComponent {
 
     @Component.Builder
-    interface Builder{
+    interface Builder {
 
         @BindsInstance
         fun application(app: Application): Builder
