@@ -1,6 +1,8 @@
 package com.codingwithmitch.espressodaggerexamples.ui
 
 
+import android.app.Application
+import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -43,47 +45,65 @@ class ListFragmentTests{
 
     private val CLASS_NAME = "ListFragmentTest"
 
-    val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-
     @Inject
     lateinit var viewModelFactory: FakeMainViewModelFactory
 
     @Inject
     lateinit var requestManager: FakeGlideRequestManager
 
-    lateinit var fragmentFactory: FakeMainFragmentFactory
-
-    val uiCommunicationListener = mockk<UICommunicationListener>()
-
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
-    @Before
-    fun init(){
-        every {
-            uiCommunicationListener.showCategoriesMenu(allAny())
-        } just runs
-    }
-
-    private fun setupDependencies(apiService: ApiService){
+    private fun setupDependencies(apiService: ApiService, application: Application): FragmentFactory{
 
         val appComponent = DaggerTestAppComponent.builder()
             .repositoryModule(TestRepositoryModule(apiService))
-            .application(app)
+            .application(application)
             .build()
 
         appComponent.inject(this)
 
-        fragmentFactory = FakeMainFragmentFactory(
+        val uiCommunicationListener = mockk<UICommunicationListener>()
+        every {
+            uiCommunicationListener.showCategoriesMenu(allAny())
+        } just runs
+        return FakeMainFragmentFactory(
             viewModelFactory,
             uiCommunicationListener,
             requestManager
         )
+    }
 
+    @Test
+    fun is_blogListEmpty() {
+
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+
+        val apiService = FakeApiService(
+            JsonUtil(app),
+            EMPTY_LIST, // empty list
+            CATEGORIES_DATA_FILENAME,
+            0L
+        )
+        val fragmentFactory = setupDependencies(apiService, app)
+
+        // Begin
+        val scenario = launchFragmentInContainer<ListFragment>(
+            factory = fragmentFactory
+        )
+
+        val recyclerView = onView(withId(R.id.recycler_view))
+
+        recyclerView.check(matches(isDisplayed()))
+
+        onView(withId(R.id.no_data_textview))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 
     @Test
     fun is_recyclerViewItemsSet_validData() {
+
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
 
         val apiService = FakeApiService(
             JsonUtil(app),
@@ -91,7 +111,7 @@ class ListFragmentTests{
             CATEGORIES_DATA_FILENAME,
             0L
         )
-        setupDependencies(apiService)
+        val fragmentFactory = setupDependencies(apiService, app)
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -122,84 +142,17 @@ class ListFragmentTests{
     }
 
     @Test
-    fun is_networkTimeoutDialogShown() {
-
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            BLOG_POSTS_DATA_FILENAME,
-            CATEGORIES_DATA_FILENAME,
-            4000L // 4000 > 3000 so it will timeout
-        )
-        setupDependencies(apiService)
-
-        // Begin
-        val scenario = launchFragmentInContainer<ListFragment>(
-            factory = fragmentFactory
-        )
-
-        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
-
-        onView(withText(NETWORK_ERROR_TIMEOUT)).check(matches(isDisplayed()))
-    }
-
-
-    @Test
-    fun is_blogListEmpty() {
-
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            EMPTY_LIST, // empty list
-            CATEGORIES_DATA_FILENAME,
-            0L
-        )
-        setupDependencies(apiService)
-
-        // Begin
-        val scenario = launchFragmentInContainer<ListFragment>(
-            factory = fragmentFactory
-        )
-
-        val recyclerView = onView(withId(R.id.recycler_view))
-
-        recyclerView.check(matches(isDisplayed()))
-
-        onView(withId(R.id.no_data_textview))
-            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-    }
-
-
-    @Test
-    fun is_dataErrorShown() {
-
-        val apiService = FakeApiService(
-            JsonUtil(app),
-            SERVER_ERROR_FILENAME, // data that will cause UNKNOWN ERROR
-            CATEGORIES_DATA_FILENAME,
-            0L
-        )
-        setupDependencies(apiService)
-
-        // Begin
-        val scenario = launchFragmentInContainer<ListFragment>(
-            factory = fragmentFactory
-        )
-
-        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
-
-        onView(withText(UNKNOWN_ERROR)).check(matches(isDisplayed()))
-    }
-
-
-    @Test
     fun is_recyclerViewPositionRestoredAfterFragmentRecreated() {
 
+        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+
         val apiService = FakeApiService(
             JsonUtil(app),
             BLOG_POSTS_DATA_FILENAME,
             CATEGORIES_DATA_FILENAME,
             0L
         )
-        setupDependencies(apiService)
+        val fragmentFactory = setupDependencies(apiService, app)
 
         // Begin
         val scenario = launchFragmentInContainer<ListFragment>(
@@ -220,6 +173,7 @@ class ListFragmentTests{
         onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
 
     }
+
 
 }
 

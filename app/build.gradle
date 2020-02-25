@@ -53,10 +53,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
 
-
     // Kotlin test
     debugImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    
+
     // Espresso
     def androidx_espresso_core = "3.1.1"
     debugImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
@@ -76,13 +75,12 @@ dependencies {
     debugImplementation "androidx.test:runner:$androidx_test_runner"
     debugImplementation "androidx.test:rules:$androidx_test_runner"
 
-    def androidx_test_core = "1.1.0"
-    debugImplementation "androidx.test:core:$androidx_test_core"
+    def androidx_test_core = "1.2.0"
+    debugImplementation "androidx.test:core-ktx:$androidx_test_core"
+
 
     def androidx_test_ext = "1.1.1"
     debugImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext"
-
-
 
     // androidx.fragment
     def fragment_version = "1.2.0"

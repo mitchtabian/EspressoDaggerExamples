@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity()
         restoreInstanceState(savedInstanceState)
     }
 
+
+
     private fun restoreInstanceState(savedInstanceState: Bundle?){
         savedInstanceState?.let { inState ->
             (inState[MAIN_VIEW_STATE_BUNDLE_KEY] as MainViewState?)?.let { viewState ->

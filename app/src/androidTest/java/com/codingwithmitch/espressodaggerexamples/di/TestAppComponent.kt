@@ -3,6 +3,7 @@ package com.codingwithmitch.espressodaggerexamples.di
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragmentTest
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragmentTest
+import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentErrorTests
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentTests
 import dagger.BindsInstance
 import dagger.Component
@@ -37,6 +38,8 @@ interface TestAppComponent {
     fun inject(detailFragmentTest: DetailFragmentTest)
 
     fun inject(finalFragmentTest: FinalFragmentTest)
+
+    fun inject(listFragmentErrorTests: ListFragmentErrorTests)
 
 }
 
