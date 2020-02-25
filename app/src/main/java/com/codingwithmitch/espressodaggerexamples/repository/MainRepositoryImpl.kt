@@ -3,11 +3,12 @@ package com.codingwithmitch.espressodaggerexamples.repository
 import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
-import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
+import com.codingwithmitch.espressodaggerexamples.util.StateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -22,15 +23,15 @@ constructor(
 
     private val CLASS_NAME = "MainRepository"
 
-    override fun getBlogs(category: String): Flow<DataState<MainViewState>> {
+    override fun getBlogs(stateEvent: StateEvent, category: String): Flow<DataState<MainViewState>> {
         return flow{
 
             val response = safeApiCall(IO){apiService.getBlogPosts(category)}
 
             emit(
                 object: ApiResponseHandler<MainViewState, List<BlogPost>>(
-                    IO,
-                    response
+                    response = response,
+                    stateEvent = stateEvent
                 ) {
                     override fun handleSuccess(resultObj: List<BlogPost>): DataState<MainViewState> {
                         return DataState.data(
@@ -39,12 +40,8 @@ constructor(
                                     blogs = resultObj
                                 )
                             ),
-                            stateEventName = stateEventName()
+                            stateEvent = stateEvent
                         )
-                    }
-
-                    override fun stateEventName(): String {
-                        return SearchBlogsByCategory(category).toString()
                     }
 
                 }.result
@@ -52,15 +49,15 @@ constructor(
         }
     }
 
-    override fun getAllBlogs(): Flow<DataState<MainViewState>> {
+    override fun getAllBlogs(stateEvent: StateEvent): Flow<DataState<MainViewState>> {
         return flow{
 
             val response = safeApiCall(IO){apiService.getAllBlogPosts()}
 
             emit(
                 object: ApiResponseHandler<MainViewState, List<BlogPost>>(
-                    IO,
-                    response
+                    response = response,
+                    stateEvent = stateEvent
                 ) {
                     override fun handleSuccess(resultObj: List<BlogPost>): DataState<MainViewState> {
                         return DataState.data(
@@ -69,12 +66,8 @@ constructor(
                                     blogs = resultObj
                                 )
                             ),
-                            stateEventName = stateEventName()
+                            stateEvent = stateEvent
                         )
-                    }
-
-                    override fun stateEventName(): String {
-                        return GetAllBlogs().toString()
                     }
 
                 }.result
@@ -82,15 +75,15 @@ constructor(
         }
     }
 
-    override fun getCategories(): Flow<DataState<MainViewState>> {
+    override fun getCategories(stateEvent: StateEvent): Flow<DataState<MainViewState>> {
         return flow{
 
             val response = safeApiCall(IO){apiService.getCategories()}
 
             emit(
                 object: ApiResponseHandler<MainViewState, List<Category>>(
-                    IO,
-                    response
+                    response = response,
+                    stateEvent = stateEvent
                 ) {
                     override fun handleSuccess(resultObj: List<Category>): DataState<MainViewState> {
                         return DataState.data(
@@ -99,12 +92,8 @@ constructor(
                                     categories = resultObj
                                 )
                             ),
-                            stateEventName = stateEventName()
+                            stateEvent = stateEvent
                         )
-                    }
-
-                    override fun stateEventName(): String {
-                        return GetCategories().toString()
                     }
 
                 }.result

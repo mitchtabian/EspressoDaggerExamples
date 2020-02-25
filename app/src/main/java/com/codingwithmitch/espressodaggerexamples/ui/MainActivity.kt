@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.afollestad.materialdialogs.MaterialDialog
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
@@ -18,8 +19,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MAIN_VIEW_STATE_BUNDLE_KEY
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
+import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
@@ -42,6 +42,10 @@ class MainActivity : AppCompatActivity()
         viewModelFactory
     }
 
+    // keep reference of dialogs for dismissing if activity destroyed
+    // also prevent recreation of same dialog when activity recreated
+    private val dialogs: HashMap<String, MaterialDialog> = HashMap()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as BaseApplication)
             .appComponent
@@ -61,6 +65,11 @@ class MainActivity : AppCompatActivity()
             (inState[MAIN_VIEW_STATE_BUNDLE_KEY] as MainViewState?)?.let { viewState ->
                 viewModel.setViewState(viewState)
             }
+            (inState[ERROR_STACK_BUNDLE_KEY] as ArrayList<ErrorState>?)?.let { stack ->
+                val errorStack = ErrorStack()
+                errorStack.addAll(stack)
+                viewModel.setErrorStack(errorStack)
+            }
         }
     }
 
@@ -70,17 +79,38 @@ class MainActivity : AppCompatActivity()
             MAIN_VIEW_STATE_BUNDLE_KEY,
             viewModel.getCurrentViewStateOrNew()
             )
+        outState.putParcelableArrayList(
+            ERROR_STACK_BUNDLE_KEY,
+            viewModel.errorStack
+        )
         super.onSaveInstanceState(outState)
     }
 
     private fun subscribeObservers(){
         viewModel.viewState.observe(this, Observer { viewState ->
             if(viewState != null){
-
                 uiCommunicationListener.displayMainProgressBar(viewModel.areAnyJobsActive())
-
             }
         })
+
+        viewModel.errorState.observe(this, Observer { errorState ->
+            errorState?.let {
+                displayErrorMessage(errorState)
+            }
+        })
+    }
+
+    private fun displayErrorMessage(errorState: ErrorState) {
+        if(!dialogs.containsKey(errorState.message)){
+            dialogs.put(
+                errorState.message,
+                displayErrorDialog(errorState.message, object: ErrorDialogCallback{
+                    override fun clearError() {
+                        viewModel.clearError(0)
+                    }
+                })
+            )
+        }
     }
 
     private fun setupActionBar() {
@@ -158,10 +188,18 @@ class MainActivity : AppCompatActivity()
             findViewById<AppBarLayout>(R.id.app_bar).setExpanded(true)
         }
 
-        override fun displayToastMessage(message: String, length: Int) {
-            Toast.makeText(this@MainActivity, message, length).show()
-        }
 
+    }
+
+    override fun onDestroy() {
+        cleanUpOnDestroy()
+        super.onDestroy()
+    }
+
+    private fun cleanUpOnDestroy(){
+        for(dialog in dialogs){
+            dialog.value.dismiss()
+        }
     }
 
     override fun onAttachFragment(fragment: Fragment) {

@@ -20,6 +20,4 @@ interface UICommunicationListener {
 
     fun expandAppBar()
 
-    fun displayToastMessage(message: String, length: Int)
-
 }

@@ -3,7 +3,6 @@ package com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state
 import android.os.Parcelable
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
-import com.codingwithmitch.espressodaggerexamples.util.Event
 import kotlinx.android.parcel.Parcelize
 
 
@@ -13,8 +12,6 @@ const val MAIN_VIEW_STATE_BUNDLE_KEY = "com.codingwithmitch.espressodaggerexampl
 data class MainViewState (
 
     var activeJobCounter: HashSet<String> = HashSet(),
-
-    var errorMessage: Event<String>? = null,
 
     var listFragmentView: ListFragmentView = ListFragmentView(),
 

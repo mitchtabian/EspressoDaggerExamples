@@ -1,10 +1,13 @@
 package com.codingwithmitch.espressodaggerexamples.ui.viewmodel
 
 import android.os.Parcelable
+import android.util.Log
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
+import com.codingwithmitch.espressodaggerexamples.util.ErrorStack
+import com.codingwithmitch.espressodaggerexamples.util.ErrorState
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
-import com.codingwithmitch.espressodaggerexamples.util.Event
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -60,14 +63,6 @@ fun MainViewModel.removeJobFromCounter(stateEventName: String){
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-fun MainViewModel.setErrorMessage(errorMessage: String){
-    val update = getCurrentViewStateOrNew()
-    update.errorMessage = Event(errorMessage)
-    setViewState(update)
-}
-
-@ExperimentalCoroutinesApi
-@InternalCoroutinesApi
 fun MainViewModel.clearBlogPosts(){
     val update = getCurrentViewStateOrNew()
     update.listFragmentView.blogs = null
@@ -90,8 +85,25 @@ fun MainViewModel.clearLayoutManagerState(){
     setViewState(update)
 }
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
+fun MainViewModel.appendErrorState(errorState: ErrorState){
+    errorStack.add(errorState)
+    printLogD(CLASS_NAME, "Appending error state. stack size: ${errorStack.size}")
+}
+
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
+fun MainViewModel.clearError(index: Int){
+    errorStack.removeAt(index)
+}
 
 
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
+fun MainViewModel.setErrorStack(errorStack: ErrorStack){
+    this.errorStack.addAll(errorStack)
+}
 
 
 

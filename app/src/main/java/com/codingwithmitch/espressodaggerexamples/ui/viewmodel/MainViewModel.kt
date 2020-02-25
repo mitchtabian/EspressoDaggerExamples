@@ -2,11 +2,13 @@ package com.codingwithmitch.espressodaggerexamples.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
+import com.codingwithmitch.espressodaggerexamples.util.StateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.DataState
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
+import com.codingwithmitch.espressodaggerexamples.util.ErrorStack
+import com.codingwithmitch.espressodaggerexamples.util.ErrorState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -26,11 +28,15 @@ constructor(
     val mainRepository: MainRepository
 ) :ViewModel() {
 
-    private val CLASS_NAME = "MainViewModel"
+    val CLASS_NAME = "MainViewModel"
 
     private val dataChannel = ConflatedBroadcastChannel<DataState<MainViewState>>()
 
     private val _viewState: MutableLiveData<MainViewState> = MutableLiveData()
+
+    val errorStack = ErrorStack()
+
+    val errorState: LiveData<ErrorState> = errorStack.errorState
 
     val viewState: LiveData<MainViewState>
         get() = _viewState
@@ -43,14 +49,11 @@ constructor(
         dataChannel
             .asFlow()
             .onEach{ dataState ->
-                dataState.dataEvent?.getContentIfNotHandled()?.let { data ->
-                    handleNewData(data)
+                dataState.data?.let { data ->
+                    handleNewData(dataState.stateEvent, data)
                 }
-                dataState.errorEvent?.getContentIfNotHandled()?.let { errorMessage ->
-                    setErrorMessage(errorMessage)
-                }
-                dataState.stateEventName?.let { eventName ->
-                    removeJobFromCounter(eventName)
+                dataState.error?.let { error ->
+                    handleNewError(dataState.stateEvent, error)
                 }
             }
             .launchIn(viewModelScope)
@@ -66,43 +69,33 @@ constructor(
         when(stateEvent){
             is GetAllBlogs -> {
                 launchJob(
-                    stateEvent.toString(),
-                    mainRepository.getAllBlogs()
+                    stateEvent,
+                    mainRepository.getAllBlogs(stateEvent)
                 )
             }
 
             is GetCategories -> {
                 launchJob(
-                    stateEvent.toString(),
-                    mainRepository.getCategories()
+                    stateEvent,
+                    mainRepository.getCategories(stateEvent)
                 )
             }
 
             is SearchBlogsByCategory -> {
                 launchJob(
-                    stateEvent.toString(),
-                    mainRepository.getBlogs(stateEvent.category)
+                    stateEvent,
+                    mainRepository.getBlogs(stateEvent, stateEvent.category)
                 )
             }
         }
     }
 
-    private fun launchJob(stateEventName: String, jobFunction: Flow<DataState<MainViewState>>){
-        if(!isJobAlreadyActive(stateEventName)){
-            addJobToCounter(stateEventName)
-            jobFunction
-                .onEach { dataState ->
-                    offerToDataChannel(dataState)
-                }
-                .launchIn(viewModelScope)
-        }
+    private fun handleNewError(stateEvent: StateEvent, error: ErrorState) {
+        appendErrorState(error)
+        removeJobFromCounter(stateEvent.toString())
     }
 
-    fun setViewState(viewState: MainViewState){
-        _viewState.value = viewState
-    }
-
-    fun handleNewData(data: MainViewState){
+    fun handleNewData(stateEvent: StateEvent, data: MainViewState){
 
         data.listFragmentView.blogs?.let { blogs ->
             setBlogListData(blogs)
@@ -116,6 +109,22 @@ constructor(
             setSelectedBlogPost(blogPost)
         }
 
+        removeJobFromCounter(stateEvent.toString())
+    }
+
+    private fun launchJob(stateEvent: StateEvent, jobFunction: Flow<DataState<MainViewState>>){
+        if(!isJobAlreadyActive(stateEvent.toString())){
+            addJobToCounter(stateEvent.toString())
+            jobFunction
+                .onEach { dataState ->
+                    offerToDataChannel(dataState)
+                }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    fun setViewState(viewState: MainViewState){
+        _viewState.value = viewState
     }
 
 

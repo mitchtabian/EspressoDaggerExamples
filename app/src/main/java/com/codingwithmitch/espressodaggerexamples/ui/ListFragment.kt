@@ -92,10 +92,6 @@ constructor(
     val observer: Observer<MainViewState> = Observer { viewState ->
         if(viewState != null){
 
-            viewState.errorMessage?.getContentIfNotHandled()?.let { message ->
-                displayErrorDialog(errorMessage = message)
-            }
-
             viewState.listFragmentView.let{ view ->
                 view.blogs?.let { blogs ->
                     listAdapter.apply {
