@@ -13,7 +13,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.di.AppComponent
-import com.codingwithmitch.espressodaggerexamples.di.IComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity()
     private val dialogs: HashMap<String, MaterialDialog> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        ((application as BaseApplication).appComponent as AppComponent)
+        (application as BaseApplication).appComponent
             .inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -58,8 +57,6 @@ class MainActivity : AppCompatActivity()
 
         restoreInstanceState(savedInstanceState)
     }
-
-
 
     private fun restoreInstanceState(savedInstanceState: Bundle?){
         savedInstanceState?.let { inState ->

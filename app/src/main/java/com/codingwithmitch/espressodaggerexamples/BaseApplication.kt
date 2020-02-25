@@ -3,7 +3,6 @@ package com.codingwithmitch.espressodaggerexamples
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.di.AppComponent
 import com.codingwithmitch.espressodaggerexamples.di.DaggerAppComponent
-import com.codingwithmitch.espressodaggerexamples.di.IComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
@@ -13,8 +12,7 @@ open class BaseApplication: Application() {
 
     private val TAG: String = "AppDebug"
 
-//    lateinit var appComponent: AppComponent
-    lateinit var appComponent: IComponent
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()

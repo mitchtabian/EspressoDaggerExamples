@@ -21,18 +21,18 @@ import javax.inject.Singleton
     TestRepositoryModule::class,
     TestAppModule::class
 ])
-interface TestAppComponent: IComponent {
+interface TestAppComponent: AppComponent {
 
     val apiService: FakeApiService
 
-    @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        fun application(app: Application): Builder
-
-        fun build(): TestAppComponent
-    }
+//    @Component.Builder
+//    interface Builder {
+//
+//        @BindsInstance
+//        fun application(app: Application): Builder
+//
+//        fun build(): TestAppComponent
+//    }
 
     fun inject(listFragmentTest: ListFragmentTests)
 

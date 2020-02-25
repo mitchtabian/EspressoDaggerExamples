@@ -19,7 +19,7 @@ import javax.inject.Singleton
     AppModule::class,
     RepositoryModule::class
 ])
-interface AppComponent: IComponent {
+interface AppComponent {
 
     @Component.Builder
     interface Builder {
