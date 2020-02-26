@@ -10,3 +10,6 @@
 5. Single-activity
 
 **Work in progress**
+
+# Contributors
+1. [@R4md4c](https://twitter.com/R4md4c)
