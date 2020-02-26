@@ -27,179 +27,26 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 
+/**
+ * ListFragment Isolation tests (FragmentScenario)
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
 class ListFragmentTests: BaseMainActivityTests() {
 
-    private val CLASS_NAME = "ListFragmentTest"
-
+    private val CLASS_NAME = "ListFragmentTests"
 
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
-    @Test
-    fun isBlogListEmpty() {
 
-        val app = InstrumentationRegistry
-            .getInstrumentation()
-            .targetContext
-            .applicationContext as TestBaseApplication
-
-        val apiService = configureFakeApiService(
-            blogsDataSource = EMPTY_LIST, // empty list of data
-            categoriesDataSource = CATEGORIES_DATA_FILENAME,
-            networkDelay = 0L,
-            application = app
-        )
-
-        configureFakeRepository(apiService, app)
-
-        injectTest(app)
-
-        val scenario = launchActivity<MainActivity>()
-
-        val recyclerView = onView(withId(R.id.recycler_view))
-
-        recyclerView.check(matches(isDisplayed()))
-
-        onView(withId(R.id.no_data_textview))
-            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-    }
-
-    // if query for categories returns an empty list, the user should still see
-    // the menu item "All"
-    @Test
-    fun isCategoryListEmpty() {
-
-        val app = InstrumentationRegistry
-            .getInstrumentation()
-            .targetContext
-            .applicationContext as TestBaseApplication
-
-        val apiService = configureFakeApiService(
-            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
-            categoriesDataSource = EMPTY_LIST, // empty list of data
-            networkDelay = 0L,
-            application = app
-        )
-
-        configureFakeRepository(apiService, app)
-
-        injectTest(app)
-
-        val scenario = launchActivity<MainActivity>().onActivity { mainActivity ->
-            val toolbar: Toolbar = mainActivity.findViewById(R.id.tool_bar)
-
-            // wait for jobs to complete to open the menu
-            mainActivity.viewModel.viewState.observe(mainActivity, Observer { viewState ->
-                if(viewState.activeJobCounter.size == 0){
-                    toolbar.showOverflowMenu()
-                }
-            })
-        }
-
-        onView(withSubstring("earthporn"))
-            .check(doesNotExist())
-
-        onView(withSubstring("dogs"))
-            .check(doesNotExist())
-
-        onView(withSubstring("fun"))
-            .check(doesNotExist())
-
-        onView(withSubstring("All"))
-            .check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun isRecyclerViewDataCorrect_testScrolling() {
-
-        val app = InstrumentationRegistry
-            .getInstrumentation()
-            .targetContext
-            .applicationContext as TestBaseApplication
-
-        val apiService = configureFakeApiService(
-            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
-            categoriesDataSource = CATEGORIES_DATA_FILENAME,
-            networkDelay = 0L,
-            application = app
-        )
-
-        configureFakeRepository(apiService, app)
-
-        injectTest(app)
-
-        val scenario = launchActivity<MainActivity>()
-
-        val recyclerView = onView(withId(R.id.recycler_view))
-
-        recyclerView.check(matches(isDisplayed()))
-
-        recyclerView.perform(
-                RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(5)
-            )
-        onView(withText("Mountains in Washington")).check(matches(isDisplayed()))
-
-        recyclerView.perform(
-            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(8)
-        )
-        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
-
-        recyclerView.perform(
-            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(0)
-        )
-        onView(withText("Vancouver PNE 2019")).check(matches(isDisplayed()))
-
-        onView(withId(R.id.no_data_textview))
-            .check(matches(withEffectiveVisibility(Visibility.GONE)))
-    }
-
-    @Test
-    fun isInstanceStateSavedAndRestored_OnDestroyActivity() {
-
-        val app = InstrumentationRegistry
-            .getInstrumentation()
-            .targetContext
-            .applicationContext as TestBaseApplication
-
-        val apiService = configureFakeApiService(
-            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
-            categoriesDataSource = CATEGORIES_DATA_FILENAME,
-            networkDelay = 0L,
-            application = app
-        )
-
-        configureFakeRepository(apiService, app)
-
-        injectTest(app)
-
-        val scenario = launchActivity<MainActivity>()
-
-        onView(withId(R.id.recycler_view))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.recycler_view)).perform(
-            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(8)
-        )
-
-        onView(withText("Blake Posing for his Website"))
-            .check(matches(isDisplayed()))
-
-        scenario.recreate()
-
-        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
-
-    }
 
     override fun injectTest(application: TestBaseApplication) {
         (application.appComponent as TestAppComponent)
             .inject(this)
     }
-
-
 }
 
 
