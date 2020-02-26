@@ -9,6 +9,7 @@ import java.io.InputStream
 import javax.inject.Inject
 
 class JsonUtil
+@Inject
 constructor(
     private val application: Application
 ){

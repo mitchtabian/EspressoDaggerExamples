@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
+import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.GlideManager
 import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
@@ -61,6 +62,7 @@ class BlogPostListAdapter(
     }
 
     fun submitList(list: List<BlogPost>) {
+        EspressoIdlingResource.increment()
         val commitCallback = Runnable {
 
             /*
@@ -72,6 +74,7 @@ class BlogPostListAdapter(
             CoroutineScope(Main).launch {
                 delay(100)
                 interaction?.restoreListPosition()
+                EspressoIdlingResource.decrement()
             }
         }
 

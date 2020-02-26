@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.afollestad.materialdialogs.MaterialDialog
@@ -23,8 +24,8 @@ import com.codingwithmitch.espressodaggerexamples.util.*
 import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity()
     private val CLASS_NAME = "MainActivity"
 
     @Inject
-    lateinit var viewModelFactory: MainViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     val viewModel: MainViewModel by viewModels {
         viewModelFactory

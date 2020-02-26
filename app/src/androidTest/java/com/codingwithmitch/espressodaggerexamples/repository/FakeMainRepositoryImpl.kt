@@ -1,33 +1,33 @@
 package com.codingwithmitch.espressodaggerexamples.repository
 
-import com.codingwithmitch.espressodaggerexamples.api.ApiService
+import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
-import com.codingwithmitch.espressodaggerexamples.util.StateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
-import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState.*
-import com.codingwithmitch.espressodaggerexamples.util.*
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
+import com.codingwithmitch.espressodaggerexamples.util.ApiResponseHandler
+import com.codingwithmitch.espressodaggerexamples.util.DataState
+import com.codingwithmitch.espressodaggerexamples.util.StateEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class  MainRepositoryImpl
+
+/**
+ * The only difference between this and the real MainRepositoryImpl is the ApiService is
+ * fake and it's not being injected so I can change it at runtime.
+ * That way I can alter the FakeApiService for each individual test.
+ */
+class FakeMainRepositoryImpl
 @Inject
-constructor(
-    private val apiService: ApiService
-) : MainRepository{
+constructor(): MainRepository{
 
-    private val CLASS_NAME = "MainRepository"
+    lateinit var apiService: FakeApiService
 
     override fun getBlogs(stateEvent: StateEvent, category: String): Flow<DataState<MainViewState>> {
         return flow{
 
-            val response = safeApiCall(IO){apiService.getBlogPosts(category)}
+            val response = safeApiCall(Dispatchers.IO){apiService.getBlogPosts(category)}
 
             emit(
                 object: ApiResponseHandler<MainViewState, List<BlogPost>>(
@@ -37,7 +37,7 @@ constructor(
                     override fun handleSuccess(resultObj: List<BlogPost>): DataState<MainViewState> {
                         return DataState.data(
                             data = MainViewState(
-                                listFragmentView = ListFragmentView(
+                                listFragmentView = MainViewState.ListFragmentView(
                                     blogs = resultObj
                                 )
                             ),
@@ -53,7 +53,7 @@ constructor(
     override fun getAllBlogs(stateEvent: StateEvent): Flow<DataState<MainViewState>> {
         return flow{
 
-            val response = safeApiCall(IO){apiService.getAllBlogPosts()}
+            val response = safeApiCall(Dispatchers.IO){apiService.getAllBlogPosts()}
 
             emit(
                 object: ApiResponseHandler<MainViewState, List<BlogPost>>(
@@ -63,7 +63,7 @@ constructor(
                     override fun handleSuccess(resultObj: List<BlogPost>): DataState<MainViewState> {
                         return DataState.data(
                             data = MainViewState(
-                                listFragmentView = ListFragmentView(
+                                listFragmentView = MainViewState.ListFragmentView(
                                     blogs = resultObj
                                 )
                             ),
@@ -79,7 +79,7 @@ constructor(
     override fun getCategories(stateEvent: StateEvent): Flow<DataState<MainViewState>> {
         return flow{
 
-            val response = safeApiCall(IO){apiService.getCategories()}
+            val response = safeApiCall(Dispatchers.IO){apiService.getCategories()}
 
             emit(
                 object: ApiResponseHandler<MainViewState, List<Category>>(
@@ -89,7 +89,7 @@ constructor(
                     override fun handleSuccess(resultObj: List<Category>): DataState<MainViewState> {
                         return DataState.data(
                             data = MainViewState(
-                                listFragmentView = ListFragmentView(
+                                listFragmentView = MainViewState.ListFragmentView(
                                     categories = resultObj
                                 )
                             ),
@@ -104,16 +104,3 @@ constructor(
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

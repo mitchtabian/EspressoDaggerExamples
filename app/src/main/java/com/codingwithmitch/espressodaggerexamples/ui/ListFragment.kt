@@ -17,12 +17,10 @@ import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
-import com.codingwithmitch.espressodaggerexamples.util.GlideManager
-import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
-import com.codingwithmitch.espressodaggerexamples.util.TopSpacingItemDecoration
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
+import com.codingwithmitch.espressodaggerexamples.util.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,6 +52,12 @@ constructor(
         swipe_refresh.setOnRefreshListener(this)
         initRecyclerView()
         subscribeObservers()
+
+        EspressoIdlingResource.increment()
+        CoroutineScope(Main).launch {
+            delay(4000)
+            EspressoIdlingResource.decrement()
+        }
         initData()
     }
 

@@ -6,6 +6,7 @@ import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_DELAY
 import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
@@ -14,7 +15,6 @@ import java.io.IOException
  * Reference: https://medium.com/@douglas.iacovelli/how-to-handle-errors-with-retrofit-and-coroutines-33e7492a912
  */
 private val TAG: String = "AppDebug"
-
 
 suspend fun <T> Repository.safeApiCall(
     dispatcher: CoroutineDispatcher,
@@ -56,7 +56,7 @@ suspend fun <T> Repository.safeApiCall(
 }
 
 
-private fun Repository.convertErrorBody(throwable: HttpException): String? {
+private fun convertErrorBody(throwable: HttpException): String? {
     return try {
         throwable.response()?.errorBody()?.toString()
     } catch (exception: Exception) {

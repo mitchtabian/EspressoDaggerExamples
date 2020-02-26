@@ -2,13 +2,10 @@ package com.codingwithmitch.espressodaggerexamples.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
-import com.codingwithmitch.espressodaggerexamples.util.StateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent.*
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
-import com.codingwithmitch.espressodaggerexamples.util.DataState
-import com.codingwithmitch.espressodaggerexamples.util.ErrorStack
-import com.codingwithmitch.espressodaggerexamples.util.ErrorState
+import com.codingwithmitch.espressodaggerexamples.util.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -25,7 +22,7 @@ import javax.inject.Inject
 class MainViewModel
 @Inject
 constructor(
-    val mainRepository: MainRepository
+    private val mainRepository: MainRepository
 ) :ViewModel() {
 
     val CLASS_NAME = "MainViewModel"
