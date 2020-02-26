@@ -33,15 +33,12 @@ interface TestAppComponent: AppComponent {
         fun build(): TestAppComponent
     }
 
-    fun inject(listFragmentTest: ListFragmentTests)
 
     fun inject(detailFragmentTest: DetailFragmentTest)
 
-    fun inject(finalFragmentTest: FinalFragmentTest)
-
     fun inject(listFragmentErrorTests: ListFragmentErrorTests)
 
-    fun inject(mainActivityIntegrationTests: MainActivityIntegrationTests)
+    fun inject(mainActivityIntegrationTests: ListFragmentIntegrationTests)
 
 }
 

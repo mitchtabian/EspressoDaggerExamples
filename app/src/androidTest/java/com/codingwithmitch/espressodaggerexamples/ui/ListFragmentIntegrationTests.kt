@@ -31,7 +31,7 @@ import org.junit.runners.MethodSorters
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
-class MainActivityIntegrationTests: BaseMainActivityTests() {
+class ListFragmentIntegrationTests: BaseMainActivityTests() {
 
     private val CLASS_NAME = "MainActivityIntegrationTests"
 
