@@ -7,10 +7,12 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewSta
 import com.codingwithmitch.espressodaggerexamples.util.ApiResponseHandler
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import com.codingwithmitch.espressodaggerexamples.util.StateEvent
+import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import javax.inject.Singleton
 
 
 /**
@@ -18,13 +20,26 @@ import javax.inject.Inject
  * fake and it's not being injected so I can change it at runtime.
  * That way I can alter the FakeApiService for each individual test.
  */
+@Singleton
 class FakeMainRepositoryImpl
 @Inject
 constructor(): MainRepository{
 
+    private val CLASS_NAME: String = "FakeMainRepositoryImpl"
+
     lateinit var apiService: FakeApiService
 
+    private fun throwExceptionIfApiServiceNotInitialzied(){
+        if(!::apiService.isInitialized){
+            throw UninitializedPropertyAccessException(
+                "Did you forget to set the ApiService in FakeMainRepositoryImpl?"
+            )
+        }
+    }
+
+    @Throws(UninitializedPropertyAccessException::class)
     override fun getBlogs(stateEvent: StateEvent, category: String): Flow<DataState<MainViewState>> {
+        throwExceptionIfApiServiceNotInitialzied()
         return flow{
 
             val response = safeApiCall(Dispatchers.IO){apiService.getBlogPosts(category)}
@@ -50,7 +65,9 @@ constructor(): MainRepository{
         }
     }
 
+    @Throws(UninitializedPropertyAccessException::class)
     override fun getAllBlogs(stateEvent: StateEvent): Flow<DataState<MainViewState>> {
+        throwExceptionIfApiServiceNotInitialzied()
         return flow{
 
             val response = safeApiCall(Dispatchers.IO){apiService.getAllBlogPosts()}
@@ -76,7 +93,9 @@ constructor(): MainRepository{
         }
     }
 
+    @Throws(UninitializedPropertyAccessException::class)
     override fun getCategories(stateEvent: StateEvent): Flow<DataState<MainViewState>> {
+        throwExceptionIfApiServiceNotInitialzied()
         return flow{
 
             val response = safeApiCall(Dispatchers.IO){apiService.getCategories()}

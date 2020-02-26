@@ -3,12 +3,17 @@ package com.codingwithmitch.espressodaggerexamples.api
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.Constants
+import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FakeApiService
 @Inject
 constructor(
@@ -18,7 +23,6 @@ constructor(
     var blogPostsJsonFileName: String = Constants.BLOG_POSTS_DATA_FILENAME
     var categoriesJsonFileName: String = Constants.CATEGORIES_DATA_FILENAME
     var networkDelay: Long = 0L
-
 
     override suspend fun getBlogPosts(category: String): List<BlogPost> {
         val rawJson = jsonUtil.readJSONFromAsset(blogPostsJsonFileName)

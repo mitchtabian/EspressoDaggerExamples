@@ -16,10 +16,10 @@ import java.io.IOException
  */
 private val TAG: String = "AppDebug"
 
-suspend fun <T> Repository.safeApiCall(
+suspend fun <T> safeApiCall(
     dispatcher: CoroutineDispatcher,
-    apiCall: suspend () -> T
-): ApiResult<T> {
+    apiCall: suspend () -> T?
+): ApiResult<T?> {
     return withContext(dispatcher) {
         try {
             // throws TimeoutCancellationException

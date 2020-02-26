@@ -1,7 +1,5 @@
 package com.codingwithmitch.espressodaggerexamples.ui
 
-import androidx.core.graphics.scaleMatrix
-import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -10,10 +8,8 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
-import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
-import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryImpl
-import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
+import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.util.Constants
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,39 +28,12 @@ import org.junit.runners.MethodSorters
 @InternalCoroutinesApi
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4ClassRunner::class)
-class ListFragmentErrorTests {
+class ListFragmentErrorTests: BaseMainActivityTests() {
 
     private val CLASS_NAME = "ListFragmentErrorTests"
 
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
-
-    private fun configureFakeApiService(
-        blogsDataSource: String? = null,
-        categoriesDataSource: String? = null,
-        networkDelay: Long? = null,
-        application: TestBaseApplication
-    ): FakeApiService {
-        val apiService = (application.appComponent as TestAppComponent).apiService
-        blogsDataSource?.let { apiService.blogPostsJsonFileName = it }
-        categoriesDataSource?.let { apiService.categoriesJsonFileName = it }
-        networkDelay?.let { apiService.networkDelay = it }
-        return apiService
-    }
-
-    private fun configureFakeRepository(
-        apiService: FakeApiService,
-        application: TestBaseApplication
-    ): FakeMainRepositoryImpl {
-        val mainRepository = (application.appComponent as TestAppComponent).mainRepository
-        mainRepository.apiService = apiService
-        return mainRepository
-    }
-
-    private fun injectTest(application: TestBaseApplication){
-        (application.appComponent as TestAppComponent)
-            .inject(this)
-    }
 
     @Test
     fun isErrorDialogShown_UnknownError() {
@@ -73,16 +42,16 @@ class ListFragmentErrorTests {
             .targetContext
             .applicationContext as TestBaseApplication
 
-        injectTest(app)
-
         val apiService = configureFakeApiService(
-            blogsDataSource = Constants.SERVER_ERROR_FILENAME,
+            blogsDataSource = Constants.SERVER_ERROR_FILENAME, // force "Unknown error"
             categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
-            networkDelay = 0L, // not needed since default is 0L
+            networkDelay = 0L,
             application = app
         )
 
-        val repository = configureFakeRepository(apiService, app)
+        configureFakeRepository(apiService, app)
+
+        injectTest(app)
 
         val scenario = launchActivity<MainActivity>()
 
@@ -92,55 +61,91 @@ class ListFragmentErrorTests {
     }
 
 
-//    @Test
-//    fun is_dataErrorShown() {
-//
-//        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-//
-//        val apiService = FakeApiService(
-//            JsonUtil(app),
-//            Constants.SERVER_ERROR_FILENAME, // data that will cause UNKNOWN ERROR
-//            Constants.CATEGORIES_DATA_FILENAME,
-//            0L
-//        )
-//        val fragmentFactory = setupDependencies(apiService, app)
-//
-//        // Begin
-//        val scenario = launchFragmentInContainer<ListFragment>(
-//            factory = fragmentFactory
-//        )
-//
-//        onView(withText(R.string.text_error))
-//            .check(matches(isDisplayed()))
-//
-//        onView(withText(Constants.UNKNOWN_ERROR))
-//            .check(matches(isDisplayed()))
-//    }
-//
-//    @Test
-//    fun is_networkTimeoutDialogShown() {
-//
-//        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
-//
-//        val apiService = FakeApiService(
-//            JsonUtil(app),
-//            Constants.BLOG_POSTS_DATA_FILENAME,
-//            Constants.CATEGORIES_DATA_FILENAME,
-//            4000L // 4000 > 3000 so it will timeout
-//        )
-//        val fragmentFactory = setupDependencies(apiService, app)
-//
-//        // Begin
-//        val scenario = launchFragmentInContainer<ListFragment>(
-//            factory = fragmentFactory
-//        )
-//
-//        onView(withText(R.string.text_error))
-//            .check(matches(isDisplayed()))
-//
-//        onView(withText(Constants.NETWORK_ERROR_TIMEOUT))
-//            .check(matches(isDisplayed()))
-//    }
+    @Test
+    fun doesNetworkTimeout_networkTimeoutError() {
+
+        val app = InstrumentationRegistry
+            .getInstrumentation()
+            .targetContext
+            .applicationContext as TestBaseApplication
+
+        val apiService = configureFakeApiService(
+            blogsDataSource = Constants.BLOG_POSTS_DATA_FILENAME,
+            categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
+            networkDelay = 4000L, // force timeout (4000 > 3000)
+            application = app
+        )
+
+        configureFakeRepository(apiService, app)
+
+        injectTest(app)
+
+        val scenario = launchActivity<MainActivity>()
+
+        onView(withText(R.string.text_error))
+            .check(matches(isDisplayed()))
+
+        onView(withSubstring(Constants.NETWORK_ERROR_TIMEOUT))
+            .check(matches(isDisplayed()))
+
+    }
+
+    @Test
+    fun isErrorDialogShown_CannotRetrieveCategories() {
+        val app = InstrumentationRegistry
+            .getInstrumentation()
+            .targetContext
+            .applicationContext as TestBaseApplication
+
+        val apiService = configureFakeApiService(
+            blogsDataSource = Constants.BLOG_POSTS_DATA_FILENAME,
+            categoriesDataSource = Constants.SERVER_ERROR_FILENAME, // force error
+            networkDelay = 0L,
+            application = app
+        )
+
+        configureFakeRepository(apiService, app)
+
+        injectTest(app)
+
+        val scenario = launchActivity<MainActivity>()
+
+        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+
+        onView(withSubstring(MainStateEvent.GetCategories().errorInfo()))
+            .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun isErrorDialogShown_CannotRetrieveBlogPosts() {
+        val app = InstrumentationRegistry
+            .getInstrumentation()
+            .targetContext
+            .applicationContext as TestBaseApplication
+
+        val apiService = configureFakeApiService(
+            blogsDataSource = Constants.SERVER_ERROR_FILENAME, // force error
+            categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
+            networkDelay = 0L,
+            application = app
+        )
+
+        configureFakeRepository(apiService, app)
+
+        injectTest(app)
+
+        val scenario = launchActivity<MainActivity>()
+
+        onView(withText(R.string.text_error)).check(matches(isDisplayed()))
+
+        onView(withSubstring(MainStateEvent.GetAllBlogs().errorInfo()))
+            .check(matches(isDisplayed()))
+    }
+
+    override fun injectTest(application: TestBaseApplication){
+        (application.appComponent as TestAppComponent)
+            .inject(this)
+    }
 
 }
 

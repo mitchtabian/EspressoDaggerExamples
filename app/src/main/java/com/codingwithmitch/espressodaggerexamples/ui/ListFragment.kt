@@ -52,12 +52,6 @@ constructor(
         swipe_refresh.setOnRefreshListener(this)
         initRecyclerView()
         subscribeObservers()
-
-        EspressoIdlingResource.increment()
-        CoroutineScope(Main).launch {
-            delay(4000)
-            EspressoIdlingResource.decrement()
-        }
         initData()
     }
 

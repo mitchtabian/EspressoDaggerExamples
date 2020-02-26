@@ -12,7 +12,6 @@ import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.di.DaggerTestAppComponent
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
-import com.codingwithmitch.espressodaggerexamples.di.TestRepositoryModule
 import com.codingwithmitch.espressodaggerexamples.fragments.FakeMainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.setSelectedBlogPost

@@ -1,10 +1,8 @@
 package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
-import com.codingwithmitch.espressodaggerexamples.api.ApiService
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryImpl
-import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.ui.*
 import dagger.BindsInstance
 import dagger.Component
@@ -18,7 +16,6 @@ import javax.inject.Singleton
 @Component(modules = [
     FragmentModule::class,
     TestViewModelModule::class,
-    TestRepositoryModule::class,
     TestAppModule::class
 ])
 interface TestAppComponent: AppComponent {

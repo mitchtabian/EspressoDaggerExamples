@@ -3,6 +3,7 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -147,34 +148,34 @@ class ListFragmentTests{
 //        onView(withId(R.id.no_data_textview))
 //            .check(matches(withEffectiveVisibility(Visibility.GONE)))
 //    }
-//
+
 //    @Test
 //    fun is_recyclerViewPositionRestoredAfterFragmentRecreated() {
 //
-//        val app = InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TestBaseApplication
+//        val app = InstrumentationRegistry
+//            .getInstrumentation()
+//            .targetContext
+//            .applicationContext as TestBaseApplication
 //
-//        injectTest(app)
-//
-//        configureApiService(
-//            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
-//            categoriesDataSource = CATEGORIES_DATA_FILENAME,
-//            networkDelay = 0L, // not needed since default is 0L
+//        val apiService = configureFakeApiService(
+//            blogsDataSource = Constants.BLOG_POSTS_DATA_FILENAME,
+//            categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
+//            networkDelay = 0L, // force timeout (4000 > 3000)
 //            application = app
 //        )
 //
-//        val fragmentFactory = buildFragmentFactory()
+//        configureFakeRepository(apiService, app)
 //
-//        // Begin
-//        val scenario = launchFragmentInContainer<ListFragment>(
-//            factory = fragmentFactory
-//        )
+//        injectTest(app)
+//
+//        val scenario = launchActivity<MainActivity>()
 //
 //        val recyclerView = onView(withId(R.id.recycler_view))
 //
 //        recyclerView.check(matches(isDisplayed()))
 //
 //        recyclerView.perform(
-//            RecyclerViewActions.scrollToPosition<BlogPostViewHolder>(8)
+//            RecyclerViewActions.scrollToPosition<BlogPostListAdapter.BlogPostViewHolder>(8)
 //        )
 //        onView(withText("Blake Posing for his Website")).check(matches(isDisplayed()))
 //
