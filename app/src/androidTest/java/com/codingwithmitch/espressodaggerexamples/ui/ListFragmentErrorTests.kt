@@ -11,6 +11,9 @@ import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainStateEvent
 import com.codingwithmitch.espressodaggerexamples.util.Constants
+import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
+import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
+import com.codingwithmitch.espressodaggerexamples.util.Constants.SERVER_ERROR_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -43,8 +46,8 @@ class ListFragmentErrorTests: BaseMainActivityTests() {
             .applicationContext as TestBaseApplication
 
         val apiService = configureFakeApiService(
-            blogsDataSource = Constants.SERVER_ERROR_FILENAME, // force "Unknown error"
-            categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
+            blogsDataSource = SERVER_ERROR_FILENAME, // force "Unknown error"
+            categoriesDataSource = CATEGORIES_DATA_FILENAME,
             networkDelay = 0L,
             application = app
         )
@@ -70,8 +73,8 @@ class ListFragmentErrorTests: BaseMainActivityTests() {
             .applicationContext as TestBaseApplication
 
         val apiService = configureFakeApiService(
-            blogsDataSource = Constants.BLOG_POSTS_DATA_FILENAME,
-            categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
+            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
+            categoriesDataSource = CATEGORIES_DATA_FILENAME,
             networkDelay = 4000L, // force timeout (4000 > 3000)
             application = app
         )
@@ -98,8 +101,8 @@ class ListFragmentErrorTests: BaseMainActivityTests() {
             .applicationContext as TestBaseApplication
 
         val apiService = configureFakeApiService(
-            blogsDataSource = Constants.BLOG_POSTS_DATA_FILENAME,
-            categoriesDataSource = Constants.SERVER_ERROR_FILENAME, // force error
+            blogsDataSource = BLOG_POSTS_DATA_FILENAME,
+            categoriesDataSource = SERVER_ERROR_FILENAME, // force error
             networkDelay = 0L,
             application = app
         )
@@ -124,8 +127,8 @@ class ListFragmentErrorTests: BaseMainActivityTests() {
             .applicationContext as TestBaseApplication
 
         val apiService = configureFakeApiService(
-            blogsDataSource = Constants.SERVER_ERROR_FILENAME, // force error
-            categoriesDataSource = Constants.CATEGORIES_DATA_FILENAME,
+            blogsDataSource = SERVER_ERROR_FILENAME, // force error
+            categoriesDataSource = CATEGORIES_DATA_FILENAME,
             networkDelay = 0L,
             application = app
         )

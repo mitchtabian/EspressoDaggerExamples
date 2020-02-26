@@ -58,11 +58,11 @@ class MainActivity : AppCompatActivity()
 
         restoreInstanceState(savedInstanceState)
 
-//        EspressoIdlingResource.increment()
-//        CoroutineScope(Main).launch {
-//            delay(4000L)
-//            EspressoIdlingResource.decrement()
-//        }
+        EspressoIdlingResource.increment()
+        CoroutineScope(Main).launch {
+            delay(4000L)
+            EspressoIdlingResource.decrement()
+        }
     }
 
     private fun restoreInstanceState(savedInstanceState: Bundle?){
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity()
     private val uiCommunicationListener: UICommunicationListener = object: UICommunicationListener{
 
         override fun showCategoriesMenu(categories: ArrayList<Category>) {
-            printLogD(CLASS_NAME, "showCategoriesMenu")
+            printLogD(CLASS_NAME, "showCategoriesMenu: ${categories}")
             val menu = tool_bar.menu
             menu.clear()
             categories.add(Category(MENU_ITEM_ID_GET_ALL_BLOGS, MENU_ITEM_NAME_GET_ALL_BLOGS))
