@@ -57,15 +57,15 @@ dependencies {
     androidTestUtil "androidx.test:orchestrator:$orchestrator_version"
 
     // Kotlin test
-    debugImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     // Espresso
     def androidx_espresso_core = "3.1.1"
-    debugImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
-    debugImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
 
     def androidx_espresso_idling_resource = "3.2.0"
-    debugImplementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
     implementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
 
     // Mockk.io
@@ -75,19 +75,19 @@ dependencies {
 
     // androidx.test
     def androidx_test_runner = "1.2.0"
-    debugImplementation "androidx.test:runner:$androidx_test_runner"
-    debugImplementation "androidx.test:rules:$androidx_test_runner"
+    androidTestImplementation "androidx.test:runner:$androidx_test_runner"
+    androidTestImplementation "androidx.test:rules:$androidx_test_runner"
 
     def androidx_test_core = "1.2.0"
-    debugImplementation "androidx.test:core-ktx:$androidx_test_core"
+    androidTestImplementation "androidx.test:core-ktx:$androidx_test_core"
 
 
     def androidx_test_ext = "1.1.1"
-    debugImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext"
 
     // androidx.fragment
     def fragment_version = "1.2.0"
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    androidTestImplementation "androidx.fragment:fragment-testing:$fragment_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // -- Lifecycle Components (ViewModel, LiveData)
@@ -110,10 +110,12 @@ dependencies {
     kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
 
     // jetpack navigation components
-    def nav_version = "2.2.0-rc03"
+    def nav_version = "2.3.0-alpha02"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-runtime:$nav_version"
+    // Navigation testing artifact
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // -- Retrofit2
     def retrofit2_version = "2.6.0"
