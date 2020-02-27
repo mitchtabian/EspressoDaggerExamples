@@ -62,7 +62,6 @@ class BlogPostListAdapter(
     }
 
     fun submitList(list: List<BlogPost>) {
-        EspressoIdlingResource.increment()
         val commitCallback = Runnable {
 
             /*
@@ -74,7 +73,6 @@ class BlogPostListAdapter(
             CoroutineScope(Main).launch {
                 delay(100)
                 interaction?.restoreListPosition()
-                EspressoIdlingResource.decrement()
             }
         }
 
