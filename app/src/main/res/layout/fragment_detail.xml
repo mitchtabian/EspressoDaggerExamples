@@ -43,6 +43,7 @@
             android:scaleType="fitXY"
             android:adjustViewBounds="true"
             android:src="@drawable/default_image"
+            android:contentDescription="@string/blog_image"
             />
 
         <LinearLayout
