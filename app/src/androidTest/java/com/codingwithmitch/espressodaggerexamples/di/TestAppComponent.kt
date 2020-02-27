@@ -40,6 +40,7 @@ interface TestAppComponent: AppComponent {
 
     fun inject(mainActivityIntegrationTests: ListFragmentIntegrationTests)
 
+    fun inject(mainNavigationTests: MainNavigationTests)
 }
 
 
