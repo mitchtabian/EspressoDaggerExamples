@@ -8,8 +8,6 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewSta
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState.*
 import com.codingwithmitch.espressodaggerexamples.util.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -22,7 +20,7 @@ constructor(
     private val apiService: ApiService
 ) : MainRepository{
 
-    private val CLASS_NAME = "MainRepository"
+    private val CLASS_NAME = "MainRepositoryImpl"
 
     override fun getBlogs(stateEvent: StateEvent, category: String): Flow<DataState<MainViewState>> {
         return flow{

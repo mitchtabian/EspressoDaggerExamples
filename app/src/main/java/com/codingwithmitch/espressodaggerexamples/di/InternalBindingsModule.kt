@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 
 /**
- * These are dependencies that are not provided to other part of the application.
+ * These are dependencies that are not provided to other parts of the application.
  * They are used 'internally' by other dependencies.
  */
 /* **These will NOT be mocked in tests***/
@@ -40,3 +40,16 @@ object InternalBindingsModule {
             .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

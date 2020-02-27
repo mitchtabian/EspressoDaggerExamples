@@ -8,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-/* Published bindings that will be mocked OR have test fakes */
 /* Alternative for Test: 'TestAppModule' */
 @Module
 object AppModule{

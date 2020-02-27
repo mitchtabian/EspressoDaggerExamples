@@ -8,8 +8,6 @@ import dagger.Provides
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-/* Published bindings that will be mocked OR have test fakes */
-/* Alternative for Test: 'TestRepositoryModule' */
 @Module
 object RepositoryModule{
 

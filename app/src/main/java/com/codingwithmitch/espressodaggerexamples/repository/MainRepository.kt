@@ -5,7 +5,7 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewSta
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import kotlinx.coroutines.flow.Flow
 
-interface MainRepository : Repository{
+interface MainRepository{
 
     fun getBlogs(stateEvent: StateEvent, category: String): Flow<DataState<MainViewState>>
 

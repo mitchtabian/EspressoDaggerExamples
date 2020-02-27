@@ -15,6 +15,7 @@ import android.widget.ImageView
 
 
 /**
+ * ImageView that you can pinch to scale (zoom in and out)
  * Created by Mitch on 3/9/2018.
  */
 class ScalingImageView : ImageView,

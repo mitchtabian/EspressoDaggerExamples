@@ -1,7 +1,6 @@
 package com.codingwithmitch.espressodaggerexamples.ui.viewmodel
 
 import android.os.Parcelable
-import android.util.Log
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.ErrorStack

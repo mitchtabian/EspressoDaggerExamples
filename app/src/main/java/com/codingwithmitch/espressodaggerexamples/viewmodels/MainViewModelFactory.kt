@@ -6,6 +6,7 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
+/* classic Map Multibinding for providing ViewModels through Factory */
 @Singleton
 class MainViewModelFactory
 @Inject

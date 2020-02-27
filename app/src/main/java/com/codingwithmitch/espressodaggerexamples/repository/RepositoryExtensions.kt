@@ -6,7 +6,6 @@ import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_DELAY
 import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_ERROR_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.Constants.UNKNOWN_ERROR
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.*
 import retrofit2.HttpException
 import java.io.IOException
