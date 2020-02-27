@@ -15,7 +15,6 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.codingwithmitch.espressodaggerexamples.MockTestRunner"
 
         // clear state after each individual test
@@ -43,13 +42,6 @@ android {
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 
-//    sourceSets{
-//        androidTest.java.srcDirs += "src/test-common/java"
-//    }
-
-//    testOptions {
-//        animationsDisabled = true
-//    }
 }
 
 dependencies {
@@ -78,7 +70,7 @@ dependencies {
 
     // Mockk.io
     def mockk_version = "1.9.2"
-//    def mockk_version = "1.9.3"
+    //def mockk_version = "1.9.3" // had issues with this
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 
     // androidx.test
