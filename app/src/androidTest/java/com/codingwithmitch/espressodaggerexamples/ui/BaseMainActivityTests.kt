@@ -7,6 +7,10 @@ import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryI
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+/**
+ * All tests extend this base class for easy configuration of fake Repository
+ * and fake ApiService.
+ */
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 abstract class BaseMainActivityTests{

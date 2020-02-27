@@ -3,13 +3,10 @@ package com.codingwithmitch.espressodaggerexamples.api
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.models.Category
 import com.codingwithmitch.espressodaggerexamples.util.Constants
-import com.codingwithmitch.espressodaggerexamples.util.Constants.NETWORK_TIMEOUT
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withTimeout
 import javax.inject.Inject
 import javax.inject.Singleton
 

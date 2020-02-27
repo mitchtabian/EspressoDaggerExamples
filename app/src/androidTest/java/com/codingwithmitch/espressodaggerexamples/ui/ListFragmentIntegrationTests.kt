@@ -15,7 +15,6 @@ import com.codingwithmitch.espressodaggerexamples.TestBaseApplication
 import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewState
 import com.codingwithmitch.espressodaggerexamples.util.Constants
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi

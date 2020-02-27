@@ -7,7 +7,6 @@ import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state.MainViewSta
 import com.codingwithmitch.espressodaggerexamples.util.ApiResponseHandler
 import com.codingwithmitch.espressodaggerexamples.util.DataState
 import com.codingwithmitch.espressodaggerexamples.util.StateEvent
-import com.codingwithmitch.espressodaggerexamples.util.printLogD
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

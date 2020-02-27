@@ -3,7 +3,6 @@ package com.codingwithmitch.espressodaggerexamples.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryImpl
-import com.codingwithmitch.espressodaggerexamples.repository.MainRepository
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi

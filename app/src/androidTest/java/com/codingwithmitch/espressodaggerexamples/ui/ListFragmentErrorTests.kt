@@ -24,8 +24,9 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 
 /**
- * Separate class for the error testing because because the error dialogs are shown in MainActivity.
- * So need ActivityScenario, not FragmentScenario.
+ * Separate class for the error testing because because the error dialogs
+ * are shown in MainActivity.
+ * (ActivityScenario, not FragmentScenario.)
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @InternalCoroutinesApi
