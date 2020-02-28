@@ -2,8 +2,7 @@ package com.codingwithmitch.espressodaggerexamples.ui.viewmodel.state
 
 import com.codingwithmitch.espressodaggerexamples.util.StateEvent
 
-sealed class MainStateEvent:
-    StateEvent {
+sealed class MainStateEvent: StateEvent {
 
     class GetAllBlogs: MainStateEvent(){
 

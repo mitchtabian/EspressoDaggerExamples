@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity()
         })
     }
 
-    private fun displayErrorMessage(errorState: ErrorState) {
+        private fun displayErrorMessage(errorState: ErrorState) {
         if(!dialogs.containsKey(errorState.message)){
             dialogs.put(
                 errorState.message,
