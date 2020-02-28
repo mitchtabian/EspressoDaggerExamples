@@ -57,12 +57,6 @@ class MainActivity : AppCompatActivity()
         subscribeObservers()
 
         restoreInstanceState(savedInstanceState)
-
-//        EspressoIdlingResource.increment()
-//        CoroutineScope(Main).launch {
-//            delay(8000L)
-//            EspressoIdlingResource.decrement()
-//        }
     }
 
     private fun restoreInstanceState(savedInstanceState: Bundle?){

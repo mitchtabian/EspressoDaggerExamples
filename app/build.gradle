@@ -71,7 +71,7 @@ dependencies {
     // Mockk.io
     def mockk_version = "1.9.2"
     //def mockk_version = "1.9.3" // had issues with this
-    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
+    debugImplementation "io.mockk:mockk-android:$mockk_version"
 
     // androidx.test
     def androidx_test_runner = "1.2.0"
@@ -110,10 +110,12 @@ dependencies {
     kaptAndroidTest "com.google.dagger:dagger-compiler:$dagger_version"
 
     // jetpack navigation components
-    def nav_version = "2.2.0-rc03"
+    def nav_version = "2.3.0-alpha02"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-runtime:$nav_version"
+    // Navigation testing artifact
+    debugImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // -- Retrofit2
     def retrofit2_version = "2.6.0"
