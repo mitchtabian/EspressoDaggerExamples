@@ -15,7 +15,7 @@ class FakeMainViewModelFactory
 @Inject
 constructor(
     private val mainRepository: FakeMainRepositoryImpl
-): ViewModelProvider.NewInstanceFactory() {
+): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
