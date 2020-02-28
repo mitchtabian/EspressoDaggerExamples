@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.GlideManager
-import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main

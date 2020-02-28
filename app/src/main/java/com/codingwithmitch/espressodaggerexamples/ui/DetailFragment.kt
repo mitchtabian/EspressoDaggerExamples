@@ -12,12 +12,9 @@ import com.codingwithmitch.espressodaggerexamples.R
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.GlideManager
-import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Main
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -15,10 +15,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "com.codingwithmitch.espressodaggerexamples.MockTestRunner"
-
-        // clear state after each individual test
-        testInstrumentationRunnerArguments clearPackageData: 'true'
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -38,70 +35,18 @@ android {
         }
     }
 
-    testOptions {
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
-    }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
-
-    // orchestrator
-    def orchestrator_version = "1.2.0"
-    androidTestUtil "androidx.test:orchestrator:$orchestrator_version"
-
-    // Kotlin test
-    debugImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-
-    // Espresso
-    def androidx_espresso_core = "3.1.1"
-    debugImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
-    debugImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
-
-    def androidx_espresso_idling_resource = "3.2.0"
-    debugImplementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
-    implementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
-
-    // Mockk.io
-    def mockk_version = "1.9.2"
-    //def mockk_version = "1.9.3" // had issues with this
-    debugImplementation "io.mockk:mockk-android:$mockk_version"
-
-    // androidx.test
-    def androidx_test_runner = "1.2.0"
-    debugImplementation "androidx.test:runner:$androidx_test_runner"
-    debugImplementation "androidx.test:rules:$androidx_test_runner"
-
-    def androidx_test_core = "1.2.0"
-    debugImplementation "androidx.test:core-ktx:$androidx_test_core"
-
-
-    def androidx_test_ext = "1.1.1"
-    debugImplementation "androidx.test.ext:junit-ktx:$androidx_test_ext"
-
-    // androidx.fragment
-    def fragment_version = "1.2.0"
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // -- Lifecycle Components (ViewModel, LiveData)
     def lifecycle_version = "2.2.0-alpha03"
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-
-    // LiveData Coroutines
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-
-    // android coroutines
-    def coroutines_version = "1.3.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Dagger
     def dagger_version = "2.25.4"
@@ -114,8 +59,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-runtime:$nav_version"
-    // Navigation testing artifact
-    debugImplementation "androidx.navigation:navigation-testing:$nav_version"
 
     // -- Retrofit2
     def retrofit2_version = "2.6.0"
