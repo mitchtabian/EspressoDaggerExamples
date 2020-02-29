@@ -1,37 +1,47 @@
 package com.codingwithmitch.espressodaggerexamples.fragments
 
-import android.util.Log
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.ViewModelProvider
+import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
+import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
+import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
+import com.codingwithmitch.espressodaggerexamples.util.GlideManager
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
-import javax.inject.Provider
 import javax.inject.Singleton
 
-/* classic Map Multibinding FragmentFactory */
+@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Singleton
 class MainFragmentFactory
 @Inject
 constructor(
-    private val creators: Map<Class<out Fragment>, @JvmSuppressWildcards Provider<Fragment>>
-) : FragmentFactory() {
+    private val viewModelFactory: ViewModelProvider.Factory,
+    private val requestManager: GlideManager
+): FragmentFactory(){
 
-    private val TAG: String = "AppDebug"
+    override fun instantiate(classLoader: ClassLoader, className: String) =
 
-    override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-        val fragmentClass = loadFragmentClass(classLoader, className)
-        val creator = creators[fragmentClass]
-            ?: return createFragmentAsFallback(classLoader, className)
+        when(className){
 
-        try {
-            return creator.get()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
+            ListFragment::class.java.name -> {
+                val fragment = ListFragment(viewModelFactory, requestManager)
+                fragment
+            }
+
+            DetailFragment::class.java.name -> {
+                val fragment = DetailFragment(viewModelFactory, requestManager)
+                fragment
+            }
+
+            FinalFragment::class.java.name -> {
+                val fragment = FinalFragment(viewModelFactory, requestManager)
+                fragment
+            }
+
+            else -> {
+                super.instantiate(classLoader, className)
+            }
         }
-    }
-
-    private fun createFragmentAsFallback(classLoader: ClassLoader, className: String): Fragment {
-        Log.d(TAG, "No creator found for class: $className. Using default constructor")
-        return super.instantiate(classLoader, className)
-    }
-
 }
