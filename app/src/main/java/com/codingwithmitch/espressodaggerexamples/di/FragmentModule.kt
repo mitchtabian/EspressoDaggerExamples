@@ -7,34 +7,30 @@ import com.codingwithmitch.espressodaggerexamples.fragments.MainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragment
 import com.codingwithmitch.espressodaggerexamples.ui.FinalFragment
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragment
+import com.codingwithmitch.espressodaggerexamples.util.GlideManager
+import com.codingwithmitch.espressodaggerexamples.viewmodels.MainViewModelFactory
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.multibindings.IntoMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
 @Module
-abstract class FragmentModule {
+object FragmentModule {
 
-    @Binds
-    abstract fun bindFragmentFactory(fragmentFactory: MainFragmentFactory): FragmentFactory
-
-    @Binds
-    @IntoMap
-    @MainFragmentKey(ListFragment::class)
-    abstract fun bindListFragment(fragment: ListFragment): Fragment
-
-    @Binds
-    @IntoMap
-    @MainFragmentKey(DetailFragment::class)
-    abstract fun bindDetailFragment(fragment: DetailFragment): Fragment
-
-    @Binds
-    @IntoMap
-    @MainFragmentKey(FinalFragment::class)
-    abstract fun bindFinalFragment(fragment: FinalFragment): Fragment
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideMainFragmentFactory(
+        viewModelFactory: MainViewModelFactory,
+        glideManager: GlideManager
+    ): FragmentFactory{
+        return MainFragmentFactory(viewModelFactory, glideManager)
+    }
 
 }
 

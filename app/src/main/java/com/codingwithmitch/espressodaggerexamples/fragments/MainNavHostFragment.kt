@@ -1,9 +1,9 @@
 package com.codingwithmitch.espressodaggerexamples.fragments
 
 import android.content.Context
+import androidx.fragment.app.FragmentFactory
 import androidx.navigation.fragment.NavHostFragment
 import com.codingwithmitch.espressodaggerexamples.BaseApplication
-import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import javax.inject.Inject
@@ -15,9 +15,7 @@ class MainNavHostFragment : NavHostFragment(){
     private val TAG: String = "AppDebug"
 
     @Inject
-    lateinit var mainFragmentFactory: MainFragmentFactory
-
-    lateinit var uiCommunicationListener: UICommunicationListener
+    lateinit var mainFragmentFactory: FragmentFactory
 
     override fun onAttach(context: Context) {
         (activity?.application as BaseApplication).appComponent
@@ -26,9 +24,6 @@ class MainNavHostFragment : NavHostFragment(){
         super.onAttach(context)
     }
 
-    fun setUICommunicationListener(uiCommunicationListener: UICommunicationListener){
-        this.uiCommunicationListener = uiCommunicationListener
-    }
 }
 
 

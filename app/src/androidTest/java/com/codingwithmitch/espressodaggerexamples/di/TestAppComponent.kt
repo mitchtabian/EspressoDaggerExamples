@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @InternalCoroutinesApi
 @Singleton
 @Component(modules = [
-    FragmentModule::class,
+    TestFragmentModule::class,
     TestViewModelModule::class,
     TestAppModule::class
 ])
@@ -32,7 +32,6 @@ interface TestAppComponent: AppComponent {
 
         fun build(): TestAppComponent
     }
-
 
     fun inject(detailFragmentTest: DetailFragmentTest)
 

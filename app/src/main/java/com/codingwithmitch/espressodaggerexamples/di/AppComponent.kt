@@ -3,6 +3,7 @@ package com.codingwithmitch.espressodaggerexamples.di
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.ui.MainActivity
+import com.codingwithmitch.espressodaggerexamples.ui.UICommunicationListener
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -3,6 +3,7 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,14 +22,13 @@ import com.codingwithmitch.espressodaggerexamples.util.*
 import kotlinx.android.synthetic.main.fragment_list.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-@Singleton
 class ListFragment
-@Inject
 constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
     private val requestManager: GlideManager
@@ -159,11 +159,11 @@ constructor(
         if(mockUICommuncationListener != null){
             this.uiCommunicationListener = mockUICommuncationListener
         }
-        else{ // PRODUCTION: if no mock, get from MainNavHostFragment
-            val navHostFragment = activity?.supportFragmentManager
-                ?.findFragmentById(R.id.nav_host_fragment) as MainNavHostFragment?
-            navHostFragment?.let{ navHost ->
-                this.uiCommunicationListener = navHost.uiCommunicationListener
+        else{ // PRODUCTION: if no mock, get from context
+            try {
+                uiCommunicationListener = (context as UICommunicationListener)
+            }catch (e: Exception){
+                Log.e(CLASS_NAME, "$context must implement UICommunicationListener")
             }
         }
     }
