@@ -2,7 +2,6 @@ package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
-import com.codingwithmitch.espressodaggerexamples.fragments.FakeNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.ui.*
 import dagger.BindsInstance
