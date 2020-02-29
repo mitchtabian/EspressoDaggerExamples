@@ -2,6 +2,7 @@ package com.codingwithmitch.espressodaggerexamples.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -9,23 +10,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.codingwithmitch.espressodaggerexamples.R
-import com.codingwithmitch.espressodaggerexamples.fragments.MainNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.MainViewModel
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResource
 import com.codingwithmitch.espressodaggerexamples.util.GlideManager
-import com.codingwithmitch.espressodaggerexamples.util.GlideRequestManager
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.Main
-import javax.inject.Inject
-import javax.inject.Singleton
+import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
-@Singleton
 class DetailFragment
-@Inject
 constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
     private val requestManager: GlideManager
@@ -81,20 +75,23 @@ constructor(
         setUICommunicationListener(null)
     }
 
+
     fun setUICommunicationListener(mockUICommuncationListener: UICommunicationListener?){
 
         // TEST: Set interface from mock
         if(mockUICommuncationListener != null){
             this.uiCommunicationListener = mockUICommuncationListener
         }
-        else{ // PRODUCTION: if no mock, get from MainNavHostFragment
-            val navHostFragment = activity?.supportFragmentManager
-                ?.findFragmentById(R.id.nav_host_fragment) as MainNavHostFragment?
-            navHostFragment?.let{ navHost ->
-                this.uiCommunicationListener = navHost.uiCommunicationListener
+        else{ // PRODUCTION: if no mock, get from context
+            try {
+                uiCommunicationListener = (context as UICommunicationListener)
+            }catch (e: Exception){
+                Log.e(CLASS_NAME, "$context must implement UICommunicationListener")
             }
         }
     }
+
+
 }
 
 

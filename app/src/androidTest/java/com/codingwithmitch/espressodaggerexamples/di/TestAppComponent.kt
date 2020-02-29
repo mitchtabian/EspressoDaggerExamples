@@ -2,6 +2,7 @@ package com.codingwithmitch.espressodaggerexamples.di
 
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
+import com.codingwithmitch.espressodaggerexamples.fragments.FakeNavHostFragment
 import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryImpl
 import com.codingwithmitch.espressodaggerexamples.ui.*
 import dagger.BindsInstance
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 @InternalCoroutinesApi
 @Singleton
 @Component(modules = [
-    FragmentModule::class,
+    TestFragmentModule::class,
     TestViewModelModule::class,
     TestAppModule::class
 ])
@@ -32,7 +33,6 @@ interface TestAppComponent: AppComponent {
 
         fun build(): TestAppComponent
     }
-
 
     fun inject(detailFragmentTest: DetailFragmentTest)
 

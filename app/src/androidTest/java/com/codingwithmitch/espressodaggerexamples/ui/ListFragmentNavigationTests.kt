@@ -87,9 +87,9 @@ class ListFragmentNavigationTests : BaseMainActivityTests(){
 
         fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
-            uiCommunicationListener,
             requestManager
         )
+        fragmentFactory.uiCommunicationListener = uiCommunicationListener
 
         val navController = TestNavHostController(app)
         navController.setGraph(R.navigation.main_nav_graph)

@@ -81,9 +81,9 @@ class DetailFragmentTest: BaseMainActivityTests() {
 
         fragmentFactory = FakeMainFragmentFactory(
             viewModelFactory,
-            uiCommunicationListener,
             requestManager
         )
+        fragmentFactory.uiCommunicationListener = uiCommunicationListener
 
         val scenario = launchFragmentInContainer<DetailFragment>(
             factory = fragmentFactory
