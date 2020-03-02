@@ -3,7 +3,6 @@ package com.codingwithmitch.espressodaggerexamples.di
 import android.app.Application
 import com.codingwithmitch.espressodaggerexamples.api.FakeApiService
 import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryImpl
-import com.codingwithmitch.espressodaggerexamples.ui.DetailFragmentTest
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,7 +33,6 @@ interface TestAppComponent : AppComponent{
         fun build(): TestAppComponent
     }
 
-    fun inject(detailFragmentTest: DetailFragmentTest)
 }
 
 

@@ -87,14 +87,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
 
-    // androidx.fragment
-    def fragment_version = "1.2.0"
-    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
-
-    // Mockk.io
-    def mockk_version = "1.9.2"
-    //def mockk_version = "1.9.3" // had issues with this
-    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 }
 
 
