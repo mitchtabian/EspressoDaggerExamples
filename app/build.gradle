@@ -99,6 +99,9 @@ dependencies {
     def mockk_version = "1.9.2"
     //def mockk_version = "1.9.3" // had issues with this
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
+
+    def androidx_test_core = "1.2.0"
+    androidTestImplementation "androidx.test:core-ktx:$androidx_test_core"
 }
 
 
