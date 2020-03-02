@@ -87,6 +87,10 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
 
+    def androidx_espresso_idling_resource = "3.2.0"
+    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
+    implementation "androidx.test.espresso:espresso-idling-resource:$androidx_espresso_idling_resource"
+
     // androidx.fragment
     def fragment_version = "1.2.0"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"

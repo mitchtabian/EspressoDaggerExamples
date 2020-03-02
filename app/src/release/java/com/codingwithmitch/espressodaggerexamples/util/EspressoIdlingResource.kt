@@ -1,11 +1,12 @@
 package com.codingwithmitch.espressodaggerexamples.util
 
+object EspressoIdlingResource{
 
-object EspressoIdlingResource {
+    fun increment(){
 
-    fun increment() {
     }
 
     fun decrement() {
+
     }
 }
