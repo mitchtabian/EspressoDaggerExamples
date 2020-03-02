@@ -6,10 +6,14 @@ import com.codingwithmitch.espressodaggerexamples.util.GlideManager
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
 @InternalCoroutinesApi
+@Singleton
 class FakeMainFragmentFactory
+@Inject
 constructor(
     private val viewModelFactory: FakeMainViewModelFactory,
     private val requestManager: GlideManager
@@ -51,3 +55,11 @@ constructor(
             }
         }
 }
+
+
+
+
+
+
+
+
