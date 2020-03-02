@@ -81,6 +81,20 @@ dependencies {
     // androidx.test
     def androidx_test_runner = "1.2.0"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner"
+
+    // Espresso
+    def androidx_espresso_core = "3.1.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_espresso_core"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_espresso_core"
+
+    // androidx.fragment
+    def fragment_version = "1.2.0"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+
+    // Mockk.io
+    def mockk_version = "1.9.2"
+    //def mockk_version = "1.9.3" // had issues with this
+    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 }
 
 
