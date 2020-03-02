@@ -55,6 +55,7 @@ class ListFragmentNavigationTests : BaseMainActivityTests(){
     @Inject
     lateinit var requestManager: FakeGlideRequestManager
 
+    @Inject
     lateinit var fragmentFactory: FakeMainFragmentFactory
 
     val uiCommunicationListener = mockk<UICommunicationListener>()
@@ -85,10 +86,6 @@ class ListFragmentNavigationTests : BaseMainActivityTests(){
 
         injectTest(app)
 
-        fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            requestManager
-        )
         fragmentFactory.uiCommunicationListener = uiCommunicationListener
 
         val navController = TestNavHostController(app)
