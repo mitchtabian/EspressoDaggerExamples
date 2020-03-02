@@ -15,7 +15,6 @@ import com.codingwithmitch.espressodaggerexamples.models.BlogPost
 import com.codingwithmitch.espressodaggerexamples.ui.viewmodel.setSelectedBlogPost
 import com.codingwithmitch.espressodaggerexamples.util.Constants.BLOG_POSTS_DATA_FILENAME
 import com.codingwithmitch.espressodaggerexamples.util.Constants.CATEGORIES_DATA_FILENAME
-import com.codingwithmitch.espressodaggerexamples.util.EspressoIdlingResourceRule
 import com.codingwithmitch.espressodaggerexamples.util.FakeGlideRequestManager
 import com.codingwithmitch.espressodaggerexamples.util.JsonUtil
 import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
@@ -24,7 +23,6 @@ import com.google.gson.reflect.TypeToken
 import io.mockk.*
 import kotlinx.coroutines.*
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import javax.inject.Inject
@@ -35,9 +33,6 @@ import javax.inject.Inject
 class DetailFragmentTest: BaseMainActivityTests() {
 
     private val CLASS_NAME = "DetailFragmentTest"
-
-    @get: Rule
-    val espressoIdlingResourceRule = EspressoIdlingResourceRule()
 
     @Inject
     lateinit var viewModelFactory: FakeMainViewModelFactory
