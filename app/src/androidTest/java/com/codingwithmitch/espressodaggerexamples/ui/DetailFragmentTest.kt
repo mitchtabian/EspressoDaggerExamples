@@ -43,6 +43,7 @@ class DetailFragmentTest: BaseMainActivityTests() {
     @Inject
     lateinit var jsonUtil: JsonUtil
 
+    @Inject
     lateinit var fragmentFactory: FakeMainFragmentFactory
 
     val uiCommunicationListener = mockk<UICommunicationListener>()
@@ -74,10 +75,6 @@ class DetailFragmentTest: BaseMainActivityTests() {
 
         injectTest(app)
 
-        fragmentFactory = FakeMainFragmentFactory(
-            viewModelFactory,
-            requestManager
-        )
         fragmentFactory.uiCommunicationListener = uiCommunicationListener
 
         val scenario = launchFragmentInContainer<DetailFragment>(
