@@ -16,11 +16,11 @@ import com.codingwithmitch.espressodaggerexamples.di.TestAppComponent
 import com.codingwithmitch.espressodaggerexamples.fragments.FakeMainFragmentFactory
 import com.codingwithmitch.espressodaggerexamples.ui.BlogPostListAdapter.*
 import com.codingwithmitch.espressodaggerexamples.util.*
-import com.codingwithmitch.espressodaggerexamples.viewmodels.FakeMainViewModelFactory
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
+import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.Before
@@ -30,7 +30,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import javax.inject.Inject
-import kotlin.test.assertEquals
 
 
 /**
@@ -48,12 +47,6 @@ class ListFragmentNavigationTests : BaseMainActivityTests(){
 
     @get: Rule
     val espressoIdlingResourceRule = EspressoIdlingResourceRule()
-
-    @Inject
-    lateinit var viewModelFactory: FakeMainViewModelFactory
-
-    @Inject
-    lateinit var requestManager: FakeGlideRequestManager
 
     @Inject
     lateinit var fragmentFactory: FakeMainFragmentFactory
