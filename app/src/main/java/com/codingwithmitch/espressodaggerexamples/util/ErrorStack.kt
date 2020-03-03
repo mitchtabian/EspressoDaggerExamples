@@ -6,7 +6,6 @@ import java.lang.IndexOutOfBoundsException
 
 const val ERROR_STACK_BUNDLE_KEY = "com.codingwithmitch.espressodaggerexamples.util.ErrorStack"
 
-
 class ErrorStack: ArrayList<ErrorState>() {
 
     @IgnoredOnParcel
