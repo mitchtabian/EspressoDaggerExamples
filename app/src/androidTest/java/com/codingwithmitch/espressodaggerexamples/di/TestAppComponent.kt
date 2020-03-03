@@ -6,6 +6,7 @@ import com.codingwithmitch.espressodaggerexamples.repository.FakeMainRepositoryI
 import com.codingwithmitch.espressodaggerexamples.ui.DetailFragmentTest
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentErrorTests
 import com.codingwithmitch.espressodaggerexamples.ui.ListFragmentIntegrationTests
+import com.codingwithmitch.espressodaggerexamples.ui.MainNavigationTests
 import dagger.BindsInstance
 import dagger.Component
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,6 +42,8 @@ interface TestAppComponent : AppComponent{
     fun inject(listFragmentIntegrationTests: ListFragmentIntegrationTests)
 
     fun inject(listFragmentErrorTests: ListFragmentErrorTests)
+
+    fun inject(mainNavigationTests: MainNavigationTests)
 }
 
 
