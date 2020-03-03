@@ -26,7 +26,7 @@ import org.junit.runner.RunWith
 import javax.inject.Inject
 
 /**
- * Test the overall navigation with NavController
+ * Test the overall navigation with ActivityScenario
  * ListFragment -> DetailFragment -> FinalFragment
  */
 @InternalCoroutinesApi
