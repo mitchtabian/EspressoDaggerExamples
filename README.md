@@ -1,4 +1,4 @@
-# Advanced UI testing with Espresso
+# <a href="https://codingwithmitch.com/courses/ui-testing-jetpack-androidx/">Advanced UI testing with Espresso</a>
 
 1. Dagger2 (**no dagger-android since it will be deprecated**)
      - Mocking components and modules
