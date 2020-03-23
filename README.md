@@ -1,4 +1,4 @@
-<a href='https://codingwithmitch.com/courses/ui-testing-jetpack-androidx/' target='_blank'><img class='header-img' src='https://codingwithmitch.s3.amazonaws.com/static/powerful-android-apps-with-jetpack-architecture/images/powerful_android_apps_1.png' /></a>
+<a href='https://codingwithmitch.com/courses/ui-testing-jetpack-androidx/' target='_blank'><img class='header-img' src='https://codingwithmitch.s3.amazonaws.com/static/ui-testing-jetpack-androidx/images/EspressoDaggerExamples_course_thumbnail.png' /></a>
 # <a href="https://codingwithmitch.com/courses/ui-testing-jetpack-androidx/">Advanced UI testing with Espresso</a>
 
 <br>
