@@ -9,7 +9,7 @@
 4. Navigation Components
 5. Single-activity
 
-**Work in progress**
+<p>Watch the video course here: <a href="https://codingwithmitch.com/courses/ui-testing-jetpack-androidx/">UI Testing with Jetpack and AndroidX</a>.</p>
 
 # Contributors
 1. [@R4md4c](https://twitter.com/R4md4c)
